@@ -5,6 +5,7 @@ from hummingbot.client.settings import AllConnectorSettings
 from hummingbot.connector.gateway.amm.gateway_evm_amm import GatewayEVMAMM
 from hummingbot.connector.gateway.amm.gateway_telos_amm import GatewayTelosAMM
 from hummingbot.connector.gateway.amm.gateway_tezos_amm import GatewayTezosAMM
+from hummingbot.connector.gateway.amm.gateway_cardano_amm import GatewayCardanoAMM
 from hummingbot.connector.gateway.common_types import Chain
 from hummingbot.connector.gateway.gateway_price_shim import GatewayPriceShim
 from hummingbot.core.rate_oracle.rate_oracle import RateOracle
@@ -60,6 +61,8 @@ def start(self):
             amm_connector: GatewayTezosAMM = cast(GatewayTezosAMM, amm_market_info.market)
         elif Chain.TELOS.chain == amm_market_info.market.chain:
             amm_connector: GatewayTelosAMM = cast(GatewayTelosAMM, amm_market_info.market)
+        elif Chain.CARDANO.chain == amm_market_info.market.chain:
+            amm_connector: GatewayCardanoAMM = cast(GatewayCardanoAMM, amm_market_info.market)
         else:
             raise ValueError(f"Unsupported chain: {amm_market_info.market.chain}")
         GatewayPriceShim.get_instance().patch_prices(
