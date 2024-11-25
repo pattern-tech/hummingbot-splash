@@ -21,7 +21,7 @@ native_tokens = {
     "xrpl": "XRP",
     "kujira": "KUJI",
     "telos": "TLOS",
-    "cardano": "LOVELACE"
+    "cardano": "ADA"
 }
 
 SUPPORTED_CHAINS = set(native_tokens.keys())
