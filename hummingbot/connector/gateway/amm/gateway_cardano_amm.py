@@ -54,6 +54,9 @@ class GatewayCardanoAMM(GatewayEVMAMM):
             additional_spenders=additional_spenders,
             trading_required=trading_required,
         )
+        self._native_currency = "ADA"
+        self._default_fee = Decimal("0.001")
+        self._network_transaction_fee: Optional[TokenAmount] = TokenAmount(token=self._native_currency, amount=self._default_fee)
 
     async def get_chain_info(self):
         """
