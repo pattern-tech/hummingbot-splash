@@ -21,6 +21,7 @@ native_tokens = {
     "xrpl": "XRP",
     "kujira": "KUJI",
     "telos": "TLOS",
+    "ethereum-classic": "ETC",
     "cardano": "ADA"
 }
 
