@@ -36,7 +36,7 @@ class TriangularArbV2Config(StrategyV2ConfigBase):
             prompt_on_new=True
         ))
     cex_connector_proxy: str = Field(
-        default="coinbase_advanced_trade",
+        default="kucoin",
         client_data=ClientFieldData(
             prompt=lambda e: "Enter proxy CEX connector: ",
             prompt_on_new=True
@@ -47,10 +47,10 @@ class TriangularArbV2Config(StrategyV2ConfigBase):
             prompt=lambda e: "Enter DEX connector: ",
             prompt_on_new=True
         ))
-    arb_asset: str = Field(default="USDT")
+    arb_asset: str = Field(default="ERG")
     arb_asset_wrapped: str = Field(default="rsERG")
     proxy_asset: str = Field(default="ADA")
-    stable_asset: str = Field(default="USDC")
+    stable_asset: str = Field(default="USDT")
     min_arbitrage_percent: Decimal = Field(default=Decimal("-10"))
     # In stable asset
     min_arbitrage_volume: Decimal = Field(default=Decimal("2"))
@@ -61,6 +61,8 @@ class TriangularArbV2(StrategyV2Base):
 
     @classmethod
     def init_markets(cls, config: TriangularArbV2Config):
+         cls.cex_connector_proxy = "_kucoin"
+         config.cex_connector_proxy = "_kucoin"
          cls.markets = {config.cex_connector_main: {f"{config.arb_asset}-{config.stable_asset}"},
                        config.cex_connector_proxy: {f"{config.proxy_asset}-{config.stable_asset}"},
                        config.dex_connector: {f"{config.arb_asset_wrapped}-{config.proxy_asset}"}, }
@@ -108,7 +110,7 @@ class TriangularArbV2(StrategyV2Base):
             proxy_asset=self.config.proxy_asset,
             stable_asset=self.config.stable_asset,
             buying_market=cex_main if direction is ArbitrageDirection.FORWARD else dex,
-            proxy_market=ConnectorPair(connector_name=self.config.cex_connector_proxy,
+            proxy_market=ConnectorPair(connector_name="kucoin",
                                        trading_pair=proxy_trading_pair),
             selling_market=dex if direction is ArbitrageDirection.FORWARD else cex_main,
             order_amount=self.config.min_arbitrage_volume,
@@ -146,7 +148,7 @@ class TriangularArbV2(StrategyV2Base):
         print(active_executors)
         if len(active_executors) == 0:
             forward_arbitrage_percent = await self.estimate_arbitrage_percent(ArbitrageDirection.FORWARD)
-            if forward_arbitrage_percent >= self.config.min_arbitrage_percent:
+            if 1 >= self.config.min_arbitrage_percent:
                 x = CreateExecutorAction(executor_config=self.arbitrage_config(ArbitrageDirection.FORWARD))
                 print("--------------- generated one")
                 print(x)
@@ -178,12 +180,13 @@ class TriangularArbV2(StrategyV2Base):
         proxy_trading_pair = next(iter(self.markets[self.config.cex_connector_proxy]))
         dex_trading_pair = next(iter(self.markets[self.config.dex_connector]))
         print(main_trading_pair,proxy_trading_pair,dex_trading_pair)
+
         p_arb_asset_in_stable_asset = self.connectors[self.config.cex_connector_main].get_quote_price(
             trading_pair=main_trading_pair, 
             is_buy=forward,
             amount=self.config.min_arbitrage_volume)
     
-        p_proxy_asset_in_stable_asset = self.connectors[self.config.cex_connector_proxy].get_quote_price(
+        p_proxy_asset_in_stable_asset = self.connectors["kucoin"].get_quote_price(
             trading_pair=proxy_trading_pair, 
             is_buy=not forward,
             amount=self.config.min_arbitrage_volume)
@@ -204,7 +207,7 @@ class TriangularArbV2(StrategyV2Base):
             p_proxy_asset_in_stable_asset,
             p_arb_asset_wrapped_asset_in_proxy_asset
         )
-        
+
         return get_arbitrage_percent(
             p_arb_asset_in_stable_asset,
             p_proxy_asset_in_stable_asset,
