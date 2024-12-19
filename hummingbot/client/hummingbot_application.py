@@ -4,7 +4,7 @@ import asyncio
 import logging
 import time
 from collections import deque
-from typing import Deque, Dict, List, Optional, Tuple, Union
+from typing import Deque, Dict, List, Optional, Tuple, Union, cast
 
 from hummingbot.client.command import __all__ as commands
 from hummingbot.client.config.client_config_map import ClientConfigMap
@@ -36,7 +36,7 @@ from hummingbot.core.utils.kill_switch import KillSwitch
 from hummingbot.core.utils.trading_pair_fetcher import TradingPairFetcher
 from hummingbot.data_feed.data_feed_base import DataFeedBase
 from hummingbot.exceptions import ArgumentParserError
-from hummingbot.logger import HummingbotLogger
+from hummingbot.logger import HummingbotLogger, logger
 from hummingbot.logger.application_warning import ApplicationWarning
 from hummingbot.model.sql_connection_manager import SQLConnectionManager
 from hummingbot.notifier.notifier_base import NotifierBase
@@ -299,6 +299,7 @@ class HummingbotApplication(*commands):
                 self.market_trading_pairs_map[market_name].append(hb_trading_pair)
 
         for connector_name, trading_pairs in self.market_trading_pairs_map.items():
+            print(connector_name)
             conn_setting = AllConnectorSettings.get_connector_settings()[connector_name]
 
             if connector_name.endswith("paper_trade") and conn_setting.type == ConnectorType.Exchange:

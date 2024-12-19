@@ -11,6 +11,7 @@ class ArbitrageExecutorConfig(ExecutorConfigBase):
     order_amount: Decimal
     min_profitability: Decimal
     max_retries: int = 3
+    controller_id: str
 
 
 class ArbitrageExecutorStatus(Enum):
