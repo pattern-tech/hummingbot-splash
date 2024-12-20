@@ -276,6 +276,10 @@ class GatewayCommand(GatewayChainApiManager):
                     network = await self.app.prompt(
                         prompt=f"Which network do you want {connector} to connect to? ({', '.join(networks)}) >>> "
                     )
+                    if chain == 'cardano':
+                        maestro_api_key = await self.app.prompt(
+                            prompt="Enter your Maestro API key >>> "
+                        )
                     if self.app.to_stop_config:
                         return
                     if network in networks:
@@ -388,6 +392,7 @@ class GatewayCommand(GatewayChainApiManager):
                     wallet_address=wallet_address,
                     additional_spenders=additional_spenders,
                     additional_prompt_values=additional_prompt_values,
+                    dex_api_key=maestro_api_key
                 )
                 self.notify(
                     f"The {connector} connector now uses wallet {wallet_address} on {chain}-{network}")

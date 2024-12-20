@@ -1,14 +1,10 @@
 import asyncio
 import os
+import time
 from asyncio import Future
 from decimal import Decimal
-import time
 from typing import Dict, List, Set, cast
 
-from hummingbot.client.settings import AllConnectorSettings
-from hummingbot.connector.gateway.amm.gateway_cardano_amm import GatewayCardanoAMM
-from hummingbot.connector.gateway.amm.gateway_evm_amm import GatewayEVMAMM
-from hummingbot.strategy.market_trading_pair_tuple import MarketTradingPairTuple
 from pydantic import Field
 
 from hummingbot.client.config.config_data_types import ClientFieldData
@@ -35,16 +31,34 @@ class TriangularArbV2Config(StrategyV2ConfigBase):
             prompt=lambda e: "Enter main CEX connector: ",
             prompt_on_new=True
         ))
+    cex_main_trading_pair: str = Field(
+        default="ERG-USDT",
+        client_data=ClientFieldData(
+            prompt=lambda e: "Which pair would you like to use on main CEX connector( arb asset & stable asset): ",
+            prompt_on_new=True
+        ))
     cex_connector_proxy: str = Field(
         default="kucoin",
         client_data=ClientFieldData(
             prompt=lambda e: "Enter proxy CEX connector: ",
             prompt_on_new=True
         ))
+    cex_proxy_trading_pair: str = Field(
+        default="ADA-USDT",
+        client_data=ClientFieldData(
+            prompt=lambda e: "Which pair would you like to use on proxy CEX connector( proxy asset & stable asset): ",
+            prompt_on_new=True
+        ))
     dex_connector: str = Field(
         default="splash_cardano_mainnet",
         client_data=ClientFieldData(
             prompt=lambda e: "Enter DEX connector: ",
+            prompt_on_new=True
+        ))
+    dex_proxy_trading_pair: str = Field(
+        default="rsERG-ADA",
+        client_data=ClientFieldData(
+            prompt=lambda e: "Which pair would you like to use on proxy DEX connector( arb asset wrapped & proxy asset): ",
             prompt_on_new=True
         ))
     arb_asset: str = Field(default="ERG")
@@ -61,11 +75,11 @@ class TriangularArbV2(StrategyV2Base):
 
     @classmethod
     def init_markets(cls, config: TriangularArbV2Config):
-         cls.cex_connector_proxy = "_kucoin"
-         config.cex_connector_proxy = "_kucoin"
-         cls.markets = {config.cex_connector_main: {f"{config.arb_asset}-{config.stable_asset}"},
-                       config.cex_connector_proxy: {f"{config.proxy_asset}-{config.stable_asset}"},
-                       config.dex_connector: {f"{config.arb_asset_wrapped}-{config.proxy_asset}"}, }
+        cls.cex_connector_proxy = "_kucoin"
+        config.cex_connector_proxy = "_kucoin"
+        cls.markets = {config.cex_connector_main: {config.cex_main_trading_pair},
+                       config.cex_connector_proxy: {config.cex_proxy_trading_pair},
+                       config.dex_connector: {config.dex_proxy_trading_pair}, }
 
     def __init__(self, connectors: Dict[str, ConnectorBase], config: TriangularArbV2Config):
         super().__init__(connectors, config)
@@ -75,34 +89,10 @@ class TriangularArbV2(StrategyV2Base):
         main_trading_pair = next(iter(self.markets[self.config.cex_connector_main]))
         proxy_trading_pair = next(iter(self.markets[self.config.cex_connector_proxy]))
         dex_trading_pair = next(iter(self.markets[self.config.dex_connector]))
-
-        print(
-            "trading pairssssssssssssssssssssssssssss",
-            main_trading_pair,
-            proxy_trading_pair,
-            dex_trading_pair,
-            "connectorr namessssssssssssssssssssssssssssssss",
-            self.config.cex_connector_main,
-            self.config.dex_connector,
-            self.config.cex_connector_proxy,
-            "end  connectorr namessssssssssssssssssssssssssssssss"
-        )
-
-        print(
-            self.config.dex_connector
-        )
-
         cex_main = ConnectorPair(connector_name=self.config.cex_connector_main,
                                  trading_pair=main_trading_pair)
-        
         dex = ConnectorPair(connector_name=self.config.dex_connector,
                             trading_pair=dex_trading_pair)
-        
-        # splash = MarketTradingPairTuple(
-        # self.markets[self.config.dex_connector]
-        # )
-        # dex: GatewayCardanoAMM = cast(GatewayCardanoAMM, splash.market)
-
         return TriangularArbExecutorConfig(
             type="triangular_arb_executor",
             arb_asset=self.config.arb_asset,
@@ -133,41 +123,27 @@ class TriangularArbV2(StrategyV2Base):
             self._arb_task = safe_ensure_future(self.try_create_arbitrage_action())
             print("this is the done executers actions")
             print(executor_actions)
-        
         print("on status", self._arb_task, "returnning this", executor_actions)
         return executor_actions
 
     async def try_create_arbitrage_action(self) -> List[ExecutorAction]:
-        print("building some executers")
         executor_actions = []
         active_executors = self.filter_executors(
             executors=self.get_all_executors(),
             filter_func=lambda e: not e.is_done
         )
-        print("this is the active executers")
-        print(active_executors)
         if len(active_executors) == 0:
-            forward_arbitrage_percent = await self.estimate_arbitrage_percent(ArbitrageDirection.FORWARD)
+            # forward_arbitrage_percent = await self.estimate_arbitrage_percent(ArbitrageDirection.FORWARD)
             if 1 >= self.config.min_arbitrage_percent:
                 x = CreateExecutorAction(executor_config=self.arbitrage_config(ArbitrageDirection.FORWARD))
-                print("--------------- generated one")
-                print(x)
-                print("------------------end of generated one")
                 executor_actions.append(x)
-                print("----------executer actions")
-                print(executor_actions)
             else:
                 backward_arbitrage_percent = await self.estimate_arbitrage_percent(ArbitrageDirection.BACKWARD)
                 if -backward_arbitrage_percent >= self.config.min_arbitrage_percent:
                     x = CreateExecutorAction(executor_config=self.arbitrage_config(ArbitrageDirection.BACKWARD))
-                    print("--------------- generated one")
-                    print(x)
-                    print("------------------end of generated one")
                     executor_actions.append(x)
-                    print("----------executer actions")
                     print(executor_actions)
         if len(executor_actions) == 0:
-            print("its zero returning this", )
             return executor_actions
         else:
             return executor_actions[0]
@@ -179,44 +155,31 @@ class TriangularArbV2(StrategyV2Base):
         main_trading_pair = next(iter(self.markets[self.config.cex_connector_main]))
         proxy_trading_pair = next(iter(self.markets[self.config.cex_connector_proxy]))
         dex_trading_pair = next(iter(self.markets[self.config.dex_connector]))
-        print(main_trading_pair,proxy_trading_pair,dex_trading_pair)
-
         p_arb_asset_in_stable_asset = self.connectors[self.config.cex_connector_main].get_quote_price(
-            trading_pair=main_trading_pair, 
+            trading_pair=main_trading_pair,
             is_buy=forward,
             amount=self.config.min_arbitrage_volume)
-    
         p_proxy_asset_in_stable_asset = self.connectors["kucoin"].get_quote_price(
-            trading_pair=proxy_trading_pair, 
+            trading_pair=proxy_trading_pair,
             is_buy=not forward,
             amount=self.config.min_arbitrage_volume)
-    
         p_arb_asset_in_stable_asset, p_proxy_asset_in_stable_asset = await asyncio.gather(
             p_arb_asset_in_stable_asset,
             p_proxy_asset_in_stable_asset)
-        
         arb_vol_in_proxy_asset = self.config.min_arbitrage_volume / p_proxy_asset_in_stable_asset
-    
         p_arb_asset_wrapped_asset_in_proxy_asset = await self.connectors[self.config.dex_connector].get_quote_price(
-            trading_pair=dex_trading_pair, 
+            trading_pair=dex_trading_pair,
             is_buy=not forward,
             amount=arb_vol_in_proxy_asset)
-        
-        print(
-            p_arb_asset_in_stable_asset,
-            p_proxy_asset_in_stable_asset,
-            p_arb_asset_wrapped_asset_in_proxy_asset
-        )
-
         return get_arbitrage_percent(
             p_arb_asset_in_stable_asset,
             p_proxy_asset_in_stable_asset,
             p_arb_asset_wrapped_asset_in_proxy_asset
         )
-
-
 # Important: all prices must be given in Base/Quote format, assuming
 # arb_asset, proxy_asset, arb_asset_wrapped are quote assets in corresponding pairs.
+
+
 def get_arbitrage_percent(p_arb_asset_in_stable_asset: Decimal, p_proxy_asset_in_stable_asset: Decimal,
                           p_arb_asset_wrapped_in_proxy_asset: Decimal) -> Decimal:
     p_arb_asset_wrapped_in_stable_asset = p_proxy_asset_in_stable_asset * p_arb_asset_wrapped_in_proxy_asset
