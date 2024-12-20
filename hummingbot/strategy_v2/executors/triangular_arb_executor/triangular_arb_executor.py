@@ -1,9 +1,10 @@
 import asyncio
+from decimal import Decimal
 import logging
 from typing import Optional, Union, cast
 
 from hummingbot.connector.connector_base import ConnectorBase
-from hummingbot.core.data_type.common import OrderType, TradeType
+from hummingbot.core.data_type.common import OrderType, PositionAction, TradeType
 from hummingbot.core.event.events import BuyOrderCreatedEvent, MarketOrderFailureEvent, SellOrderCreatedEvent
 from hummingbot.logger import HummingbotLogger
 from hummingbot.strategy.script_strategy_base import ScriptStrategyBase
@@ -80,7 +81,11 @@ class TriangularArbExecutor(ExecutorBase):
         if self.arb_direction is ArbitrageDirection.FORWARD:
             buying_account_not_ok = self.buying_market().get_balance(self.stable_asset) < self.order_amount
             proxy_account_not_ok = self.proxy_market().get_balance(self.proxy_asset) < self.order_amount
-            selling_account_not_ok = self.selling_market().get_balance(self.arb_asset_wrapped) < self.order_amount
+            selling_account_not_ok = self.selling_market().get_balance("rsERG") < self.order_amount
+            self.logger().info("printing in forward situationnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnn")
+            self.logger().info("%s %s %s", buying_account_not_ok, proxy_account_not_ok, selling_account_not_ok)
+            self.logger().info("%s %s %s", self.buying_market().get_balance(self.stable_asset),self.proxy_market().get_balance(self.proxy_asset),self.selling_market().get_balance("rsERG"))
+
             if buying_account_not_ok or proxy_account_not_ok or selling_account_not_ok:
                 self.state = Failed(FailureReason.INSUFFICIENT_BALANCE)
                 self.logger().error("Not enough budget to open position.")
@@ -88,6 +93,10 @@ class TriangularArbExecutor(ExecutorBase):
             buying_account_not_ok = self.buying_market().get_balance(self.proxy_asset) < self.order_amount
             proxy_account_not_ok = self.selling_market().get_balance(self.stable_asset) < self.order_amount
             selling_account_not_ok = self.proxy_market().get_balance(self.arb_asset) < self.order_amount
+            self.logger().info("printing in backward situationnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnn")
+            self.logger().info("%s %s %s", buying_account_not_ok, proxy_account_not_ok, selling_account_not_ok)
+            self.logger().info("%s %s %s", self.buying_market().get_balance(self.proxy_asset),self.selling_market().get_balance(self.stable_asset),self.proxy_market().get_balance(self.arb_asset))
+
             if buying_account_not_ok or proxy_account_not_ok or selling_account_not_ok:
                 self.state = Failed(FailureReason.INSUFFICIENT_BALANCE)
                 self.logger().error("Not enough budget to open position.")
@@ -164,6 +173,33 @@ class TriangularArbExecutor(ExecutorBase):
             elif order_id == self.state.sell_order.order_id:
                 self.state.sell_order = asyncio.run(self.place_sell_order())
 
+    def place_order(self,
+                    connector_name: str,
+                    trading_pair: str,
+                    order_type: OrderType,
+                    side: TradeType,
+                    amount: Decimal,
+                    position_action: PositionAction = PositionAction.NIL,
+                    price=Decimal("NaN"),
+                    ):
+        """
+        Places an order with the specified parameters.
+
+        :param connector_name: The name of the connector.
+        :param trading_pair: The trading pair for the order.
+        :param order_type: The type of the order.
+        :param side: The side of the order (buy or sell).
+        :param amount: The amount for the order.
+        :param position_action: The position action for the order.
+        :param price: The price for the order.
+        :return: The result of the order placement.
+        """
+        self.logger().info("doing with triangular placer")
+        price = Decimal("1") if connector_name == "splash_cardano_mainnet" else Decimal("NaN")
+        if side == TradeType.BUY:
+            return self._strategy.buy(connector_name, trading_pair, amount, order_type, price, position_action)
+        else:
+            return self._strategy.sell(connector_name, trading_pair, amount, order_type, price, position_action)
 
 def is_valid_arbitrage(arb_asset: str,
                        arb_asset_wrapped: str,

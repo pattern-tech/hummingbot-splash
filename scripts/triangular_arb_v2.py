@@ -38,7 +38,7 @@ class TriangularArbV2Config(StrategyV2ConfigBase):
             prompt_on_new=True
         ))
     cex_connector_proxy: str = Field(
-        default="kucoin",
+        default="mexc",
         client_data=ClientFieldData(
             prompt=lambda e: "Enter proxy CEX connector: ",
             prompt_on_new=True
@@ -62,7 +62,7 @@ class TriangularArbV2Config(StrategyV2ConfigBase):
             prompt_on_new=True
         ))
     arb_asset: str = Field(default="ERG")
-    arb_asset_wrapped: str = Field(default="rsERG")
+    arb_asset_wrapped: str = Field(default="RSERG")
     proxy_asset: str = Field(default="ADA")
     stable_asset: str = Field(default="USDT")
     min_arbitrage_percent: Decimal = Field(default=Decimal("-10"))
@@ -86,11 +86,9 @@ class TriangularArbV2(StrategyV2Base):
         self.config = config
 
     def arbitrage_config(self, direction: ArbitrageDirection) -> TriangularArbExecutorConfig:
-        main_trading_pair = next(iter(self.markets[self.config.cex_connector_main]))
-        proxy_trading_pair = next(iter(self.markets[self.config.cex_connector_proxy]))
         dex_trading_pair = next(iter(self.markets[self.config.dex_connector]))
         cex_main = ConnectorPair(connector_name=self.config.cex_connector_main,
-                                 trading_pair=main_trading_pair)
+                                 trading_pair=self.config.cex_main_trading_pair)
         dex = ConnectorPair(connector_name=self.config.dex_connector,
                             trading_pair=dex_trading_pair)
         return TriangularArbExecutorConfig(
@@ -100,20 +98,18 @@ class TriangularArbV2(StrategyV2Base):
             proxy_asset=self.config.proxy_asset,
             stable_asset=self.config.stable_asset,
             buying_market=cex_main if direction is ArbitrageDirection.FORWARD else dex,
-            proxy_market=ConnectorPair(connector_name="kucoin",
-                                       trading_pair=proxy_trading_pair),
+            proxy_market=ConnectorPair(connector_name=self.config.cex_connector_proxy,
+                                       trading_pair=self.config.dex_proxy_trading_pair),
             selling_market=dex if direction is ArbitrageDirection.FORWARD else cex_main,
             order_amount=self.config.min_arbitrage_volume,
             min_profitability_percent=cast(Decimal, -10),
             max_retries=3,
             timestamp=time.time(),
-            # controller_id="splash_cardano_mainnet" if direction is ArbitrageDirection.FORWARD else "kucoin"
         )
 
     def determine_executor_actions(self) -> List[ExecutorAction]:
         executor_actions = []
         if self._arb_task is None:
-            print("running on none")
             self._arb_task = safe_ensure_future(self.try_create_arbitrage_action())
             print("this is the arb task")
             print(self._arb_task)
@@ -152,14 +148,15 @@ class TriangularArbV2(StrategyV2Base):
         forward = direction is ArbitrageDirection.FORWARD
 
         # Get the trading pairs as strings from the sets
-        main_trading_pair = next(iter(self.markets[self.config.cex_connector_main]))
-        proxy_trading_pair = next(iter(self.markets[self.config.cex_connector_proxy]))
+        main_trading_pair = f"{self.config.arb_asset}-{self.config.stable_asset}"
+        proxy_trading_pair = f"{self.config.proxy_asset}-{self.config.stable_asset}"
         dex_trading_pair = next(iter(self.markets[self.config.dex_connector]))
         p_arb_asset_in_stable_asset = self.connectors[self.config.cex_connector_main].get_quote_price(
             trading_pair=main_trading_pair,
             is_buy=forward,
             amount=self.config.min_arbitrage_volume)
-        p_proxy_asset_in_stable_asset = self.connectors["kucoin"].get_quote_price(
+
+        p_proxy_asset_in_stable_asset = self.connectors[self.config.cex_connector_proxy].get_quote_price(
             trading_pair=proxy_trading_pair,
             is_buy=not forward,
             amount=self.config.min_arbitrage_volume)
