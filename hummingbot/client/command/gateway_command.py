@@ -536,6 +536,9 @@ class GatewayCommand(GatewayChainApiManager):
                 chain, network, address = (
                     conf["chain"], conf["network"], conf["wallet_address"]
                 )
+                self.notify(chain)
+                if chain == 'cardano':
+                    self.notify("Make sure you are connected to splash with a valid maestro api key before getting balance each time you open the bot. (gateway connect splash)")
 
                 tokens_str = conf.get("tokens", "")
                 tokens = [token.strip() for token in tokens_str.split(',')] if tokens_str else []

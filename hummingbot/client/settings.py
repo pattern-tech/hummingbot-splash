@@ -84,7 +84,6 @@ class GatewayConnectionSetting:
         connections_conf_path: str = GatewayConnectionSetting.conf_path()
         print(connections_conf_path)
         if exists(connections_conf_path):
-            print("fetched the json")
             with open(connections_conf_path) as fd:
                 return json.load(fd)
         return []
