@@ -141,7 +141,6 @@ class GatewayConnectionSetting:
                 "wallet_address": wallet_address,
                 "additional_spenders": additional_spenders,
                 "additional_prompt_values": additional_prompt_values,
-                "dex_api_key": dex_api_key
             }
         else:
             new_connector_spec: Dict[str, str] = {

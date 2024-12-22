@@ -280,6 +280,8 @@ class GatewayCommand(GatewayChainApiManager):
                         maestro_api_key = await self.app.prompt(
                             prompt="Enter your Maestro API key >>> "
                         )
+                        self.notify("\nFetching all the tokens may take a while, be patient...\n")
+                        await self._get_gateway_instance().add_dex_api_key(chain, network, maestro_api_key)
                     if self.app.to_stop_config:
                         return
                     if network in networks:
@@ -392,7 +394,6 @@ class GatewayCommand(GatewayChainApiManager):
                     wallet_address=wallet_address,
                     additional_spenders=additional_spenders,
                     additional_prompt_values=additional_prompt_values,
-                    dex_api_key=maestro_api_key
                 )
                 self.notify(
                     f"The {connector} connector now uses wallet {wallet_address} on {chain}-{network}")
