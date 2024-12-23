@@ -65,13 +65,14 @@ class TriangularArbV2Config(StrategyV2ConfigBase):
     arb_asset_wrapped: str = Field(default="RSERG")
     proxy_asset: str = Field(default="ADA")
     stable_asset: str = Field(default="USDT")
-    min_arbitrage_percent: Decimal = Field(default=Decimal("-10"))
+    min_arbitrage_percent: Decimal = Field(default=Decimal("0.01"))   # We set a -10% profit threshold as a filter to help the program quickly identify potential opportunities
     # In stable asset
     min_arbitrage_volume: Decimal = Field(default=Decimal("2"))
 
 
 class TriangularArbV2(StrategyV2Base):
     _arb_task: Future = None
+    one_time_trade: bool = False
 
     @classmethod
     def init_markets(cls, config: TriangularArbV2Config):
@@ -87,10 +88,12 @@ class TriangularArbV2(StrategyV2Base):
 
     def arbitrage_config(self, direction: ArbitrageDirection) -> TriangularArbExecutorConfig:
         dex_trading_pair = next(iter(self.markets[self.config.dex_connector]))
+
         cex_main = ConnectorPair(connector_name=self.config.cex_connector_main,
                                  trading_pair=self.config.cex_main_trading_pair)
         dex = ConnectorPair(connector_name=self.config.dex_connector,
                             trading_pair=dex_trading_pair)
+
         return TriangularArbExecutorConfig(
             type="triangular_arb_executor",
             arb_asset=self.config.arb_asset,
@@ -102,7 +105,7 @@ class TriangularArbV2(StrategyV2Base):
                                        trading_pair=self.config.dex_proxy_trading_pair),
             selling_market=dex if direction is ArbitrageDirection.FORWARD else cex_main,
             order_amount=self.config.min_arbitrage_volume,
-            min_profitability_percent=cast(Decimal, -10),
+            min_profitability_percent=cast(Decimal, 1),
             max_retries=3,
             timestamp=time.time(),
         )
@@ -111,37 +114,41 @@ class TriangularArbV2(StrategyV2Base):
         executor_actions = []
         if self._arb_task is None:
             self._arb_task = safe_ensure_future(self.try_create_arbitrage_action())
-            print("this is the arb task")
-            print(self._arb_task)
+
         elif self._arb_task.done():
-            print("running on done")
             executor_actions.append(self._arb_task.result())
             self._arb_task = safe_ensure_future(self.try_create_arbitrage_action())
-            print("this is the done executers actions")
-            print(executor_actions)
-        print("on status", self._arb_task, "returnning this", executor_actions)
+
         return executor_actions
 
     async def try_create_arbitrage_action(self) -> List[ExecutorAction]:
+        if self.one_time_trade:
+            self.logger().error("one action already created, check the balances")
+            return []
+
         executor_actions = []
         active_executors = self.filter_executors(
             executors=self.get_all_executors(),
             filter_func=lambda e: not e.is_done
         )
+
         if len(active_executors) == 0:
-            # forward_arbitrage_percent = await self.estimate_arbitrage_percent(ArbitrageDirection.FORWARD)
-            if 1 >= self.config.min_arbitrage_percent:
+            forward_arbitrage_percent = await self.estimate_arbitrage_percent(ArbitrageDirection.FORWARD)
+            backward_arbitrage_percent = await self.estimate_arbitrage_percent(ArbitrageDirection.BACKWARD)
+            forward_arbitrage_percent = await self.estimate_arbitrage_percent(ArbitrageDirection.FORWARD)
+            self.logger().info("this is the forward percentage %s and this is the backward percentage %s", forward_arbitrage_percent, backward_arbitrage_percent)
+            if forward_arbitrage_percent >= self.config.min_arbitrage_percent:
                 x = CreateExecutorAction(executor_config=self.arbitrage_config(ArbitrageDirection.FORWARD))
                 executor_actions.append(x)
             else:
                 backward_arbitrage_percent = await self.estimate_arbitrage_percent(ArbitrageDirection.BACKWARD)
-                if -backward_arbitrage_percent >= self.config.min_arbitrage_percent:
+                if backward_arbitrage_percent >= self.config.min_arbitrage_percent:
                     x = CreateExecutorAction(executor_config=self.arbitrage_config(ArbitrageDirection.BACKWARD))
                     executor_actions.append(x)
-                    print(executor_actions)
         if len(executor_actions) == 0:
             return executor_actions
         else:
+            self.one_time_trade = True
             return executor_actions[0]
 
     async def estimate_arbitrage_percent(self, direction: ArbitrageDirection) -> Decimal:
@@ -151,6 +158,7 @@ class TriangularArbV2(StrategyV2Base):
         main_trading_pair = f"{self.config.arb_asset}-{self.config.stable_asset}"
         proxy_trading_pair = f"{self.config.proxy_asset}-{self.config.stable_asset}"
         dex_trading_pair = next(iter(self.markets[self.config.dex_connector]))
+
         p_arb_asset_in_stable_asset = self.connectors[self.config.cex_connector_main].get_quote_price(
             trading_pair=main_trading_pair,
             is_buy=forward,
@@ -160,6 +168,7 @@ class TriangularArbV2(StrategyV2Base):
             trading_pair=proxy_trading_pair,
             is_buy=not forward,
             amount=self.config.min_arbitrage_volume)
+
         p_arb_asset_in_stable_asset, p_proxy_asset_in_stable_asset = await asyncio.gather(
             p_arb_asset_in_stable_asset,
             p_proxy_asset_in_stable_asset)
@@ -168,6 +177,7 @@ class TriangularArbV2(StrategyV2Base):
             trading_pair=dex_trading_pair,
             is_buy=not forward,
             amount=arb_vol_in_proxy_asset)
+
         return get_arbitrage_percent(
             p_arb_asset_in_stable_asset,
             p_proxy_asset_in_stable_asset,

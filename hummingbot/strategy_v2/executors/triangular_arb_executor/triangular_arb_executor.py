@@ -136,7 +136,7 @@ class TriangularArbExecutor(ExecutorBase):
         market = self._proxy_market
         order_id = self.place_order(connector_name=market.connector_name, trading_pair=market.trading_pair,
                                     order_type=OrderType.MARKET,
-                                    side=TradeType.BUY if self.arb_direction is ArbitrageDirection.FORWARD else TradeType.SELL,
+                                    side=TradeType.SELL if self.arb_direction is ArbitrageDirection.FORWARD else TradeType.BUY,
                                     amount=self.order_amount)
         return TrackedOrder(order_id)
 
