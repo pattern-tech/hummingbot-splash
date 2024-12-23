@@ -51,9 +51,9 @@ class TriangularArbV2Config(StrategyV2ConfigBase):
     arb_asset_wrapped: str = Field(default="RSERG")
     proxy_asset: str = Field(default="ADA")
     stable_asset: str = Field(default="USDT")
-    min_arbitrage_percent: Decimal = Field(default=Decimal("0.01")) # We set a -10% profit threshold as a filter to help the program quickly identify potential opportunities
+    min_arbitrage_percent: Decimal = Field(default=Decimal("0.01"))
     # In stable asset
-    min_arbitrage_volume: Decimal = Field(default=Decimal("2")) 
+    min_arbitrage_volume: Decimal = Field(default=Decimal("1")) 
 
 
 class TriangularArbV2(StrategyV2Base):
@@ -70,8 +70,8 @@ class TriangularArbV2(StrategyV2Base):
         self.config = config
 
     def arbitrage_config(self, direction: ArbitrageDirection) -> TriangularArbExecutorConfig:
-        main_trading_pair = f"{self.config.arb_asset}-{self.config.stable_asset}"
-        proxy_trading_pair = f"{self.config.proxy_asset}-{self.config.stable_asset}"
+        main_trading_pair = next(iter(self.markets[self.config.cex_connector_main]))
+        proxy_trading_pair = next(iter(self.markets[self.config.cex_connector_proxy]))
         dex_trading_pair = next(iter(self.markets[self.config.dex_connector]))
 
         cex_main = ConnectorPair(connector_name=self.config.cex_connector_main,
@@ -101,22 +101,12 @@ class TriangularArbV2(StrategyV2Base):
         executor_actions = []
         if self._arb_task is None:
             self._arb_task = safe_ensure_future(self.try_create_arbitrage_action())
-            
         elif self._arb_task.done():
             executor_actions.append(self._arb_task.result())
             self._arb_task = safe_ensure_future(self.try_create_arbitrage_action())
-            
-            
-        
-        
         return executor_actions
 
     async def try_create_arbitrage_action(self) -> List[ExecutorAction]:
-        if self.one_time_trade:
-            self.logger().error("one action already created, check the balances")
-            return [] 
-        
-        
         executor_actions = []
         active_executors = self.filter_executors(
             executors=self.get_all_executors(),
@@ -125,9 +115,6 @@ class TriangularArbV2(StrategyV2Base):
         
         if len(active_executors) == 0:
             forward_arbitrage_percent = await self.estimate_arbitrage_percent(ArbitrageDirection.FORWARD)
-            backward_arbitrage_percent = await self.estimate_arbitrage_percent(ArbitrageDirection.BACKWARD)
-            forward_arbitrage_percent = await self.estimate_arbitrage_percent(ArbitrageDirection.FORWARD)
-            self.logger().info("this is the forward percentage %s and this is the backward percentage %s", forward_arbitrage_percent, backward_arbitrage_percent)
             if forward_arbitrage_percent >= self.config.min_arbitrage_percent:
                 x = CreateExecutorAction(executor_config=self.arbitrage_config(ArbitrageDirection.FORWARD))
                 executor_actions.append(x)
@@ -136,6 +123,7 @@ class TriangularArbV2(StrategyV2Base):
                 if backward_arbitrage_percent >= self.config.min_arbitrage_percent:
                     x = CreateExecutorAction(executor_config=self.arbitrage_config(ArbitrageDirection.BACKWARD))
                     executor_actions.append(x)
+                    
         if len(executor_actions) == 0:
             return executor_actions
         else:
@@ -146,8 +134,8 @@ class TriangularArbV2(StrategyV2Base):
         forward = direction is ArbitrageDirection.FORWARD
 
         # Get the trading pairs as strings from the sets
-        main_trading_pair = f"{self.config.arb_asset}-{self.config.stable_asset}"
-        proxy_trading_pair = f"{self.config.proxy_asset}-{self.config.stable_asset}"
+        main_trading_pair = next(iter(self.markets[self.config.cex_connector_main]))
+        proxy_trading_pair = next(iter(self.markets[self.config.cex_connector_proxy]))
         dex_trading_pair = next(iter(self.markets[self.config.dex_connector]))
 
         p_arb_asset_in_stable_asset = self.connectors[self.config.cex_connector_main].get_quote_price(
