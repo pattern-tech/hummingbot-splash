@@ -82,7 +82,6 @@ class GatewayConnectionSetting:
     @staticmethod
     def load() -> List[Dict[str, str]]:
         connections_conf_path: str = GatewayConnectionSetting.conf_path()
-        print(connections_conf_path)
         if exists(connections_conf_path):
             with open(connections_conf_path) as fd:
                 return json.load(fd)
@@ -128,30 +127,17 @@ class GatewayConnectionSetting:
         wallet_address: str,
         additional_spenders: List[str],
         additional_prompt_values: Dict[str, str],
-        dex_api_key: str = 0
     ):
-        if chain == 'cardano':
-            new_connector_spec: Dict[str, str] = {
-                "connector": connector_name,
-                "chain": chain,
-                "network": network,
-                "trading_type": trading_type,
-                "chain_type": chain_type,
-                "wallet_address": wallet_address,
-                "additional_spenders": additional_spenders,
-                "additional_prompt_values": additional_prompt_values,
-            }
-        else:
-            new_connector_spec: Dict[str, str] = {
-                "connector": connector_name,
-                "chain": chain,
-                "network": network,
-                "trading_type": trading_type,
-                "chain_type": chain_type,
-                "wallet_address": wallet_address,
-                "additional_spenders": additional_spenders,
-                "additional_prompt_values": additional_prompt_values,
-            }
+        new_connector_spec: Dict[str, str] = {
+            "connector": connector_name,
+            "chain": chain,
+            "network": network,
+            "trading_type": trading_type,
+            "chain_type": chain_type,
+            "wallet_address": wallet_address,
+            "additional_spenders": additional_spenders,
+            "additional_prompt_values": additional_prompt_values,
+        }
         updated: bool = False
         connectors_conf: List[Dict[str, str]] = GatewayConnectionSetting.load()
         for i, c in enumerate(connectors_conf):
@@ -448,10 +434,9 @@ class AllConnectorSettings:
         gateway_connections_conf: List[Dict[str, str]] = GatewayConnectionSetting.load()
         trade_fee_settings: List[float] = [0.0, 0.0]  # we assume no swap fees for now
         trade_fee_schema: TradeFeeSchema = cls._validate_trade_fee_schema("gateway", trade_fee_settings)
-        print(gateway_connections_conf)
+
         for connection_spec in gateway_connections_conf:
             market_name: str = GatewayConnectionSetting.get_market_name_from_connector_spec(connection_spec)
-            print(market_name)
             cls.all_connector_settings[market_name] = ConnectorSetting(
                 name=market_name,
                 type=ConnectorType[connection_spec["trading_type"]],
@@ -493,7 +478,6 @@ class AllConnectorSettings:
     def get_connector_settings(cls) -> Dict[str, ConnectorSetting]:
         if len(cls.all_connector_settings) == 0:
             cls.all_connector_settings = cls.create_connector_settings()
-            print(cls.all_connector_settings)
         return cls.all_connector_settings
 
     @classmethod
