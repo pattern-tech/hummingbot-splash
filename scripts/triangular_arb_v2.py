@@ -51,14 +51,14 @@ class TriangularArbV2Config(StrategyV2ConfigBase):
     arb_asset_wrapped: str = Field(default="RSERG")
     proxy_asset: str = Field(default="ADA")
     stable_asset: str = Field(default="USDT")
-    min_arbitrage_percent: Decimal = Field(default=Decimal("-10"))
+    min_arbitrage_percent: Decimal = Field(default=Decimal("0.01")) # We set a -10% profit threshold as a filter to help the program quickly identify potential opportunities
     # In stable asset
-    min_arbitrage_volume: Decimal = Field(default=Decimal("2"))
+    min_arbitrage_volume: Decimal = Field(default=Decimal("2")) 
 
 
 class TriangularArbV2(StrategyV2Base):
     _arb_task: Future = None
-
+    one_time_trade : bool = False
     @classmethod
     def init_markets(cls, config: TriangularArbV2Config):
          cls.markets = {config.cex_connector_proxy: {f"{config.proxy_asset}-{config.stable_asset}"},
@@ -74,32 +74,12 @@ class TriangularArbV2(StrategyV2Base):
         proxy_trading_pair = f"{self.config.proxy_asset}-{self.config.stable_asset}"
         dex_trading_pair = next(iter(self.markets[self.config.dex_connector]))
 
-        print(
-            "trading pairssssssssssssssssssssssssssss",
-            main_trading_pair,
-            proxy_trading_pair,
-            dex_trading_pair,
-            "connectorr namessssssssssssssssssssssssssssssss",
-            self.config.cex_connector_main,
-            self.config.dex_connector,
-            self.config.cex_connector_proxy,
-            "end  connectorr namessssssssssssssssssssssssssssssss"
-        )
-
-        print(
-            self.config.dex_connector
-        )
-
         cex_main = ConnectorPair(connector_name=self.config.cex_connector_main,
                                  trading_pair=main_trading_pair)
         
         dex = ConnectorPair(connector_name=self.config.dex_connector,
                             trading_pair=dex_trading_pair)
-        
-        # splash = MarketTradingPairTuple(
-        # self.markets[self.config.dex_connector]
-        # )
-        # dex: GatewayCardanoAMM = cast(GatewayCardanoAMM, splash.market)
+
 
         return TriangularArbExecutorConfig(
             type="triangular_arb_executor",
@@ -112,7 +92,7 @@ class TriangularArbV2(StrategyV2Base):
                                        trading_pair=proxy_trading_pair),
             selling_market=dex if direction is ArbitrageDirection.FORWARD else cex_main,
             order_amount=self.config.min_arbitrage_volume,
-            min_profitability_percent=cast(Decimal, -10),
+            min_profitability_percent=cast(Decimal, 1),
             max_retries=3,
             timestamp=time.time(),
         )
@@ -120,53 +100,46 @@ class TriangularArbV2(StrategyV2Base):
     def determine_executor_actions(self) -> List[ExecutorAction]:
         executor_actions = []
         if self._arb_task is None:
-            print("running on none")
             self._arb_task = safe_ensure_future(self.try_create_arbitrage_action())
-            print("this is the arb task")
-            print(self._arb_task)
+            
         elif self._arb_task.done():
-            print("running on done")
             executor_actions.append(self._arb_task.result())
             self._arb_task = safe_ensure_future(self.try_create_arbitrage_action())
-            print("this is the done executers actions")
-            print(executor_actions)
+            
+            
         
-        print("on status", self._arb_task, "returnning this", executor_actions)
+        
         return executor_actions
 
     async def try_create_arbitrage_action(self) -> List[ExecutorAction]:
-        print("building some executers")
+        if self.one_time_trade:
+            self.logger().error("one action already created, check the balances")
+            return [] 
+        
+        
         executor_actions = []
         active_executors = self.filter_executors(
             executors=self.get_all_executors(),
             filter_func=lambda e: not e.is_done
         )
-        print("this is the active executers")
-        print(active_executors)
+        
         if len(active_executors) == 0:
             forward_arbitrage_percent = await self.estimate_arbitrage_percent(ArbitrageDirection.FORWARD)
-            if 1 >= self.config.min_arbitrage_percent:
+            backward_arbitrage_percent = await self.estimate_arbitrage_percent(ArbitrageDirection.BACKWARD)
+            forward_arbitrage_percent = await self.estimate_arbitrage_percent(ArbitrageDirection.FORWARD)
+            self.logger().info("this is the forward percentage %s and this is the backward percentage %s", forward_arbitrage_percent, backward_arbitrage_percent)
+            if forward_arbitrage_percent >= self.config.min_arbitrage_percent:
                 x = CreateExecutorAction(executor_config=self.arbitrage_config(ArbitrageDirection.FORWARD))
-                print("--------------- generated one")
-                print(x)
-                print("------------------end of generated one")
                 executor_actions.append(x)
-                print("----------executer actions")
-                print(executor_actions)
             else:
                 backward_arbitrage_percent = await self.estimate_arbitrage_percent(ArbitrageDirection.BACKWARD)
-                if -backward_arbitrage_percent >= self.config.min_arbitrage_percent:
+                if backward_arbitrage_percent >= self.config.min_arbitrage_percent:
                     x = CreateExecutorAction(executor_config=self.arbitrage_config(ArbitrageDirection.BACKWARD))
-                    print("--------------- generated one")
-                    print(x)
-                    print("------------------end of generated one")
                     executor_actions.append(x)
-                    print("----------executer actions")
-                    print(executor_actions)
         if len(executor_actions) == 0:
-            print("its zero returning this", )
             return executor_actions
         else:
+            self.one_time_trade = True
             return executor_actions[0]
 
     async def estimate_arbitrage_percent(self, direction: ArbitrageDirection) -> Decimal:
@@ -176,17 +149,16 @@ class TriangularArbV2(StrategyV2Base):
         main_trading_pair = f"{self.config.arb_asset}-{self.config.stable_asset}"
         proxy_trading_pair = f"{self.config.proxy_asset}-{self.config.stable_asset}"
         dex_trading_pair = next(iter(self.markets[self.config.dex_connector]))
-        print(main_trading_pair,proxy_trading_pair,dex_trading_pair)
 
         p_arb_asset_in_stable_asset = self.connectors[self.config.cex_connector_main].get_quote_price(
             trading_pair=main_trading_pair, 
             is_buy=forward,
-            amount=self.config.min_arbitrage_volume)
+            amount=self.config.min_arbitrage_volume) 
     
         p_proxy_asset_in_stable_asset = self.connectors[self.config.cex_connector_proxy].get_quote_price(
             trading_pair=proxy_trading_pair, 
             is_buy=not forward,
-            amount=self.config.min_arbitrage_volume)
+            amount=self.config.min_arbitrage_volume) 
     
         p_arb_asset_in_stable_asset, p_proxy_asset_in_stable_asset = await asyncio.gather(
             p_arb_asset_in_stable_asset,
@@ -198,12 +170,7 @@ class TriangularArbV2(StrategyV2Base):
             trading_pair=dex_trading_pair, 
             is_buy=not forward,
             amount=arb_vol_in_proxy_asset)
-        
-        print(
-            p_arb_asset_in_stable_asset,
-            p_proxy_asset_in_stable_asset,
-            p_arb_asset_wrapped_asset_in_proxy_asset
-        )
+    
 
         return get_arbitrage_percent(
             p_arb_asset_in_stable_asset,
