@@ -434,7 +434,6 @@ class AllConnectorSettings:
         gateway_connections_conf: List[Dict[str, str]] = GatewayConnectionSetting.load()
         trade_fee_settings: List[float] = [0.0, 0.0]  # we assume no swap fees for now
         trade_fee_schema: TradeFeeSchema = cls._validate_trade_fee_schema("gateway", trade_fee_settings)
-
         for connection_spec in gateway_connections_conf:
             market_name: str = GatewayConnectionSetting.get_market_name_from_connector_spec(connection_spec)
             cls.all_connector_settings[market_name] = ConnectorSetting(

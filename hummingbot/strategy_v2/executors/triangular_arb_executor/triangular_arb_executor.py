@@ -37,8 +37,6 @@ class TriangularArbExecutor(ExecutorBase):
         return type(self.state) is Completed or type(self.state) is Failed
 
     def __init__(self, strategy: ScriptStrategyBase, config: TriangularArbExecutorConfig, update_interval: float = 1.0):
-
-        cast(TriangularArbExecutorConfig, config)
         super().__init__(strategy=strategy,
                          connectors=[config.buying_market.connector_name,
                                      config.proxy_market.connector_name,
@@ -48,7 +46,6 @@ class TriangularArbExecutor(ExecutorBase):
         arb_direction = is_valid_arbitrage(config.arb_asset, config.arb_asset_wrapped, config.proxy_asset,
                                            config.stable_asset, config.buying_market, config.proxy_market,
                                            config.selling_market)
-        print("is a valid arbitrage? :", arb_direction)
         if arb_direction:
             self.arb_direction: ArbitrageDirection = arb_direction
 
@@ -81,10 +78,7 @@ class TriangularArbExecutor(ExecutorBase):
         if self.arb_direction is ArbitrageDirection.FORWARD:
             buying_account_not_ok = self.buying_market().get_balance(self.stable_asset) < self.order_amount
             proxy_account_not_ok = self.proxy_market().get_balance(self.proxy_asset) < self.order_amount
-            selling_account_not_ok = self.selling_market().get_balance("rsERG") < self.order_amount
-            self.logger().info("printing in forward situationnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnn")
-            self.logger().info("%s %s %s", buying_account_not_ok, proxy_account_not_ok, selling_account_not_ok)
-            self.logger().info("%s %s %s", self.buying_market().get_balance(self.stable_asset),self.proxy_market().get_balance(self.proxy_asset),self.selling_market().get_balance("rsERG"))
+            selling_account_not_ok = self.selling_market().get_balance(self.arb_asset_wrapped) < self.order_amount
 
             if buying_account_not_ok or proxy_account_not_ok or selling_account_not_ok:
                 self.state = Failed(FailureReason.INSUFFICIENT_BALANCE)
@@ -93,9 +87,6 @@ class TriangularArbExecutor(ExecutorBase):
             buying_account_not_ok = self.buying_market().get_balance(self.proxy_asset) < self.order_amount
             proxy_account_not_ok = self.selling_market().get_balance(self.stable_asset) < self.order_amount
             selling_account_not_ok = self.proxy_market().get_balance(self.arb_asset) < self.order_amount
-            self.logger().info("printing in backward situationnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnn")
-            self.logger().info("%s %s %s", buying_account_not_ok, proxy_account_not_ok, selling_account_not_ok)
-            self.logger().info("%s %s %s", self.buying_market().get_balance(self.proxy_asset),self.selling_market().get_balance(self.stable_asset),self.proxy_market().get_balance(self.arb_asset))
 
             if buying_account_not_ok or proxy_account_not_ok or selling_account_not_ok:
                 self.state = Failed(FailureReason.INSUFFICIENT_BALANCE)
@@ -139,7 +130,7 @@ class TriangularArbExecutor(ExecutorBase):
                                     side=TradeType.SELL if self.arb_direction is ArbitrageDirection.FORWARD else TradeType.BUY,
                                     amount=self.order_amount)
         return TrackedOrder(order_id)
-
+     
     async def place_sell_order(self) -> TrackedOrder:
         market = self._selling_market
         order_id = self.place_order(connector_name=market.connector_name, trading_pair=market.trading_pair,
@@ -194,7 +185,7 @@ class TriangularArbExecutor(ExecutorBase):
         :param price: The price for the order.
         :return: The result of the order placement.
         """
-        self.logger().info("doing with triangular placer")
+
         price = Decimal("1") if connector_name == "splash_cardano_mainnet" else Decimal("NaN")
         if side == TradeType.BUY:
             return self._strategy.buy(connector_name, trading_pair, amount, order_type, price, position_action)
@@ -212,32 +203,17 @@ def is_valid_arbitrage(arb_asset: str,
     proxy_pair_assets = proxy_market.trading_pair.split("-")
     selling_pair_assets = selling_market.trading_pair.split("-")
     proxy_market_ok = proxy_asset in proxy_pair_assets and stable_asset in proxy_pair_assets
-    print("------ proxysss and stffff")
-    print(
-        buying_pair_assets,
-            proxy_pair_assets,
-            selling_pair_assets,
-            proxy_market_ok,
-            arb_asset,
-            arb_asset_wrapped,
-            proxy_asset,
-            stable_asset,
-            buying_market,
-            proxy_market,
-            selling_market,
-    )
-    print("------ proxysss and stffff")
+
     if arb_asset in buying_pair_assets:
         buying_market_ok = stable_asset in buying_pair_assets and arb_asset == buying_pair_assets[0]
         selling_market_ok = proxy_asset in selling_pair_assets and arb_asset_wrapped in selling_pair_assets
-        print("status first:", buying_market_ok, selling_market_ok, proxy_market_ok, buying_pair_assets[0], arb_asset, arb_asset == buying_pair_assets[0], stable_asset in buying_pair_assets,  stable_asset)
-
         if buying_market_ok and proxy_market_ok and selling_market_ok:
             return ArbitrageDirection.FORWARD
+        
     elif arb_asset in selling_pair_assets:
         buying_market_ok = proxy_asset in buying_pair_assets and arb_asset_wrapped == buying_pair_assets[0]
         selling_market_ok = stable_asset in selling_pair_assets
-        print("status sec:", buying_market_ok, selling_market_ok, proxy_market_ok)
         if buying_market_ok and proxy_market_ok and selling_market_ok:
             return ArbitrageDirection.BACKWARD
+        
     return None
