@@ -127,30 +127,17 @@ class GatewayConnectionSetting:
         wallet_address: str,
         additional_spenders: List[str],
         additional_prompt_values: Dict[str, str],
-        dex_api_key: str = 0
     ):
-        if chain == 'cardano':
-            new_connector_spec: Dict[str, str] = {
-                "connector": connector_name,
-                "chain": chain,
-                "network": network,
-                "trading_type": trading_type,
-                "chain_type": chain_type,
-                "wallet_address": wallet_address,
-                "additional_spenders": additional_spenders,
-                "additional_prompt_values": additional_prompt_values,
-            }
-        else:
-            new_connector_spec: Dict[str, str] = {
-                "connector": connector_name,
-                "chain": chain,
-                "network": network,
-                "trading_type": trading_type,
-                "chain_type": chain_type,
-                "wallet_address": wallet_address,
-                "additional_spenders": additional_spenders,
-                "additional_prompt_values": additional_prompt_values,
-            }
+        new_connector_spec: Dict[str, str] = {
+            "connector": connector_name,
+            "chain": chain,
+            "network": network,
+            "trading_type": trading_type,
+            "chain_type": chain_type,
+            "wallet_address": wallet_address,
+            "additional_spenders": additional_spenders,
+            "additional_prompt_values": additional_prompt_values,
+        }
         updated: bool = False
         connectors_conf: List[Dict[str, str]] = GatewayConnectionSetting.load()
         for i, c in enumerate(connectors_conf):
