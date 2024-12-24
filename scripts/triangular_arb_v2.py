@@ -47,13 +47,43 @@ class TriangularArbV2Config(StrategyV2ConfigBase):
             prompt=lambda e: "Enter DEX connector: ",
             prompt_on_new=True
         ))
-    arb_asset: str = Field(default="ERG")
-    arb_asset_wrapped: str = Field(default="RSERG")
-    proxy_asset: str = Field(default="ADA")
-    stable_asset: str = Field(default="USDT")
-    min_arbitrage_percent: Decimal = Field(default=Decimal("0.01"))
+    arb_asset: str = Field(
+        default="ERG",
+        client_data=ClientFieldData(
+            prompt=lambda e: "Enter main arbitrage asset: ",
+            prompt_on_new=True
+        ))
+    arb_asset_wrapped: str = Field(
+        default="RSERG",
+        client_data=ClientFieldData(
+            prompt=lambda e: "Enter wrapped main arbitrage asset: ",
+            prompt_on_new=True
+        ))
+    proxy_asset: str = Field(
+        default="ADA",
+        client_data=ClientFieldData(
+            prompt=lambda e: "Enter proxy asset: ",
+            prompt_on_new=True
+        ))
+    stable_asset: str = Field(
+        default="USDT",
+        client_data=ClientFieldData(
+            prompt=lambda e: "Enter enter stable asset: ",
+            prompt_on_new=True
+        ))
+    min_arbitrage_percent: Decimal = Field(
+        default=Decimal("0.01"),
+        client_data=ClientFieldData(
+            prompt=lambda e: "Enter profitability percentage: ",
+            prompt_on_new=True
+        ))
     # In stable asset
-    min_arbitrage_volume: Decimal = Field(default=Decimal("1")) 
+    min_arbitrage_volume: Decimal = Field(
+        default=Decimal("1"),
+        client_data=ClientFieldData(
+            prompt=lambda e: "Enter trading amount in (stable assets): ",
+            prompt_on_new=True
+        )) 
 
 
 class TriangularArbV2(StrategyV2Base):
@@ -92,7 +122,7 @@ class TriangularArbV2(StrategyV2Base):
                                        trading_pair=proxy_trading_pair),
             selling_market=dex if direction is ArbitrageDirection.FORWARD else cex_main,
             order_amount=self.config.min_arbitrage_volume,
-            min_profitability_percent=cast(Decimal, 1),
+            min_profitability_percent=cast(Decimal, self.config.min_arbitrage_percent),
             max_retries=3,
             timestamp=time.time(),
         )
