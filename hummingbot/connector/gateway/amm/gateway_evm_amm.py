@@ -518,7 +518,6 @@ class GatewayEVMAMM(ConnectorBase):
         :param price: The minimum price for the order.
         :return: A newly created order id (internal).
         """
-        self.logger().info("in the gateway evm placing order")
         side: TradeType = TradeType.BUY if is_buy else TradeType.SELL
         order_id: str = self.create_market_order_id(side, trading_pair)
         safe_ensure_future(self._create_order(side, order_id, trading_pair, amount, price, **request_args))

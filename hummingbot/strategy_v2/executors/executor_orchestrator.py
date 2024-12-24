@@ -90,9 +90,6 @@ class ExecutorOrchestrator:
         """
         Execute the action and handle executors based on action type.
         """
-        print("her is the action ======================")
-        print(action)
-        print("her is the action ======================")
         controller_id = action.controller_id
         if controller_id not in self.cached_performance:
             self.active_executors[controller_id] = []

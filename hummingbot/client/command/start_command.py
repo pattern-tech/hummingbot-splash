@@ -135,7 +135,6 @@ class StartCommand(GatewayChainApiManager):
 
         for exchange in settings.required_exchanges:
             connector: str = str(exchange)
-            print(connector)
             # confirm gateway connection
             conn_setting: settings.ConnectorSetting = settings.AllConnectorSettings.get_connector_settings()[connector]
             if conn_setting.uses_gateway_generic_connector():
