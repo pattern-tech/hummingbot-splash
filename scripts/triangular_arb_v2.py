@@ -75,7 +75,7 @@ class TriangularArbV2Config(StrategyV2ConfigBase):
         ))
     # In stable asset
     min_arbitrage_volume: Decimal = Field(
-        default=Decimal("1"),
+        default=Decimal("2"),
         client_data=ClientFieldData(
             prompt=lambda e: "Enter trading amount in (stable assets): ",
             prompt_on_new=True
@@ -88,24 +88,39 @@ class TriangularArbV2(StrategyV2Base):
 
     @classmethod
     def init_markets(cls, config: TriangularArbV2Config):
-        cls.markets = {config.cex_connector_proxy: {f"{config.proxy_asset}-{config.stable_asset}"},
-                       config.cex_connector_main: {f"{config.arb_asset}-{config.stable_asset}"},
-                       config.dex_connector: {f"{config.arb_asset_wrapped}-{config.proxy_asset}"}, }
+        markets = {}
+        main_trading_pair = f"{config.arb_asset}-{config.stable_asset}" 
+        proxy_trading_pair = f"{config.proxy_asset}-{config.stable_asset}" 
+        dex_trading_pair = f"{config.arb_asset_wrapped}-{config.proxy_asset}"
+        
+        if config.cex_connector_proxy == config.cex_connector_main:
+            markets = {
+                config.cex_connector_main: {main_trading_pair, proxy_trading_pair},
+                config.dex_connector: {dex_trading_pair}
+                }
+        else:
+            markets = {
+                config.cex_connector_proxy: {proxy_trading_pair},
+                config.cex_connector_main: {main_trading_pair},
+                config.dex_connector: {dex_trading_pair}
+                   }
+            
+        cls.markets = markets
 
     def __init__(self, connectors: Dict[str, ConnectorBase], config: TriangularArbV2Config):
         super().__init__(connectors, config)
         self.config = config
+        self.main_trading_pair = f"{config.arb_asset}-{config.stable_asset}" 
+        self.proxy_trading_pair = f"{config.proxy_asset}-{config.stable_asset}" 
+        self.dex_trading_pair = f"{config.arb_asset_wrapped}-{config.proxy_asset}"
 
     def arbitrage_config(self, direction: ArbitrageDirection) -> TriangularArbExecutorConfig:
-        main_trading_pair = next(iter(self.markets[self.config.cex_connector_main]))
-        proxy_trading_pair = next(iter(self.markets[self.config.cex_connector_proxy]))
-        dex_trading_pair = next(iter(self.markets[self.config.dex_connector]))
 
         cex_main = ConnectorPair(connector_name=self.config.cex_connector_main,
-                                 trading_pair=main_trading_pair)
+                                 trading_pair=self.main_trading_pair)
 
         dex = ConnectorPair(connector_name=self.config.dex_connector,
-                            trading_pair=dex_trading_pair)
+                            trading_pair=self.dex_trading_pair)
 
         return TriangularArbExecutorConfig(
             type="triangular_arb_executor",
@@ -115,7 +130,7 @@ class TriangularArbV2(StrategyV2Base):
             stable_asset=self.config.stable_asset,
             buying_market=cex_main if direction is ArbitrageDirection.FORWARD else dex,
             proxy_market=ConnectorPair(connector_name=self.config.cex_connector_proxy,
-                                       trading_pair=proxy_trading_pair),
+                                       trading_pair=self.proxy_trading_pair),
             selling_market=dex if direction is ArbitrageDirection.FORWARD else cex_main,
             order_amount=self.config.min_arbitrage_volume,
             min_profitability_percent=cast(Decimal, self.config.min_arbitrage_percent),
@@ -159,18 +174,13 @@ class TriangularArbV2(StrategyV2Base):
     async def estimate_arbitrage_percent(self, direction: ArbitrageDirection) -> Decimal:
         forward = direction is ArbitrageDirection.FORWARD
 
-        # Get the trading pairs as strings from the sets
-        main_trading_pair = next(iter(self.markets[self.config.cex_connector_main]))
-        proxy_trading_pair = next(iter(self.markets[self.config.cex_connector_proxy]))
-        dex_trading_pair = next(iter(self.markets[self.config.dex_connector]))
-
         p_arb_asset_in_stable_asset = self.connectors[self.config.cex_connector_main].get_quote_price(
-            trading_pair=main_trading_pair,
+            trading_pair=self.main_trading_pair,
             is_buy=forward,
             amount=self.config.min_arbitrage_volume)
 
         p_proxy_asset_in_stable_asset = self.connectors[self.config.cex_connector_proxy].get_quote_price(
-            trading_pair=proxy_trading_pair,
+            trading_pair=self.proxy_trading_pair,
             is_buy=not forward,
             amount=self.config.min_arbitrage_volume)
 
@@ -181,7 +191,7 @@ class TriangularArbV2(StrategyV2Base):
         arb_vol_in_proxy_asset = self.config.min_arbitrage_volume / p_proxy_asset_in_stable_asset
 
         p_arb_asset_wrapped_asset_in_proxy_asset = await self.connectors[self.config.dex_connector].get_quote_price(
-            trading_pair=dex_trading_pair,
+            trading_pair=self.dex_trading_pair,
             is_buy=not forward,
             amount=arb_vol_in_proxy_asset)
 
