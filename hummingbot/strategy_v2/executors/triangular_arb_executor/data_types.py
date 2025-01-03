@@ -6,7 +6,7 @@ from attr import dataclass
 from hummingbot.core.data_type.in_flight_order import InFlightOrder
 from hummingbot.strategy_v2.executors.data_types import ConnectorPair, ExecutorConfigBase
 from hummingbot.strategy_v2.models.executors import TrackedOrder
-
+from dataclasses import dataclass
 
 class ArbitrageDirection(Enum):
     FORWARD = 0
@@ -25,6 +25,16 @@ class TriangularArbExecutorConfig(ExecutorConfigBase):
     order_amount: Decimal
     min_profitability_percent: Decimal = 1.5
     max_retries: int = 3
+    buy_amount: Decimal
+    proxy_amount: Decimal
+    sell_amount: Decimal
+
+@dataclass
+class ArbitragePercent:
+    percent: Decimal
+    buy_amount: Decimal
+    proxy_amount: Decimal
+    sell_amount: Decimal
 
 
 class Idle:

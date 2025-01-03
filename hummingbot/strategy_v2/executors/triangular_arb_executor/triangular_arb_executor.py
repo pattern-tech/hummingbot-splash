@@ -60,7 +60,9 @@ class TriangularArbExecutor(ExecutorBase):
             self.order_amount = config.order_amount
             self.min_profitability_percent = config.min_profitability_percent
             self.max_retries = config.max_retries
-
+            self.buy_amount = config.buy_amount
+            self.proxy_amount = config.proxy_amount
+            self.sell_amount = config.sell_amount
             self.state: Idle | InProgress | Completed | Failed = Idle()
         else:
             raise Exception("Arbitrage is not valid.")
@@ -116,25 +118,30 @@ class TriangularArbExecutor(ExecutorBase):
             proxy_order=proxy_order,
             sell_order=sell_order,
         )
-
+    # forward = erg -> usdt -> ada -> rserg
+    # backward rserg -> ada -> usdt -> erg 
+    # main = (erg-usdt) sell erg -> usdt
+    # proxy = (ada-usdt) buy usdt -> ada
+    # dex = (rsERG-ada) sell ada -> rserg
     async def place_buy_order(self) -> TrackedOrder:
         market = self._buying_market
         order_id = self.place_order(connector_name=market.connector_name, trading_pair=market.trading_pair,
-                                    order_type=OrderType.MARKET, side=TradeType.BUY, amount=self.order_amount)
-        return TrackedOrder(order_id)
+                                    order_type=OrderType.MARKET, side=TradeType.SELL if self.arb_direction is ArbitrageDirection.FORWARD else TradeType.BUY, amount=self.buy_amount)
+        return TrackedOrder(order_id) # erg -> usdt
 
     async def place_proxy_order(self) -> TrackedOrder:
         market = self._proxy_market
         order_id = self.place_order(connector_name=market.connector_name, trading_pair=market.trading_pair,
                                     order_type=OrderType.MARKET,
-                                    side=TradeType.SELL if self.arb_direction is ArbitrageDirection.FORWARD else TradeType.BUY,
-                                    amount=self.order_amount)
+                                    side=TradeType.BUY if self.arb_direction is ArbitrageDirection.FORWARD else TradeType.SELL,
+                                    amount=self.proxy_amount)
         return TrackedOrder(order_id)
      
     async def place_sell_order(self) -> TrackedOrder:
         market = self._selling_market
+        
         order_id = self.place_order(connector_name=market.connector_name, trading_pair=market.trading_pair,
-                                    order_type=OrderType.MARKET, side=TradeType.SELL, amount=self.order_amount)
+                                    order_type=OrderType.MARKET, side=TradeType.SELL if self.arb_direction is ArbitrageDirection.FORWARD else TradeType.BUY, amount=self.sell_amount)
         return TrackedOrder(order_id)
 
     def process_order_created_event(self,
@@ -185,7 +192,7 @@ class TriangularArbExecutor(ExecutorBase):
         :param price: The price for the order.
         :return: The result of the order placement.
         """
-
+        self.arb_direction
         price = Decimal("1") if connector_name == "splash_cardano_mainnet" else Decimal("NaN")
         if side == TradeType.BUY:
             return self._strategy.buy(connector_name, trading_pair, amount, order_type, price, position_action)
