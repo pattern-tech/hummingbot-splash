@@ -6,6 +6,7 @@ from decimal import Decimal
 from typing import Dict, List, Set, cast
 
 from pydantic import Field
+from dataclasses import dataclass
 
 from hummingbot.client.config.config_data_types import ClientFieldData
 from hummingbot.connector.connector_base import ConnectorBase
@@ -15,10 +16,10 @@ from hummingbot.strategy.strategy_v2_base import StrategyV2Base, StrategyV2Confi
 from hummingbot.strategy_v2.executors.data_types import ConnectorPair
 from hummingbot.strategy_v2.executors.triangular_arb_executor.data_types import (
     ArbitrageDirection,
+    ArbitragePercent,
     TriangularArbExecutorConfig,
 )
 from hummingbot.strategy_v2.models.executor_actions import CreateExecutorAction, ExecutorAction
-
 
 class TriangularArbV2Config(StrategyV2ConfigBase):
     script_file_name: str = Field(default_factory=lambda: os.path.basename(__file__))
@@ -32,7 +33,7 @@ class TriangularArbV2Config(StrategyV2ConfigBase):
             prompt_on_new=True
         ))
     cex_connector_proxy: str = Field(
-        default="mexc",
+        default="kucoin",
         client_data=ClientFieldData(
             prompt=lambda e: "Enter proxy CEX connector: ",
             prompt_on_new=True
@@ -114,7 +115,7 @@ class TriangularArbV2(StrategyV2Base):
         self.proxy_trading_pair = f"{config.proxy_asset}-{config.stable_asset}" 
         self.dex_trading_pair = f"{config.arb_asset_wrapped}-{config.proxy_asset}"
 
-    def arbitrage_config(self, direction: ArbitrageDirection) -> TriangularArbExecutorConfig:
+    def arbitrage_config(self, direction: ArbitrageDirection, amounts: ArbitragePercent) -> TriangularArbExecutorConfig:
 
         cex_main = ConnectorPair(connector_name=self.config.cex_connector_main,
                                  trading_pair=self.main_trading_pair)
@@ -136,6 +137,9 @@ class TriangularArbV2(StrategyV2Base):
             min_profitability_percent=cast(Decimal, self.config.min_arbitrage_percent),
             max_retries=3,
             timestamp=time.time(),
+            buy_amount=amounts.buy_amount,
+            proxy_amount=amounts.proxy_amount,
+            sell_amount=amounts.sell_amount
         )
 
     def determine_executor_actions(self) -> List[ExecutorAction]:
@@ -153,16 +157,21 @@ class TriangularArbV2(StrategyV2Base):
             executors=self.get_all_executors(),
             filter_func=lambda e: not e.is_done
         )
-
+        if self.one_time_trade:
+            print("traded one time, not trading anymore")
+            return []
+        
         if len(active_executors) == 0:
             forward_arbitrage_percent = await self.estimate_arbitrage_percent(ArbitrageDirection.FORWARD)
-            if forward_arbitrage_percent >= self.config.min_arbitrage_percent:
-                x = CreateExecutorAction(executor_config=self.arbitrage_config(ArbitrageDirection.FORWARD))
+            self.logger().info("these are the forward percents %s %s",forward_arbitrage_percent.percent, self.config.min_arbitrage_percent)
+            if forward_arbitrage_percent.percent >= self.config.min_arbitrage_percent:
+                x = CreateExecutorAction(executor_config=self.arbitrage_config(ArbitrageDirection.FORWARD, forward_arbitrage_percent))
                 executor_actions.append(x)
             else:
                 backward_arbitrage_percent = await self.estimate_arbitrage_percent(ArbitrageDirection.BACKWARD)
-                if backward_arbitrage_percent >= self.config.min_arbitrage_percent:
-                    x = CreateExecutorAction(executor_config=self.arbitrage_config(ArbitrageDirection.BACKWARD))
+                self.logger().info("these are the backwards percents %s %s",backward_arbitrage_percent, self.config.min_arbitrage_percent)
+                if backward_arbitrage_percent.percent >= self.config.min_arbitrage_percent:
+                    x = CreateExecutorAction(executor_config=self.arbitrage_config(ArbitrageDirection.BACKWARD, backward_arbitrage_percent))
                     executor_actions.append(x)
 
         if len(executor_actions) == 0:
@@ -171,35 +180,57 @@ class TriangularArbV2(StrategyV2Base):
             self.one_time_trade = True
             return executor_actions[0]
 
-    async def estimate_arbitrage_percent(self, direction: ArbitrageDirection) -> Decimal:
+    async def estimate_arbitrage_percent(self, direction: ArbitrageDirection) -> ArbitragePercent:
         forward = direction is ArbitrageDirection.FORWARD
-
-        p_arb_asset_in_stable_asset = self.connectors[self.config.cex_connector_main].get_quote_price(
-            trading_pair=self.main_trading_pair,
-            is_buy=forward,
-            amount=self.config.min_arbitrage_volume)
-
-        p_proxy_asset_in_stable_asset = self.connectors[self.config.cex_connector_proxy].get_quote_price(
+        proxy_amount: Decimal = Decimal(0)
+        p_arb_asset_wrapped_asset_in_proxy_asset: Decimal = Decimal(0)
+        p_arb_asset_in_stable_asset: Decimal = Decimal(0)
+    
+        if forward:
+            p_arb_asset_in_stable_asset = await self.connectors[self.config.cex_connector_main].get_quote_price(
+                trading_pair=self.main_trading_pair,
+                is_buy=not forward,
+                amount=self.config.min_arbitrage_volume)
+            proxy_amount = self.config.min_arbitrage_volume * p_arb_asset_in_stable_asset
+        else:
+            p_arb_asset_wrapped_asset_in_proxy_asset = await self.connectors[self.config.dex_connector].get_quote_price(
+                trading_pair=self.dex_trading_pair,
+                is_buy=not forward,
+                amount=self.config.min_arbitrage_volume)
+            proxy_amount = p_arb_asset_wrapped_asset_in_proxy_asset * self.config.min_arbitrage_volume
+    
+        p_proxy_asset_in_stable_asset = await self.connectors[self.config.cex_connector_proxy].get_quote_price(
             trading_pair=self.proxy_trading_pair,
-            is_buy=not forward,
-            amount=self.config.min_arbitrage_volume)
-
-        p_arb_asset_in_stable_asset, p_proxy_asset_in_stable_asset = await asyncio.gather(
-            p_arb_asset_in_stable_asset,
-            p_proxy_asset_in_stable_asset)
-
-        arb_vol_in_proxy_asset = self.config.min_arbitrage_volume / p_proxy_asset_in_stable_asset
-
-        p_arb_asset_wrapped_asset_in_proxy_asset = await self.connectors[self.config.dex_connector].get_quote_price(
-            trading_pair=self.dex_trading_pair,
-            is_buy=not forward,
-            amount=arb_vol_in_proxy_asset)
-
-        return get_arbitrage_percent(
-            p_arb_asset_in_stable_asset,
-            p_proxy_asset_in_stable_asset,
-            p_arb_asset_wrapped_asset_in_proxy_asset
+            is_buy=forward,
+            amount=proxy_amount)
+    
+        if not forward:
+            p_arb_asset_in_stable_asset = await self.connectors[self.config.cex_connector_main].get_quote_price(
+                trading_pair=self.main_trading_pair,
+                is_buy=not forward,
+                amount=proxy_amount * p_proxy_asset_in_stable_asset)
+        else:
+            p_arb_asset_wrapped_asset_in_proxy_asset = await self.connectors[self.config.dex_connector].get_quote_price(
+                trading_pair=self.dex_trading_pair,
+                is_buy=not forward,
+                amount=proxy_amount * p_proxy_asset_in_stable_asset)
+    
+        buying_amount = self.config.min_arbitrage_volume
+        selling_amount = proxy_amount * p_proxy_asset_in_stable_asset
+    
+        result = ArbitragePercent(
+            get_arbitrage_percent(
+                p_arb_asset_in_stable_asset,
+                p_proxy_asset_in_stable_asset,
+                p_arb_asset_wrapped_asset_in_proxy_asset
+            ),
+            buying_amount,
+            proxy_amount,
+            selling_amount,
         )
+        
+        self.logger().info("hibye %s", result)
+        return result
 
 
 # Important: all prices must be given in Base/Quote format, assuming
