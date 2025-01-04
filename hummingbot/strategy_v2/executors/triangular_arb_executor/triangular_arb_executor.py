@@ -78,17 +78,17 @@ class TriangularArbExecutor(ExecutorBase):
 
     def validate_sufficient_balance(self):
         if self.arb_direction is ArbitrageDirection.FORWARD:
-            buying_account_not_ok = self.buying_market().get_balance(self.stable_asset) < self.order_amount
-            proxy_account_not_ok = self.proxy_market().get_balance(self.proxy_asset) < self.order_amount
-            selling_account_not_ok = self.selling_market().get_balance(self.arb_asset_wrapped) < self.order_amount
+            buying_account_not_ok = self.buying_market().get_balance(self.arb_asset) < self.buy_amount
+            proxy_account_not_ok = self.proxy_market().get_balance(self.stable_asset) < self.proxy_amount
+            selling_account_not_ok = self.selling_market().get_balance(self.proxy_asset) < self.sell_amount
 
             if buying_account_not_ok or proxy_account_not_ok or selling_account_not_ok:
                 self.state = Failed(FailureReason.INSUFFICIENT_BALANCE)
                 self.logger().error("Not enough budget to open position.")
         else:
-            buying_account_not_ok = self.buying_market().get_balance(self.proxy_asset) < self.order_amount
-            proxy_account_not_ok = self.selling_market().get_balance(self.stable_asset) < self.order_amount
-            selling_account_not_ok = self.proxy_market().get_balance(self.arb_asset) < self.order_amount
+            buying_account_not_ok = self.buying_market().get_balance(self.arb_asset_wrapped) < self.buy_amount
+            selling_account_not_ok = self.proxy_market().get_balance(self.proxy_asset) < self.proxy_amount
+            proxy_account_not_ok = self.selling_market().get_balance(self.stable_asset) < self.sell_amount
 
             if buying_account_not_ok or proxy_account_not_ok or selling_account_not_ok:
                 self.state = Failed(FailureReason.INSUFFICIENT_BALANCE)
@@ -118,16 +118,12 @@ class TriangularArbExecutor(ExecutorBase):
             proxy_order=proxy_order,
             sell_order=sell_order,
         )
-    # forward = erg -> usdt -> ada -> rserg
-    # backward rserg -> ada -> usdt -> erg 
-    # main = (erg-usdt) sell erg -> usdt
-    # proxy = (ada-usdt) buy usdt -> ada
-    # dex = (rsERG-ada) sell ada -> rserg
+
     async def place_buy_order(self) -> TrackedOrder:
         market = self._buying_market
         order_id = self.place_order(connector_name=market.connector_name, trading_pair=market.trading_pair,
                                     order_type=OrderType.MARKET, side=TradeType.SELL if self.arb_direction is ArbitrageDirection.FORWARD else TradeType.BUY, amount=self.buy_amount)
-        return TrackedOrder(order_id) # erg -> usdt
+        return TrackedOrder(order_id)
 
     async def place_proxy_order(self) -> TrackedOrder:
         market = self._proxy_market
@@ -192,7 +188,7 @@ class TriangularArbExecutor(ExecutorBase):
         :param price: The price for the order.
         :return: The result of the order placement.
         """
-        self.arb_direction
+        
         price = Decimal("1") if connector_name == "splash_cardano_mainnet" else Decimal("NaN")
         if side == TradeType.BUY:
             return self._strategy.buy(connector_name, trading_pair, amount, order_type, price, position_action)

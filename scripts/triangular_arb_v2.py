@@ -157,19 +157,21 @@ class TriangularArbV2(StrategyV2Base):
             executors=self.get_all_executors(),
             filter_func=lambda e: not e.is_done
         )
-        if self.one_time_trade:
-            print("traded one time, not trading anymore")
-            return []
+        
+        #
+        # Uncomment this if you want to test the stats and do only one trade once found an opportunity
+        #
+        # if self.one_time_trade:
+        #     print("traded one time, not trading anymore")
+        #     return []
         
         if len(active_executors) == 0:
             forward_arbitrage_percent = await self.estimate_arbitrage_percent(ArbitrageDirection.FORWARD)
-            self.logger().info("these are the forward percents %s %s",forward_arbitrage_percent.percent, self.config.min_arbitrage_percent)
             if forward_arbitrage_percent.percent >= self.config.min_arbitrage_percent:
                 x = CreateExecutorAction(executor_config=self.arbitrage_config(ArbitrageDirection.FORWARD, forward_arbitrage_percent))
                 executor_actions.append(x)
             else:
                 backward_arbitrage_percent = await self.estimate_arbitrage_percent(ArbitrageDirection.BACKWARD)
-                self.logger().info("these are the backwards percents %s %s",backward_arbitrage_percent, self.config.min_arbitrage_percent)
                 if backward_arbitrage_percent.percent >= self.config.min_arbitrage_percent:
                     x = CreateExecutorAction(executor_config=self.arbitrage_config(ArbitrageDirection.BACKWARD, backward_arbitrage_percent))
                     executor_actions.append(x)
@@ -195,13 +197,13 @@ class TriangularArbV2(StrategyV2Base):
         else:
             p_arb_asset_wrapped_asset_in_proxy_asset = await self.connectors[self.config.dex_connector].get_quote_price(
                 trading_pair=self.dex_trading_pair,
-                is_buy=not forward,
+                is_buy=forward,
                 amount=self.config.min_arbitrage_volume)
             proxy_amount = p_arb_asset_wrapped_asset_in_proxy_asset * self.config.min_arbitrage_volume
     
         p_proxy_asset_in_stable_asset = await self.connectors[self.config.cex_connector_proxy].get_quote_price(
             trading_pair=self.proxy_trading_pair,
-            is_buy=forward,
+            is_buy=True if forward else False,
             amount=proxy_amount)
     
         if not forward:
@@ -212,7 +214,7 @@ class TriangularArbV2(StrategyV2Base):
         else:
             p_arb_asset_wrapped_asset_in_proxy_asset = await self.connectors[self.config.dex_connector].get_quote_price(
                 trading_pair=self.dex_trading_pair,
-                is_buy=not forward,
+                is_buy=forward,
                 amount=proxy_amount * p_proxy_asset_in_stable_asset)
     
         buying_amount = self.config.min_arbitrage_volume
@@ -229,7 +231,6 @@ class TriangularArbV2(StrategyV2Base):
             selling_amount,
         )
         
-        self.logger().info("hibye %s", result)
         return result
 
 
