@@ -63,6 +63,7 @@ class TriangularArbExecutor(ExecutorBase):
             self.buy_amount = config.buy_amount
             self.proxy_amount = config.proxy_amount
             self.sell_amount = config.sell_amount
+            self.confirm_round_callback = config.confirm_round_callback
             self.state: Idle | InProgress | Completed | Failed = Idle()
         else:
             raise Exception("Arbitrage is not valid.")
@@ -106,6 +107,7 @@ class TriangularArbExecutor(ExecutorBase):
                 self.state = Completed(buy_order_exec_price=state.buy_order.average_executed_price,
                                        proxy_order_exec_price=state.proxy_order.average_executed_price,
                                        sell_order_exec_price=state.sell_order.average_executed_price)
+                self.confirm_round_callback()
                 self.stop()
 
     async def init_arbitrage(self):

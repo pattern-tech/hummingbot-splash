@@ -114,6 +114,7 @@ class TriangularArbV2(StrategyV2Base):
         self.main_trading_pair = f"{config.arb_asset}-{config.stable_asset}" 
         self.proxy_trading_pair = f"{config.proxy_asset}-{config.stable_asset}" 
         self.dex_trading_pair = f"{config.arb_asset_wrapped}-{config.proxy_asset}"
+        self.previous_round_confirmed = True
 
     def arbitrage_config(self, direction: ArbitrageDirection, amounts: ArbitragePercent) -> TriangularArbExecutorConfig:
 
@@ -139,7 +140,8 @@ class TriangularArbV2(StrategyV2Base):
             timestamp=time.time(),
             buy_amount=amounts.buy_amount,
             proxy_amount=amounts.proxy_amount,
-            sell_amount=amounts.sell_amount
+            sell_amount=amounts.sell_amount,
+            confirm_round_callback=self.confirm_round
         )
 
     def determine_executor_actions(self) -> List[ExecutorAction]:
@@ -165,6 +167,10 @@ class TriangularArbV2(StrategyV2Base):
         #     print("traded one time, not trading anymore")
         #     return []
         
+        if not self.previous_round_confirmed:
+            print("Wait until next round gets confirmed")
+            return []
+        
         if len(active_executors) == 0:
             forward_arbitrage_percent = await self.estimate_arbitrage_percent(ArbitrageDirection.FORWARD)
             if forward_arbitrage_percent.percent >= self.config.min_arbitrage_percent:
@@ -180,6 +186,7 @@ class TriangularArbV2(StrategyV2Base):
             return executor_actions
         else:
             self.one_time_trade = True
+            self.previous_round_confirmed = False
             return executor_actions[0]
 
     async def estimate_arbitrage_percent(self, direction: ArbitrageDirection) -> ArbitragePercent:
@@ -232,7 +239,10 @@ class TriangularArbV2(StrategyV2Base):
         )
         
         return result
-
+    
+    def confirm_round(self):
+        print("All orders have been filled")
+        self.previous_round_confirmed = True
 
 # Important: all prices must be given in Base/Quote format, assuming
 # arb_asset, proxy_asset, arb_asset_wrapped are quote assets in corresponding pairs.

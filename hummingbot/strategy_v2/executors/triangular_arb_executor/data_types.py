@@ -1,7 +1,7 @@
 from decimal import Decimal
 from enum import Enum
 
-from attr import dataclass
+from typing import Callable, Protocol
 
 from hummingbot.core.data_type.in_flight_order import InFlightOrder
 from hummingbot.strategy_v2.executors.data_types import ConnectorPair, ExecutorConfigBase
@@ -13,6 +13,9 @@ class ArbitrageDirection(Enum):
     BACKWARD = 1
 
 
+class Strategy(Protocol):
+    def confirm_round(self) -> None: ...
+
 class TriangularArbExecutorConfig(ExecutorConfigBase):
     type: str = "triangular_arb_executor"
     arb_asset: str
@@ -23,11 +26,12 @@ class TriangularArbExecutorConfig(ExecutorConfigBase):
     proxy_market: ConnectorPair
     selling_market: ConnectorPair
     order_amount: Decimal
-    min_profitability_percent: Decimal = 1.5
+    min_profitability_percent: Decimal = Decimal("1.5")
     max_retries: int = 3
     buy_amount: Decimal
     proxy_amount: Decimal
     sell_amount: Decimal
+    confirm_round_callback: Callable[[Strategy], None] 
 
 @dataclass
 class ArbitragePercent:
