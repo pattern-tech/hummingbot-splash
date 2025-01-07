@@ -78,7 +78,7 @@ class TriangularArbV2Config(StrategyV2ConfigBase):
     min_arbitrage_volume: Decimal = Field(
         default=Decimal("2"),
         client_data=ClientFieldData(
-            prompt=lambda e: "Enter trading amount in (stable assets): ",
+            prompt=lambda e: "Enter trading amount (in arb asset): ",
             prompt_on_new=True
         ))
 
