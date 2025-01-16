@@ -194,7 +194,7 @@ class TriangularArbV2(StrategyV2Base):
         proxy_amount: Decimal = Decimal(0)
         p_arb_asset_wrapped_asset_in_proxy_asset: Decimal = Decimal(0)
         p_arb_asset_in_stable_asset: Decimal = Decimal(0)
-    
+
         if forward:
             p_arb_asset_in_stable_asset = await self.connectors[self.config.cex_connector_main].get_quote_price(
                 trading_pair=self.main_trading_pair,
@@ -232,12 +232,17 @@ class TriangularArbV2(StrategyV2Base):
         
         selling_amount = proxy_amount * p_arb_asset_wrapped_asset_in_proxy_asset if forward else (proxy_amount * p_proxy_asset_in_stable_asset) / p_arb_asset_in_stable_asset    
 
-    
+        p_arb_asset_wrapped_asset_in_proxy_asset_for_percentage = await self.connectors[self.config.dex_connector].get_quote_price(
+            trading_pair=self.dex_trading_pair,
+            is_buy=False,
+            amount=proxy_amount * p_proxy_asset_in_stable_asset)
+        
         result = ArbitragePercent(
             get_arbitrage_percent(
                 p_arb_asset_in_stable_asset,
                 p_proxy_asset_in_stable_asset,
-                p_arb_asset_wrapped_asset_in_proxy_asset
+                p_arb_asset_wrapped_asset_in_proxy_asset_for_percentage,
+                forward,
             ),
             buying_amount,
             proxy_amount,
@@ -253,8 +258,10 @@ class TriangularArbV2(StrategyV2Base):
 # Important: all prices must be given in Base/Quote format, assuming
 # arb_asset, proxy_asset, arb_asset_wrapped are quote assets in corresponding pairs.
 def get_arbitrage_percent(p_arb_asset_in_stable_asset: Decimal, p_proxy_asset_in_stable_asset: Decimal,
-                          p_arb_asset_wrapped_in_proxy_asset: Decimal) -> Decimal:
+                          p_arb_asset_wrapped_in_proxy_asset: Decimal, forward: bool) -> Decimal:
     p_arb_asset_wrapped_in_stable_asset = p_proxy_asset_in_stable_asset * p_arb_asset_wrapped_in_proxy_asset
-    price_diff = p_arb_asset_wrapped_in_stable_asset - p_arb_asset_in_stable_asset
+    price_diff = p_arb_asset_wrapped_in_stable_asset - p_arb_asset_in_stable_asset if not forward else p_arb_asset_in_stable_asset - p_arb_asset_wrapped_in_stable_asset
     return price_diff * Decimal(100) / (
-        p_arb_asset_wrapped_in_stable_asset if price_diff >= Decimal(0) else p_arb_asset_in_stable_asset)
+        p_arb_asset_wrapped_in_stable_asset if forward else p_arb_asset_in_stable_asset)
+
+
