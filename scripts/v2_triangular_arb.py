@@ -235,7 +235,8 @@ class TriangularArbV2(StrategyV2Base):
         p_arb_asset_wrapped_asset_in_proxy_asset_for_percentage = await self.connectors[self.config.dex_connector].get_quote_price(
             trading_pair=self.dex_trading_pair,
             is_buy=False,
-            amount=proxy_amount * p_proxy_asset_in_stable_asset)
+            amount=proxy_amount * p_proxy_asset_in_stable_asset if forward else self.config.min_arbitrage_volume
+        )
         
         result = ArbitragePercent(
             get_arbitrage_percent(
