@@ -230,7 +230,7 @@ class TriangularArbV2(StrategyV2Base):
     
         buying_amount = self.config.min_arbitrage_volume
         
-        selling_amount = proxy_amount * p_arb_asset_wrapped_asset_in_proxy_asset if forward else (proxy_amount * p_proxy_asset_in_stable_asset) / p_arb_asset_in_stable_asset    
+        selling_amount = proxy_amount / p_arb_asset_wrapped_asset_in_proxy_asset if forward else (proxy_amount * p_proxy_asset_in_stable_asset) / p_arb_asset_in_stable_asset    
 
         p_arb_asset_wrapped_asset_in_proxy_asset_for_percentage = await self.connectors[self.config.dex_connector].get_quote_price(
             trading_pair=self.dex_trading_pair,
