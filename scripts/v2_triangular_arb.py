@@ -194,49 +194,60 @@ class TriangularArbV2(StrategyV2Base):
         proxy_amount: Decimal = Decimal(0)
         p_arb_asset_wrapped_asset_in_proxy_asset: Decimal = Decimal(0)
         p_arb_asset_in_stable_asset: Decimal = Decimal(0)
+        
+        # forward
+        if forward:            
+            p_arb_asset_wrapped_asset_in_proxy_asset = await self.connectors[self.config.dex_connector].get_quote_price(
+                trading_pair=self.dex_trading_pair,
+                is_buy=True,
+                amount=self.config.min_arbitrage_volume)
 
-        if forward:
-            p_arb_asset_in_stable_asset = await self.connectors[self.config.cex_connector_main].get_quote_price(
-                trading_pair=self.main_trading_pair,
-                is_buy=not forward,
-                amount=self.config.min_arbitrage_volume)
-            proxy_amount = self.config.min_arbitrage_volume * p_arb_asset_in_stable_asset 
-        else:
-            p_arb_asset_wrapped_asset_in_proxy_asset = await self.connectors[self.config.dex_connector].get_quote_price(
-                trading_pair=self.dex_trading_pair,
-                is_buy=forward,
-                amount=self.config.min_arbitrage_volume)
-            proxy_amount = p_arb_asset_wrapped_asset_in_proxy_asset * self.config.min_arbitrage_volume
-    
-        p_proxy_asset_in_stable_asset = await self.connectors[self.config.cex_connector_proxy].get_quote_price(
+            proxy_amount = self.config.min_arbitrage_volume / p_arb_asset_wrapped_asset_in_proxy_asset
+
+            p_proxy_asset_in_stable_asset = await self.connectors[self.config.cex_connector_proxy].get_quote_price(
             trading_pair=self.proxy_trading_pair,
-            is_buy=True if forward else False,
+            is_buy= True,
             amount=proxy_amount)
-        
-        # proxy is buy
-        if forward:
-            proxy_amount = (self.config.min_arbitrage_volume * p_arb_asset_in_stable_asset) / p_proxy_asset_in_stable_asset
             
-        if not forward:
             p_arb_asset_in_stable_asset = await self.connectors[self.config.cex_connector_main].get_quote_price(
                 trading_pair=self.main_trading_pair,
-                is_buy=not forward,
-                amount=proxy_amount * p_proxy_asset_in_stable_asset)
+                is_buy=False,
+                amount=p_proxy_asset_in_stable_asset / proxy_amount)
+            
+            buying_amount = proxy_amount * p_proxy_asset_in_stable_asset / p_arb_asset_in_stable_asset
+            
+            selling_amount = proxy_amount
+
+        #backward
         else:
             p_arb_asset_wrapped_asset_in_proxy_asset = await self.connectors[self.config.dex_connector].get_quote_price(
                 trading_pair=self.dex_trading_pair,
-                is_buy=forward,
+                is_buy=False,
                 amount=self.config.min_arbitrage_volume)
-    
-        buying_amount = self.config.min_arbitrage_volume
+            
+            proxy_amount = p_arb_asset_wrapped_asset_in_proxy_asset * self.config.min_arbitrage_volume
+            
+            p_proxy_asset_in_stable_asset = await self.connectors[self.config.cex_connector_proxy].get_quote_price(
+            trading_pair=self.proxy_trading_pair,
+            is_buy= False,
+            amount=proxy_amount)
+            
+            p_arb_asset_in_stable_asset = await self.connectors[self.config.cex_connector_main].get_quote_price(
+                trading_pair=self.main_trading_pair,
+                is_buy=True,
+                amount=proxy_amount * p_proxy_asset_in_stable_asset)
+            
+            buying_amount = self.config.min_arbitrage_volume 
         
-        selling_amount = self.config.min_arbitrage_volume if forward else (proxy_amount * p_proxy_asset_in_stable_asset) / p_arb_asset_in_stable_asset    
+            selling_amount = proxy_amount * p_proxy_asset_in_stable_asset / p_arb_asset_in_stable_asset    
+            
         
         p_arb_asset_wrapped_asset_in_proxy_asset_for_percentage =  await self.connectors[self.config.dex_connector].get_quote_price(
             trading_pair=self.dex_trading_pair,
             is_buy=False,
             amount=self.config.min_arbitrage_volume
         )
+        
         result = ArbitragePercent(
             get_arbitrage_percent(
                 p_arb_asset_in_stable_asset,
@@ -248,6 +259,8 @@ class TriangularArbV2(StrategyV2Base):
             proxy_amount,
             selling_amount,
         )
+        
+        self.logger().info("final result  : %s", result)  
         
         return result
     
