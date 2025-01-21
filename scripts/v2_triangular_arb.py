@@ -163,9 +163,9 @@ class TriangularArbV2(StrategyV2Base):
         #
         # Uncomment this if you want to test the stats and do only one trade once found an opportunity
         #
-        if self.one_time_trade:
-            print("traded one time, not trading anymore")
-            return []
+        # if self.one_time_trade:
+        #     print("traded one time, not trading anymore")
+        #     return []
         
         if not self.previous_round_confirmed:
             print("Wait until next round gets confirmed")
@@ -176,11 +176,11 @@ class TriangularArbV2(StrategyV2Base):
             if forward_arbitrage_percent.percent >= self.config.min_arbitrage_percent:
                 x = CreateExecutorAction(executor_config=self.arbitrage_config(ArbitrageDirection.FORWARD, forward_arbitrage_percent))
                 executor_actions.append(x)
-            # else:
-            #     backward_arbitrage_percent = await self.estimate_arbitrage_percent(ArbitrageDirection.BACKWARD)
-            #     if backward_arbitrage_percent.percent >= self.config.min_arbitrage_percent:
-            #         x = CreateExecutorAction(executor_config=self.arbitrage_config(ArbitrageDirection.BACKWARD, backward_arbitrage_percent))
-            #         executor_actions.append(x)
+            else:
+                backward_arbitrage_percent = await self.estimate_arbitrage_percent(ArbitrageDirection.BACKWARD)
+                if backward_arbitrage_percent.percent >= self.config.min_arbitrage_percent:
+                    x = CreateExecutorAction(executor_config=self.arbitrage_config(ArbitrageDirection.BACKWARD, backward_arbitrage_percent))
+                    executor_actions.append(x)
 
         if len(executor_actions) == 0:
             return executor_actions
