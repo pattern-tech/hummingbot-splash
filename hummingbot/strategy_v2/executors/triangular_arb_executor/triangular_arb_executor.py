@@ -79,17 +79,17 @@ class TriangularArbExecutor(ExecutorBase):
 
     def validate_sufficient_balance(self):
         if self.arb_direction is ArbitrageDirection.FORWARD:
-            buying_account_not_ok = self.buying_market().get_balance(self.arb_asset) < self.buy_amount
+            buying_account_not_ok = self.buying_market().get_balance(self.proxy_asset) < self.buy_amount
             proxy_account_not_ok = self.proxy_market().get_balance(self.stable_asset) < self.proxy_amount
-            selling_account_not_ok = self.selling_market().get_balance(self.proxy_asset) < self.sell_amount
+            selling_account_not_ok = self.selling_market().get_balance(self.arb_asset) < self.sell_amount
 
             if buying_account_not_ok or proxy_account_not_ok or selling_account_not_ok:
                 self.state = Failed(FailureReason.INSUFFICIENT_BALANCE)
                 self.logger().error("Not enough budget to open position.")
         else:
-            buying_account_not_ok = self.buying_market().get_balance(self.arb_asset_wrapped) < self.buy_amount
+            buying_account_not_ok = self.buying_market().get_balance(self.stable_asset) < self.buy_amount
             selling_account_not_ok = self.proxy_market().get_balance(self.proxy_asset) < self.proxy_amount
-            proxy_account_not_ok = self.selling_market().get_balance(self.stable_asset) < self.sell_amount
+            proxy_account_not_ok = self.selling_market().get_balance(self.arb_asset_wrapped) < self.sell_amount
 
             if buying_account_not_ok or proxy_account_not_ok or selling_account_not_ok:
                 self.state = Failed(FailureReason.INSUFFICIENT_BALANCE)
@@ -124,7 +124,7 @@ class TriangularArbExecutor(ExecutorBase):
     async def place_buy_order(self) -> TrackedOrder:
         market = self._buying_market
         order_id = self.place_order(connector_name=market.connector_name, trading_pair=market.trading_pair,
-                                    order_type=OrderType.MARKET, side=TradeType.SELL if self.arb_direction is ArbitrageDirection.FORWARD else TradeType.BUY, amount=self.buy_amount)
+                                    order_type=OrderType.MARKET, side=TradeType.BUY, amount=self.buy_amount)
         return TrackedOrder(order_id)
 
     async def place_proxy_order(self) -> TrackedOrder:
@@ -139,7 +139,7 @@ class TriangularArbExecutor(ExecutorBase):
         market = self._selling_market
         
         order_id = self.place_order(connector_name=market.connector_name, trading_pair=market.trading_pair,
-                                    order_type=OrderType.MARKET, side=TradeType.SELL if self.arb_direction is ArbitrageDirection.FORWARD else TradeType.BUY, amount=self.sell_amount)
+                                    order_type=OrderType.MARKET, side=TradeType.SELL, amount=self.sell_amount)
         return TrackedOrder(order_id)
 
     def process_order_created_event(self,
@@ -213,12 +213,12 @@ def is_valid_arbitrage(arb_asset: str,
         buying_market_ok = stable_asset in buying_pair_assets and arb_asset == buying_pair_assets[0]
         selling_market_ok = proxy_asset in selling_pair_assets and arb_asset_wrapped in selling_pair_assets
         if buying_market_ok and proxy_market_ok and selling_market_ok:
-            return ArbitrageDirection.FORWARD
+            return ArbitrageDirection.BACKWARD
         
     elif arb_asset in selling_pair_assets:
         buying_market_ok = proxy_asset in buying_pair_assets and arb_asset_wrapped == buying_pair_assets[0]
         selling_market_ok = stable_asset in selling_pair_assets
         if buying_market_ok and proxy_market_ok and selling_market_ok:
-            return ArbitrageDirection.BACKWARD
+            return ArbitrageDirection.FORWARD
         
     return None
