@@ -44,6 +44,8 @@ class ArbitragePercent:
 class Idle:
     pass
 
+class GraceFullStop:
+    pass
 
 class InProgress:
     def __init__(self, buy_order: TrackedOrder, proxy_order: TrackedOrder, sell_order: TrackedOrder):

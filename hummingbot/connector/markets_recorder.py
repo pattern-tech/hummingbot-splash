@@ -9,6 +9,7 @@ from shutil import move
 from typing import Dict, List, Optional, Tuple, Union
 
 import pandas as pd
+from hummingbot.strategy_v2.executors.triangular_arb_executor.data_types import TriangularArbExecutorConfig
 from sqlalchemy.orm import Query, Session
 
 from hummingbot import data_path
@@ -201,8 +202,15 @@ class MarketsRecorder:
                 for attr, value in vars(executor).items():
                     setattr(existing_executor, attr, value)
             else:
+                
                 # Insert new executor
-                serialized_config = executor.executor_info.json()
+                raw_config = executor.executor_info
+                
+                # Necessary for triangular to be json serializable compatible 
+                if (isinstance(raw_config.config, TriangularArbExecutorConfig)): 
+                    raw_config.config.confirm_round_callback = None
+
+                serialized_config = raw_config.json()
                 new_executor = Executors(**json.loads(serialized_config))
                 session.add(new_executor)
             session.commit()

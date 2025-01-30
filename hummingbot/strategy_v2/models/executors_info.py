@@ -1,6 +1,7 @@
 from decimal import Decimal
 from typing import Dict, Optional, Union
 
+from hummingbot.strategy_v2.executors.triangular_arb_executor.data_types import TriangularArbExecutorConfig
 from pydantic import BaseModel
 
 from hummingbot.core.data_type.common import TradeType
@@ -21,7 +22,7 @@ class ExecutorInfo(BaseModel):
     close_timestamp: Optional[float]
     close_type: Optional[CloseType]
     status: RunnableStatus
-    config: Union[PositionExecutorConfig, XEMMExecutorConfig, ArbitrageExecutorConfig, DCAExecutorConfig, TWAPExecutorConfig, ExecutorConfigBase]
+    config: Union[PositionExecutorConfig, XEMMExecutorConfig, ArbitrageExecutorConfig, DCAExecutorConfig, TWAPExecutorConfig, TriangularArbExecutorConfig, ExecutorConfigBase]
     net_pnl_pct: Decimal
     net_pnl_quote: Decimal
     cum_fees_quote: Decimal

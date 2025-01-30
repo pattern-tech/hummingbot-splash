@@ -1,7 +1,7 @@
 import asyncio
 from decimal import Decimal
 import logging
-from typing import Optional, Union, cast
+from typing import Dict, Optional, Union, cast
 
 from hummingbot.connector.connector_base import ConnectorBase
 from hummingbot.core.data_type.common import OrderType, PositionAction, TradeType
@@ -15,6 +15,7 @@ from hummingbot.strategy_v2.executors.triangular_arb_executor.data_types import 
     Completed,
     Failed,
     FailureReason,
+    GraceFullStop,
     Idle,
     InProgress,
     TriangularArbExecutorConfig,
@@ -64,7 +65,7 @@ class TriangularArbExecutor(ExecutorBase):
             self.proxy_amount = config.proxy_amount
             self.sell_amount = config.sell_amount
             self.confirm_round_callback = config.confirm_round_callback
-            self.state: Idle | InProgress | Completed | Failed = Idle()
+            self.state: Idle | InProgress | Completed | Failed | GraceFullStop = Idle()
         else:
             raise Exception("Arbitrage is not valid.")
 
@@ -96,6 +97,8 @@ class TriangularArbExecutor(ExecutorBase):
                 self.logger().error("Not enough budget to open position.")
 
     async def control_task(self):
+        if type(self.state) is GraceFullStop:
+            return
         if type(self.state) is Idle:
             await self.init_arbitrage()
         elif type(self.state) is InProgress:
@@ -197,6 +200,25 @@ class TriangularArbExecutor(ExecutorBase):
         else:
             return self._strategy.sell(connector_name, trading_pair, amount, order_type, price, position_action)
 
+    def on_stop(self):
+        self.state = GraceFullStop
+        self.stop()
+    
+    def early_stop(self):
+        self.state = GraceFullStop
+        self.on_stop()
+        
+
+    def get_net_pnl_quote(self) -> Decimal:
+        return Decimal("0")
+
+    def get_net_pnl_pct(self) -> Decimal:
+        return Decimal("0")
+        
+    def get_cum_fees_quote(self) -> Decimal:
+        return Decimal("0")
+
+    
 def is_valid_arbitrage(arb_asset: str,
                        arb_asset_wrapped: str,
                        proxy_asset: str,
