@@ -27,10 +27,10 @@ class TriangularArbExecutorConfig(ExecutorConfigBase):
     selling_market: ConnectorPair
     order_amount: Decimal
     min_profitability_percent: Decimal = Decimal("1.5")
-    max_retries: int = 3
     buy_amount: Decimal
     proxy_amount: Decimal
     sell_amount: Decimal
+    max_retries: int = 12 # if we consider 2 mins max per poll in splash, 2 min in 15 sec = 8 + 2(+-) ext threshold = 10 => the order is oor
     confirm_round_callback: Callable[[Strategy], None] 
 
 @dataclass

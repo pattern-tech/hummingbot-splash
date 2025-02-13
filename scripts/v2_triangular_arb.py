@@ -136,7 +136,7 @@ class TriangularArbV2(StrategyV2Base):
             selling_market=cex_main if direction is ArbitrageDirection.FORWARD else dex,
             order_amount=self.config.min_arbitrage_volume,
             min_profitability_percent=cast(Decimal, self.config.min_arbitrage_percent),
-            max_retries=3,
+            max_retries=12, # default for splash OOR recognition, lower number are not suggested !
             timestamp=time.time(),
             buy_amount=amounts.buy_amount,
             proxy_amount=amounts.proxy_amount,
@@ -282,7 +282,16 @@ class TriangularArbV2(StrategyV2Base):
             )
             self.logger().info("BACKWARD  : %s", result) 
         return result
-    
+
+    def cancel(self,
+           connector_name: str,
+           trading_pair: str,
+           order_id: str):
+        
+        return self.connectors[connector_name].cancel(
+            order_id
+        )
+        
     def confirm_round(self):
         print("All orders have been filled")
         self.previous_round_confirmed = True

@@ -75,11 +75,41 @@ class GatewayCardanoAMM(GatewayEVMAMM):
         This is intentionally left blank, because cancellation is not supported for tezos blockchain.
         """
         return []
-    async def _execute_cancel(self, order_id: str, cancel_age: int) -> Optional[str]:
-        """
-        This is intentionally left blank, because cancellation is not supported for tezos blockchain.
-        """
-        pass
+    
+    async def cancel(self, client_order_id:str) -> str:
+        try:
+            cancel_res = await self._get_gateway_instance().cancel_evm_transaction("cardano", "mainnet", client_order_id, 0)
+        
+            tx_hash: str = cancel_res.get("txHash")
+
+            return tx_hash
+        
+        except Exception as err:
+            self.logger().error(
+                f"Failed to cancel order {client_order_id}: {str(err)}.",
+                exc_info=True
+            )
+    
+    async def confirm_cancel(self, cancel_hash:str) -> str:
+        try:
+            cancel_res = await self._get_gateway_instance().get_transaction_status(
+                self.chain,
+                self.network,
+                cancel_hash
+            )
+
+            if cancel_res and cancel_res.get("scripts_successful"):                
+                return True
+            else: 
+                return False
+            
+        except Exception as err:
+            self.logger().error(
+                f"Failed to fetch the cancel tx {cancel_hash}: {str(err)}.",
+                exc_info=True
+            )
+
+
     async def cancel_outdated_orders(self, cancel_age: int) -> List[CancellationResult]:
         """
         This is intentionally left blank, because cancellation is not supported for tezos blockchain.
@@ -201,9 +231,13 @@ class GatewayCardanoAMM(GatewayEVMAMM):
             )
             for tx_hash in tx_hash_list
         ], return_exceptions=True)
+        
+        failure_trigger : Union[GatewayInFlightOrder, None] = None
+        
         for tracked_order, tx_details in zip(tracked_orders, update_results):
             if isinstance(tx_details, Exception):
                 self.logger().error(f"An error occurred fetching transaction status of {tracked_order.client_order_id}. Please wait at least 2 minutes!")
+                failure_trigger = tracked_order
                 continue
             if "txHash" not in tx_details:
                 self.logger().error(f"No txHash field for transaction status of {tracked_order.client_order_id}: "
@@ -225,7 +259,13 @@ class GatewayCardanoAMM(GatewayEVMAMM):
                     f"Error fetching transaction status for the order {tracked_order.client_order_id}: {tx_details}. Please wait at least 2 minutes!",
                     app_warning_msg=f"Failed to fetch transaction status for the order {tracked_order.client_order_id}. Please wait at least 2 minutes!"
                 )
+                failure_trigger = tracked_order
                 await self._order_tracker.process_order_not_found(tracked_order.client_order_id)
+                
+                
+        if failure_trigger is not None:
+            self._order_tracker._trigger_failure_event(failure_trigger)    
+            
     async def all_trading_pairs(self) -> List[str]:
         """
         Calls the tokens endpoint on Gateway.

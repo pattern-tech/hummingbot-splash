@@ -1,7 +1,7 @@
 import asyncio
 from decimal import Decimal
 import logging
-from typing import Dict, Optional, Union, cast
+from typing import Coroutine, Dict, Optional, Union, cast
 
 from hummingbot.connector.connector_base import ConnectorBase
 from hummingbot.core.data_type.common import OrderType, PositionAction, TradeType
@@ -99,19 +99,69 @@ class TriangularArbExecutor(ExecutorBase):
     async def control_task(self):
         if type(self.state) is GraceFullStop:
             return
-        if type(self.state) is Idle:
+        elif type(self.state) is Idle:
             await self.init_arbitrage()
         elif type(self.state) is InProgress:
             state = self.state
-            if self._cumulative_failures > self.max_retries:
-                self.state = Failed(FailureReason.TOO_MANY_FAILURES)
-                self.stop()
+            if isinstance(self.state.buy_order, Coroutine):
+                self.state.buy_order = await self.state.buy_order
+            if isinstance(self.state.proxy_order, Coroutine):
+                self.state.proxy_order = await self.state.proxy_order
+            if isinstance(self.state.sell_order, Coroutine):
+                self.state.sell_order = await self.state.sell_order
+            
+            # we check before the update order function to have access to the failed order hash and cancel and replace it
+            if self._cumulative_failures > self.max_retries - 2:
+                self.logger().error("{err(OOR), msg(maximum threshold is reached), code(429)}")
+                # cancelling the splash OOR order
+                tx_hash, pair = None, None
+                
+                if self._buying_market.connector_name == "splash_cardano_mainnet":
+                    tx_hash = self.state.buy_order.order.exchange_order_id
+                    pair = self._buying_market.trading_pair
+                    
+                elif self._selling_market.connector_name == "splash_cardano_mainnet":
+                    tx_hash = self.state.sell_order.order.exchange_order_id
+                    pair = self._selling_market.trading_pair
+                
+                if tx_hash != None :
+                    self.logger().info("cancelling splash order, order id(tx hash): %s ", tx_hash)
+                    cancel_hash  = await self.cancel_splash_order("splash_cardano_mainnet", pair, tx_hash)
+                    self.logger().info("splash OOR order cancelled, canceller tx hash: %s", cancel_hash)
+                    self.logger().info("confirming the cancel ... ")
+                    cancel_res = await self.confirm_cancel(cancel_hash)
+                    if cancel_res:
+                        self.logger().info("cancel was successful ✔️")
+                    else:
+                        self.logger().info("""cancel was unsuccessful ❌, stopping ...
+                                           HINT: you should check the logs and try to recover the funds manually if there is a lost in assets
+                                                 restart the bot after the manual check""")
+                        self.stop()
+                        self.early_stop()
+                        
+                    self.logger().info("re-placing the cancelled splash order again ...")
+                    # loop until the cancel is done and 10 sec wait for update
+                    if self._buying_market.connector_name == "splash_cardano_mainnet":
+                        self.state.buy_order  = self.place_buy_order() 
+                        self._cumulative_failures = 0
+                        return
+                    elif self._selling_market.connector_name == "splash_cardano_mainnet":
+                        self.state.sell_order  = self.place_sell_order()
+                        self._cumulative_failures = 0
+                        return
             elif state.buy_order.is_filled and state.proxy_order.is_filled and state.sell_order.is_filled:
                 self.state = Completed(buy_order_exec_price=state.buy_order.average_executed_price,
                                        proxy_order_exec_price=state.proxy_order.average_executed_price,
                                        sell_order_exec_price=state.sell_order.average_executed_price)
                 self.confirm_round_callback()
+                self.stop()    
+            # old logic, the orders failed and stop is triggered
+            if self._cumulative_failures > self.max_retries:              
+                self.state = Failed(FailureReason.TOO_MANY_FAILURES)
                 self.stop()
+                self.early_stop()
+                        
+
 
     async def init_arbitrage(self):
         buy_order = asyncio.create_task(self.place_buy_order())
@@ -144,6 +194,33 @@ class TriangularArbExecutor(ExecutorBase):
         order_id = self.place_order(connector_name=market.connector_name, trading_pair=market.trading_pair,
                                     order_type=OrderType.MARKET, side=TradeType.SELL, amount=self.sell_amount)
         return TrackedOrder(order_id)
+    
+    async def cancel_splash_order(self, connector_name: str, pair: str, order_id: str) -> str:
+        
+        cancel_tx = self._strategy.cancel(connector_name, pair, order_id)
+        cancel_hash = await cancel_tx
+        return cancel_hash
+    
+    async def confirm_cancel(self, tx_hash: str, connector_name: str = "splash_cardano_mainnet",  max_attempts: int =15, delay: float = 2.0) -> bool:
+        """
+        Confirms transaction cancellation by repeatedly checking until confirmed or max attempts are reached.
+
+        Args:
+            connector_name (str): Name of the connector.
+            tx_hash (str): Transaction hash.
+            max_attempts (int): Maximum number of attempts before giving up.
+            delay (float): Delay between attempts in seconds.
+
+        Returns:
+            bool: True if cancellation is confirmed, False otherwise.
+        """
+        for attempt in range(max_attempts):
+            cancel_res = await self.connectors[connector_name].confirm_cancel(tx_hash)
+            if cancel_res:
+                return True  
+            await asyncio.sleep(delay)  
+
+        return False
 
     def process_order_created_event(self,
                                     event_tag: int,
@@ -166,11 +243,13 @@ class TriangularArbExecutor(ExecutorBase):
         if type(self.state) is InProgress and self._cumulative_failures < self.max_retries:
             order_id = event.order_id
             if order_id == self.state.buy_order.order_id:
-                self.state.buy_order = asyncio.run(self.place_sell_order())
+                if self._buying_market.connector_name != "splash_cardano_mainnet":
+                    self.state.buy_order = asyncio.create_task(self.place_buy_order())
             elif order_id == self.state.proxy_order.order_id:
-                self.state.proxy_order = asyncio.run(self.place_proxy_order())
+                    self.state.proxy_order = asyncio.create_task(self.place_proxy_order())
             elif order_id == self.state.sell_order.order_id:
-                self.state.sell_order = asyncio.run(self.place_sell_order())
+                if self._selling_market.connector_name != "splash_cardano_mainnet":
+                    self.state.sell_order = asyncio.create_task(self.place_sell_order())
 
     def place_order(self,
                     connector_name: str,
@@ -201,11 +280,11 @@ class TriangularArbExecutor(ExecutorBase):
             return self._strategy.sell(connector_name, trading_pair, amount, order_type, price, position_action)
 
     def on_stop(self):
-        self.state = GraceFullStop
+        self.state = GraceFullStop()
         self.stop()
     
     def early_stop(self):
-        self.state = GraceFullStop
+        self.state = GraceFullStop()
         self.on_stop()
         
 
@@ -222,7 +301,7 @@ class TriangularArbExecutor(ExecutorBase):
 def is_valid_arbitrage(arb_asset: str,
                        arb_asset_wrapped: str,
                        proxy_asset: str,
-                       stable_asset: str,
+                       stable_asset: str, 
                        buying_market: ConnectorPair,
                        proxy_market: ConnectorPair,
                        selling_market: ConnectorPair) -> Optional[ArbitrageDirection]:
