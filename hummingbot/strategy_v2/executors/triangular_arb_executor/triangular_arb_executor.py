@@ -105,19 +105,19 @@ class TriangularArbExecutor(ExecutorBase):
             await self.init_arbitrage()
         
         if isinstance(self.state, InProgress):
-            state = self.state
-        # Resolve pending orders
-        for attr in ['buy_order', 'proxy_order', 'sell_order']:
-            order = getattr(self.state, attr)
-            if isinstance(order, Coroutine):
-                setattr(self.state, attr, await order)
-    
-            if self._cumulative_failures > self.max_retries:
-                self.logger().error("{err(OOR), msg(maximum threshold is reached), code(429)}")
-                self.state = Failed(FailureReason.TOO_MANY_FAILURES)
-                self.stop()
-                self.early_stop()
-                return
+            # state = self.state
+             # Resolve pending orders
+            for attr in ['buy_order', 'proxy_order', 'sell_order']:
+                order = getattr(self.state, attr)
+                if isinstance(order, Coroutine):
+                    setattr(self.state, attr, await order)
+
+                if self._cumulative_failures > self.max_retries:
+                    self.logger().error("{err(OOR), msg(maximum threshold is reached), code(429)}")
+                    self.state = Failed(FailureReason.TOO_MANY_FAILURES)
+                    self.stop()
+                    self.early_stop()
+                    return
             
             # we check before the update order function to have access to the failed order hash and cancel and replace it          
                 
@@ -156,17 +156,13 @@ class TriangularArbExecutor(ExecutorBase):
                             self.early_stop()
                         return
             
-            elif state.buy_order.is_filled and state.proxy_order.is_filled and state.sell_order.is_filled:
-                self.state = Completed(buy_order_exec_price=state.buy_order.average_executed_price,
-                                       proxy_order_exec_price=state.proxy_order.average_executed_price,
-                                       sell_order_exec_price=state.sell_order.average_executed_price)
-                self.confirm_round_callback()
-                self.stop()    
-            # old logic, the orders failed and stop is triggered
-            if self._cumulative_failures > self.max_retries:              
-                self.state = Failed(FailureReason.TOO_MANY_FAILURES)
-                self.stop()
-                self.early_stop()
+        if self.state.buy_order.is_filled and self.state.proxy_order.is_filled and self.state.sell_order.is_filled:
+            self.state = Completed(buy_order_exec_price=self.state.buy_order.average_executed_price,
+                                   proxy_order_exec_price=self.state.proxy_order.average_executed_price,
+                                   sell_order_exec_price=self.state.sell_order.average_executed_price)
+            self.confirm_round_callback()
+            self.stop()    
+
                         
 
 

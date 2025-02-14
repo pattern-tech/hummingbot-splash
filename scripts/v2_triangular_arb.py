@@ -193,95 +193,105 @@ class TriangularArbV2(StrategyV2Base):
         forward = direction is ArbitrageDirection.FORWARD
         result = None
         self.logger().info ("is direction forward: ", forward)
+        try:
+            # forward
+            if forward:            
+                p_arb_asset_wrapped_asset_in_proxy_asset = await self.connectors[self.config.dex_connector].get_quote_price(
+                    trading_pair=self.dex_trading_pair,
+                    is_buy=True,
+                    amount=self.config.min_arbitrage_volume)
+                proxy_amount = self.config.min_arbitrage_volume * p_arb_asset_wrapped_asset_in_proxy_asset
 
-        # forward
-        if forward:            
-            p_arb_asset_wrapped_asset_in_proxy_asset = await self.connectors[self.config.dex_connector].get_quote_price(
-                trading_pair=self.dex_trading_pair,
-                is_buy=True,
-                amount=self.config.min_arbitrage_volume)
-            proxy_amount = self.config.min_arbitrage_volume * p_arb_asset_wrapped_asset_in_proxy_asset
+                p_proxy_asset_in_stable_asset = await self.connectors[self.config.cex_connector_proxy].get_quote_price(
+                    trading_pair=self.proxy_trading_pair,
+                    is_buy= True,
+                    amount=proxy_amount)
+                stable_amount = proxy_amount * p_proxy_asset_in_stable_asset
 
-            p_proxy_asset_in_stable_asset = await self.connectors[self.config.cex_connector_proxy].get_quote_price(
-                trading_pair=self.proxy_trading_pair,
-                is_buy= True,
-                amount=proxy_amount)
-            stable_amount = proxy_amount * p_proxy_asset_in_stable_asset
-            
-            p_arb_asset_in_stable_asset = await self.connectors[self.config.cex_connector_main].get_quote_price(
-                trading_pair=self.main_trading_pair,
-                is_buy=False,
-                amount=stable_amount)
-            arb_asset_amount = stable_amount / p_arb_asset_in_stable_asset
-            
-            # ToDo: Must be changed for backward compatibility. Must be changed on the Splash SDK side.
-            # right now if we say BUY we must pass in the proxy asset instead of arb asset 
-            # but the correct way is to say buy me x amount of arb asset not saying buy me x amount of arb asset using y amount of proxy asset.
-            buying_amount = proxy_amount
-            selling_amount = arb_asset_amount # wrapped asset amount
-            self.logger().info ("FORWARD | arb price in stable: %s", p_arb_asset_in_stable_asset)
-            self.logger().info ("FORWARD | proxy price in stable: %s", p_proxy_asset_in_stable_asset)
-            self.logger().info ("FORWARD | wrapped price in proxy: %s", p_arb_asset_wrapped_asset_in_proxy_asset)
-            self.logger().info ("FORWARD | proxy amount: %s", proxy_amount)
-            self.logger().info ("FORWARD | stable amount: %s", stable_amount)
-            self.logger().info ("FORWARD | arb amount: %s", arb_asset_amount)
-            
-            result = ArbitragePercent(
-                get_arbitrage_percent(
-                    p_arb_asset_in_stable_asset,
-                    p_proxy_asset_in_stable_asset,
-                    p_arb_asset_wrapped_asset_in_proxy_asset,
-                    forward,
-                ),
-                proxy_amount,  # buying_market amount
-                proxy_amount,  # proxy_market amount
-                selling_amount, # buying_market amount
-            )
-            self.logger().info("FORWARD  : %s", result) 
-            
+                p_arb_asset_in_stable_asset = await self.connectors[self.config.cex_connector_main].get_quote_price(
+                    trading_pair=self.main_trading_pair,
+                    is_buy=False,
+                    amount=stable_amount)
+                arb_asset_amount = stable_amount / p_arb_asset_in_stable_asset
 
-        #backward
-        else:
-            p_arb_asset_wrapped_asset_in_proxy_asset = await self.connectors[self.config.dex_connector].get_quote_price(
-                trading_pair=self.dex_trading_pair,
-                is_buy=False,
-                amount=self.config.min_arbitrage_volume)
-            proxy_amount = p_arb_asset_wrapped_asset_in_proxy_asset * self.config.min_arbitrage_volume
-            
-            p_proxy_asset_in_stable_asset = await self.connectors[self.config.cex_connector_proxy].get_quote_price(
-                trading_pair=self.proxy_trading_pair,
-                is_buy= False,
-                amount=proxy_amount)
-            stable_amount = proxy_amount * p_proxy_asset_in_stable_asset
-            
-            p_arb_asset_in_stable_asset = await self.connectors[self.config.cex_connector_main].get_quote_price(
-                trading_pair=self.main_trading_pair,
-                is_buy=True,
-                amount=stable_amount)
-            arb_asset_amount = stable_amount / p_arb_asset_in_stable_asset
+                # ToDo: Must be changed for backward compatibility. Must be changed on the Splash SDK side.
+                # right now if we say BUY we must pass in the proxy asset instead of arb asset 
+                # but the correct way is to say buy me x amount of arb asset not saying buy me x amount of arb asset using y amount of proxy asset.
+                buying_amount = proxy_amount
+                selling_amount = arb_asset_amount # wrapped asset amount
+                self.logger().info ("FORWARD | arb price in stable: %s", p_arb_asset_in_stable_asset)
+                self.logger().info ("FORWARD | proxy price in stable: %s", p_proxy_asset_in_stable_asset)
+                self.logger().info ("FORWARD | wrapped price in proxy: %s", p_arb_asset_wrapped_asset_in_proxy_asset)
+                self.logger().info ("FORWARD | proxy amount: %s", proxy_amount)
+                self.logger().info ("FORWARD | stable amount: %s", stable_amount)
+                self.logger().info ("FORWARD | arb amount: %s", arb_asset_amount)
 
-            self.logger().info ("BACKWARD | arb price in stable: %s", p_arb_asset_in_stable_asset)
-            self.logger().info ("BACKWARD | proxy price in stable: %s", p_proxy_asset_in_stable_asset)
-            self.logger().info ("BACKWARD | wrapped price in proxy: %s", p_arb_asset_wrapped_asset_in_proxy_asset)
-            self.logger().info ("BACKWARD | proxy amount: %s", proxy_amount)
-            self.logger().info ("BACKWARD | stable amount: %s", stable_amount)
-            self.logger().info ("BACKWARD | arb amount: %s", arb_asset_amount)
-            
-            buying_amount =  arb_asset_amount     # wrapped asset amount
-            selling_amount = self.config.min_arbitrage_volume
-            result = ArbitragePercent(
-                get_arbitrage_percent(
-                    p_arb_asset_in_stable_asset,
-                    p_proxy_asset_in_stable_asset,
-                    p_arb_asset_wrapped_asset_in_proxy_asset,
-                    forward,
-                ),
-                buying_amount,  # buying_market amount
-                proxy_amount,   # proxy_market amount
-                selling_amount, # buying_market amount
-            )
-            self.logger().info("BACKWARD  : %s", result) 
-        return result
+                result = ArbitragePercent(
+                    get_arbitrage_percent(
+                        p_arb_asset_in_stable_asset,
+                        p_proxy_asset_in_stable_asset,
+                        p_arb_asset_wrapped_asset_in_proxy_asset,
+                        forward,
+                    ),
+                    proxy_amount,  # buying_market amount
+                    proxy_amount,  # proxy_market amount
+                    selling_amount, # buying_market amount
+                )
+                self.logger().info("FORWARD  : %s", result) 
+
+
+            #backward
+            else:
+                p_arb_asset_wrapped_asset_in_proxy_asset = await self.connectors[self.config.dex_connector].get_quote_price(
+                    trading_pair=self.dex_trading_pair,
+                    is_buy=False,
+                    amount=self.config.min_arbitrage_volume)
+                proxy_amount = p_arb_asset_wrapped_asset_in_proxy_asset * self.config.min_arbitrage_volume
+
+                p_proxy_asset_in_stable_asset = await self.connectors[self.config.cex_connector_proxy].get_quote_price(
+                    trading_pair=self.proxy_trading_pair,
+                    is_buy= False,
+                    amount=proxy_amount)
+                stable_amount = proxy_amount * p_proxy_asset_in_stable_asset
+
+                p_arb_asset_in_stable_asset = await self.connectors[self.config.cex_connector_main].get_quote_price(
+                    trading_pair=self.main_trading_pair,
+                    is_buy=True,
+                    amount=stable_amount)
+                arb_asset_amount = stable_amount / p_arb_asset_in_stable_asset
+
+                self.logger().info ("BACKWARD | arb price in stable: %s", p_arb_asset_in_stable_asset)
+                self.logger().info ("BACKWARD | proxy price in stable: %s", p_proxy_asset_in_stable_asset)
+                self.logger().info ("BACKWARD | wrapped price in proxy: %s", p_arb_asset_wrapped_asset_in_proxy_asset)
+                self.logger().info ("BACKWARD | proxy amount: %s", proxy_amount)
+                self.logger().info ("BACKWARD | stable amount: %s", stable_amount)
+                self.logger().info ("BACKWARD | arb amount: %s", arb_asset_amount)
+
+                buying_amount =  arb_asset_amount     # wrapped asset amount
+                selling_amount = self.config.min_arbitrage_volume
+                result = ArbitragePercent(
+                    get_arbitrage_percent(
+                        p_arb_asset_in_stable_asset,
+                        p_proxy_asset_in_stable_asset,
+                        p_arb_asset_wrapped_asset_in_proxy_asset,
+                        forward,
+                    ),
+                    buying_amount,  # buying_market amount
+                    proxy_amount,   # proxy_market amount
+                    selling_amount, # buying_market amount
+                )
+                self.logger().info("BACKWARD  : %s", result) 
+                return result
+        except Exception:
+            msg = f"estimating the arb percent failed due to {Exception}"
+            print(msg)
+            self.logger().error(msg)
+            return ArbitragePercent(
+                    Decimal(0),
+                    Decimal(0), 
+                    Decimal(0),  
+                    Decimal(0),
+                )
 
     def cancel(self,
            connector_name: str,
