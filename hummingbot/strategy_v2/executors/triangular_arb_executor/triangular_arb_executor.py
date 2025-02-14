@@ -26,6 +26,7 @@ from hummingbot.strategy_v2.models.executors import TrackedOrder
 class TriangularArbExecutor(ExecutorBase):
     _logger = None
     _cumulative_failures: int = 0
+    _splash_failures: int = 0
 
     @classmethod
     def logger(cls) -> HummingbotLogger:
@@ -97,58 +98,64 @@ class TriangularArbExecutor(ExecutorBase):
                 self.logger().error("Not enough budget to open position.")
 
     async def control_task(self):
-        if type(self.state) is GraceFullStop:
+        if isinstance(self.state, GraceFullStop):
             return
-        elif type(self.state) is Idle:
+        
+        if isinstance(self.state, Idle):
             await self.init_arbitrage()
-        elif type(self.state) is InProgress:
+        
+        if isinstance(self.state, InProgress):
             state = self.state
-            if isinstance(self.state.buy_order, Coroutine):
-                self.state.buy_order = await self.state.buy_order
-            if isinstance(self.state.proxy_order, Coroutine):
-                self.state.proxy_order = await self.state.proxy_order
-            if isinstance(self.state.sell_order, Coroutine):
-                self.state.sell_order = await self.state.sell_order
-            
-            # we check before the update order function to have access to the failed order hash and cancel and replace it
-            if self._cumulative_failures > self.max_retries - 2:
+        # Resolve pending orders
+        for attr in ['buy_order', 'proxy_order', 'sell_order']:
+            order = getattr(self.state, attr)
+            if isinstance(order, Coroutine):
+                setattr(self.state, attr, await order)
+    
+            if self._cumulative_failures > self.max_retries:
                 self.logger().error("{err(OOR), msg(maximum threshold is reached), code(429)}")
-                # cancelling the splash OOR order
-                tx_hash, pair = None, None
+                self.state = Failed(FailureReason.TOO_MANY_FAILURES)
+                self.stop()
+                self.early_stop()
+                return
+            
+            # we check before the update order function to have access to the failed order hash and cancel and replace it          
                 
-                if self._buying_market.connector_name == "splash_cardano_mainnet":
-                    tx_hash = self.state.buy_order.order.exchange_order_id
-                    pair = self._buying_market.trading_pair
-                    
-                elif self._selling_market.connector_name == "splash_cardano_mainnet":
-                    tx_hash = self.state.sell_order.order.exchange_order_id
-                    pair = self._selling_market.trading_pair
+            if self._cumulative_failures > self.max_retries - 2 and self._splash_failures > self.max_retries - 2:
+                self.logger().error("{err(OOR), msg(maximum splash errors threshold is reached), code(429)}")    
                 
-                if tx_hash != None :
-                    self.logger().info("cancelling splash order, order id(tx hash): %s ", tx_hash)
-                    cancel_hash  = await self.cancel_splash_order("splash_cardano_mainnet", pair, tx_hash)
-                    self.logger().info("splash OOR order cancelled, canceller tx hash: %s", cancel_hash)
-                    self.logger().info("confirming the cancel ... ")
-                    cancel_res = await self.confirm_cancel(cancel_hash)
-                    if cancel_res:
-                        self.logger().info("cancel was successful ✔️")
-                    else:
-                        self.logger().info("""cancel was unsuccessful ❌, stopping ...
-                                           HINT: you should check the logs and try to recover the funds manually if there is a lost in assets
-                                                 restart the bot after the manual check""")
-                        self.stop()
-                        self.early_stop()
-                        
-                    self.logger().info("re-placing the cancelled splash order again ...")
-                    # loop until the cancel is done and 10 sec wait for update
-                    if self._buying_market.connector_name == "splash_cardano_mainnet":
-                        self.state.buy_order  = self.place_buy_order() 
-                        self._cumulative_failures = 0
+                markets_map = {
+                    self._buying_market: ('buy_order', self.place_buy_order),
+                    self._proxy_market: ('proxy_order', self.place_proxy_order),
+                    self._selling_market: ('sell_order', self.place_sell_order)
+                }
+        
+                for market, (state_attr, place_func) in markets_map.items():
+                    if market.connector_name == "splash_cardano_mainnet":
+                        order = getattr(self.state, state_attr)
+                        tx_hash = order.order.exchange_order_id
+                        pair = market.trading_pair
+
+                        # Cancel order
+                        self.logger().info(f"cancelling splash order, order id(tx hash): {tx_hash}")
+                        cancel_hash = await self.cancel_splash_order("splash_cardano_mainnet", pair, tx_hash)
+                        self.logger().info(f"splash OOR order cancelled, canceller tx hash: {cancel_hash}")
+                        self.logger().info("confirming the cancel...")
+
+                        # Handle cancellation result
+                        if await self.confirm_cancel(cancel_hash):
+                            self.logger().info("cancel was successful ✔️")
+                            self.logger().info("re-placing the cancelled splash order again...")
+                            setattr(self.state, state_attr, place_func())
+                            self._splash_failures = 0
+                        else:
+                            self.logger().info("""cancel was unsuccessful ❌, stopping...
+                                             HINT: you should check the logs and try to recover the funds manually if there is a lost in assets
+                                                   you can restart the bot after the manual checks are done""")
+                            self.stop()
+                            self.early_stop()
                         return
-                    elif self._selling_market.connector_name == "splash_cardano_mainnet":
-                        self.state.sell_order  = self.place_sell_order()
-                        self._cumulative_failures = 0
-                        return
+            
             elif state.buy_order.is_filled and state.proxy_order.is_filled and state.sell_order.is_filled:
                 self.state = Completed(buy_order_exec_price=state.buy_order.average_executed_price,
                                        proxy_order_exec_price=state.proxy_order.average_executed_price,
@@ -239,17 +246,34 @@ class TriangularArbExecutor(ExecutorBase):
                 self.state.update_sell_order(self.get_in_flight_order(self._selling_market.connector_name, order_id))
 
     def process_order_failed_event(self, _, market, event: MarketOrderFailureEvent):
+        """
+        Process a failed order event and attempt to recover by placing a new order
+        if within retry limits.
+
+        Args:
+            market: The market where the order failed
+            event (MarketOrderFailureEvent): The failure event details
+        """
         self._cumulative_failures += 1
-        if type(self.state) is InProgress and self._cumulative_failures < self.max_retries:
-            order_id = event.order_id
-            if order_id == self.state.buy_order.order_id:
-                if self._buying_market.connector_name != "splash_cardano_mainnet":
-                    self.state.buy_order = asyncio.create_task(self.place_buy_order())
-            elif order_id == self.state.proxy_order.order_id:
-                    self.state.proxy_order = asyncio.create_task(self.place_proxy_order())
-            elif order_id == self.state.sell_order.order_id:
-                if self._selling_market.connector_name != "splash_cardano_mainnet":
-                    self.state.sell_order = asyncio.create_task(self.place_sell_order())
+
+        if not isinstance(self.state, InProgress) or self._cumulative_failures >= self.max_retries:
+            return
+
+        order_mapping = {
+            self.state.buy_order.order_id: ('buy_order', self.place_buy_order, self._buying_market),
+            self.state.proxy_order.order_id: ('proxy_order', self.place_proxy_order, self._proxy_market),
+            self.state.sell_order.order_id: ('sell_order', self.place_sell_order, self._selling_market)
+        }
+
+        if event.order_id not in order_mapping:
+            return
+
+        state_attr, place_order_func, relevant_market = order_mapping[event.order_id]
+
+        if relevant_market.connector_name == "splash_cardano_mainnet":
+            self._splash_failures += 1
+        else:
+            setattr(self.state, state_attr, asyncio.create_task(place_order_func()))
 
     def place_order(self,
                     connector_name: str,
