@@ -5,6 +5,7 @@ from typing import Coroutine, Dict, Optional, Union, cast
 
 from hummingbot.connector.connector_base import ConnectorBase
 from hummingbot.core.data_type.common import OrderType, PositionAction, TradeType
+from hummingbot.core.data_type.in_flight_order import OrderState
 from hummingbot.core.event.events import BuyOrderCreatedEvent, MarketOrderFailureEvent, SellOrderCreatedEvent
 from hummingbot.logger import HummingbotLogger
 from hummingbot.strategy.script_strategy_base import ScriptStrategyBase
@@ -125,12 +126,12 @@ class TriangularArbExecutor(ExecutorBase):
                 self.logger().error("{err(OOR), msg(maximum splash errors threshold is reached), code(429)}")    
                 
                 markets_map = {
-                    self._buying_market: ('buy_order', self.place_buy_order),
-                    self._proxy_market: ('proxy_order', self.place_proxy_order),
-                    self._selling_market: ('sell_order', self.place_sell_order)
+                    self._buying_market: ('buy_order', self.rollback_buy_order),
+                    self._proxy_market: ('proxy_order', self.rollback_proxy_order),
+                    self._selling_market: ('sell_order', self.rollback_sell_order)
                 }
         
-                for market, (state_attr, place_func) in markets_map.items():
+                for market, (state_attr) in markets_map.items():
                     if market.connector_name == "splash_cardano_mainnet":
                         order = getattr(self.state, state_attr)
                         tx_hash = order.order.exchange_order_id
@@ -145,8 +146,12 @@ class TriangularArbExecutor(ExecutorBase):
                         # Handle cancellation result
                         if await self.confirm_cancel(cancel_hash):
                             self.logger().info("cancel was successful ✔️")
-                            self.logger().info("re-placing the cancelled splash order again...")
-                            setattr(self.state, state_attr, place_func())
+                            order._order.current_state = OrderState.CANCELED
+                            setattr(self.state, state_attr, order)                    
+                            self.logger().info("rolling back other trades ...")
+                            for market_inner, (state_attr_inner, rollback_func_inner) in markets_map.items():
+                                if market_inner.connector_name != "splash_cardano_mainnet":
+                                    setattr(self.state, state_attr_inner, rollback_func_inner())
                             self._splash_failures = 0
                         else:
                             self.logger().info("""cancel was unsuccessful ❌, stopping...
@@ -160,6 +165,12 @@ class TriangularArbExecutor(ExecutorBase):
             self.state = Completed(buy_order_exec_price=self.state.buy_order.average_executed_price,
                                    proxy_order_exec_price=self.state.proxy_order.average_executed_price,
                                    sell_order_exec_price=self.state.sell_order.average_executed_price)
+            self.confirm_round_callback()
+            self.stop()  
+              
+        if self.state.buy_order._order.is_cancelled and self.state.proxy_order._order.is_cancelled and self.state.sell_order._order.is_cancelled:
+            self.state = Failed(FailureReason(2))
+            self.logger().error("OOR happened and all orders rolled back and cancelled !!")
             self.confirm_round_callback()
             self.stop()    
 
@@ -176,13 +187,23 @@ class TriangularArbExecutor(ExecutorBase):
             proxy_order=proxy_order,
             sell_order=sell_order,
         )
-
+        
+    ## --------------------------------
     async def place_buy_order(self) -> TrackedOrder:
         market = self._buying_market
         order_id = self.place_order(connector_name=market.connector_name, trading_pair=market.trading_pair,
                                     order_type=OrderType.MARKET, side=TradeType.BUY, amount=self.buy_amount)
         return TrackedOrder(order_id)
-
+    
+    async def rollback_buy_order(self) -> TrackedOrder:
+        market = self._buying_market
+        self.logger().info("rolling back the %s on %s", market.trading_pair, market.connector_name)
+        order_id = self.place_order(connector_name=market.connector_name, trading_pair=market.trading_pair,
+                                    order_type=OrderType.MARKET, side=TradeType.SELL, amount=self.buy_amount)
+        self.state.buy_order._order.current_state = OrderState.CANCELED
+        return TrackedOrder(order_id)
+    
+    ## --------------------------------
     async def place_proxy_order(self) -> TrackedOrder:
         market = self._proxy_market
         order_id = self.place_order(connector_name=market.connector_name, trading_pair=market.trading_pair,
@@ -190,13 +211,32 @@ class TriangularArbExecutor(ExecutorBase):
                                     side=TradeType.BUY if self.arb_direction is ArbitrageDirection.FORWARD else TradeType.SELL,
                                     amount=self.proxy_amount)
         return TrackedOrder(order_id)
-     
+    
+    async def rollback_proxy_order(self) -> TrackedOrder:
+        market = self._proxy_market
+        self.logger().info("rolling back the %s on %s", market.trading_pair, market.connector_name)
+        order_id = self.place_order(connector_name=market.connector_name, trading_pair=market.trading_pair,
+                                    order_type=OrderType.MARKET,
+                                    side=TradeType.SELL if self.arb_direction is ArbitrageDirection.FORWARD else TradeType.BUY,
+                                    amount=self.proxy_amount)
+        self.state.proxy_order._order.current_state = OrderState.CANCELED
+        return TrackedOrder(order_id)
+    ## --------------------------------
     async def place_sell_order(self) -> TrackedOrder:
         market = self._selling_market
         
         order_id = self.place_order(connector_name=market.connector_name, trading_pair=market.trading_pair,
                                     order_type=OrderType.MARKET, side=TradeType.SELL, amount=self.sell_amount)
         return TrackedOrder(order_id)
+    
+    async def rollback_sell_order(self) -> TrackedOrder:
+        market = self._selling_market
+        self.logger().info("rolling back the %s on %s", market.trading_pair, market.connector_name)
+        order_id = self.place_order(connector_name=market.connector_name, trading_pair=market.trading_pair,
+                                    order_type=OrderType.MARKET, side=TradeType.BUY, amount=self.sell_amount)
+        self.state.sell_order._order.current_state = OrderState.CANCELED
+        return TrackedOrder(order_id)
+    ## --------------------------------
     
     async def cancel_splash_order(self, connector_name: str, pair: str, order_id: str) -> str:
         

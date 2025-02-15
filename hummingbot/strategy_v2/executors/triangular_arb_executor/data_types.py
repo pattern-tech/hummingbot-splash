@@ -97,6 +97,7 @@ class Completed:
 class FailureReason(Enum):
     INSUFFICIENT_BALANCE = 0
     TOO_MANY_FAILURES = 1
+    OOR_AND_ROLLBACK = 2
 
 
 class Failed:
