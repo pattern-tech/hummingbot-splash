@@ -1,7 +1,7 @@
 from decimal import Decimal
 from enum import Enum
 
-from typing import Callable, Protocol
+from typing import Any, Callable, Coroutine, List, Protocol, TypeAlias
 
 from hummingbot.core.data_type.in_flight_order import InFlightOrder
 from hummingbot.strategy_v2.executors.data_types import ConnectorPair, ExecutorConfigBase
@@ -86,7 +86,6 @@ class InProgress:
     def update_sell_order(self, order: InFlightOrder):
         self._sell_order.order = order
 
-
 @dataclass
 class Completed:
     buy_order_exec_price: Decimal
@@ -94,6 +93,16 @@ class Completed:
     sell_order_exec_price: Decimal
 
 
+AsyncTrackedOrderFunction: TypeAlias = list[Callable[[], Coroutine[Any, Any, "TrackedOrder"]]]
+
+class Canceled:
+    def __init__(self, rollback_coro_fns: AsyncTrackedOrderFunction):
+        self._rollbacks = rollback_coro_fns
+    
+    @property
+    def rollbacks(self) -> AsyncTrackedOrderFunction:
+        return self._rollbacks
+    
 class FailureReason(Enum):
     INSUFFICIENT_BALANCE = 0
     TOO_MANY_FAILURES = 1
