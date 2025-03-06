@@ -159,7 +159,9 @@ class ExecutorBase(RunnableBase):
         """
         Starts the executor and registers the events.
         """
+        self.logger().info("ran the super")
         super().start()
+        self.logger().info("running the super")
         self.register_events()
 
     def stop(self):
@@ -174,6 +176,7 @@ class ExecutorBase(RunnableBase):
         """
         Called when the executor is started.
         """
+        self.logger().info("got into on_start")
         await self.validate_sufficient_balance()
 
     def on_stop(self):
@@ -257,6 +260,7 @@ class ExecutorBase(RunnableBase):
         """
         for connector in self.connectors.values():
             for event_pair in self._event_pairs:
+                self.logger().info("connector removing %s", connector)
                 connector.remove_listener(event_pair[0], event_pair[1])
 
     def adjust_order_candidates(self, exchange: str, order_candidates: List[OrderCandidate]) -> List[OrderCandidate]:

@@ -221,7 +221,7 @@ class DCAExecutor(ExecutorBase):
 
     async def on_start(self):
         await super().on_start()
-        if self.is_expired:
+        if self.state:
             self.close_execution_by(CloseType.EXPIRED)
 
     @property

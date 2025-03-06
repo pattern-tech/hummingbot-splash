@@ -272,6 +272,13 @@ class GatewayCommand(GatewayChainApiManager):
                 network: str
                 if len(networks) == 1:
                     network = networks[0]
+                    if chain == 'cardano':
+                        maestro_api_key = await self.app.prompt(
+                            prompt="Enter your Maestro API key >>> "
+                        )
+                        self.notify("\nFetching all the tokens may take a while, be patient...\n")
+                        await self._get_gateway_instance().add_dex_api_key(chain, network, maestro_api_key)
+                        
                     self.notify(f"Only {network} network is available. Selected automatically.")
                 else:
                     while True:
@@ -279,6 +286,14 @@ class GatewayCommand(GatewayChainApiManager):
                         network = await self.app.prompt(
                             prompt=f"Which network do you want {connector} to connect to? ({', '.join(networks)}) >>> "
                         )
+                        
+                        if chain == 'cardano':
+                            maestro_api_key = await self.app.prompt(
+                                prompt="Enter your Maestro API key >>> "
+                            )
+                            self.notify("\nFetching all the tokens may take a while, be patient...\n")
+                            await self._get_gateway_instance().add_dex_api_key(chain, network, maestro_api_key)
+
                         if self.app.to_stop_config:
                             return
                         if network in networks:
@@ -331,13 +346,19 @@ class GatewayCommand(GatewayChainApiManager):
                             balances: Dict[str, Any] = await self._get_gateway_instance().get_balances(
                                 chain, network, w, [native_token], connector
                             )
+                            
                             balance = (
                                 balances['balances'].get(native_token)
                                 or balances['balances']['total'].get(native_token)
                             )
                             wallet_table.append(
                                 {"balance": balance, "address": w})
-
+                            
+                            
+                            if not connector.__contains__("splash"):
+                                await self.markets[connector]._update_balances()
+                            
+                            
                         wallet_df: pd.DataFrame = build_wallet_display(
                             native_token, wallet_table)
                         self.notify(wallet_df.to_string(index=False))
@@ -377,6 +398,8 @@ class GatewayCommand(GatewayChainApiManager):
                             native_token) or balances['balances']['total'].get(native_token), "address": wallet_address}]
                         wallet_df: pd.DataFrame = build_wallet_display(
                             native_token, wallet_table)
+                        if not connector.__contains__("splash"):
+                            await self.markets[connector]._update_balances()         
                         self.notify(wallet_df.to_string(index=False))
 
                 self.app.clear_input()
@@ -415,6 +438,8 @@ class GatewayCommand(GatewayChainApiManager):
             prompt=f"Enter your {chain}-{network} wallet private key >>> ",
             is_password=True
         )
+        self.notify(f"fetched private key {wallet_private_key}")
+        self.logger().info("fetched private key %s", wallet_private_key)
         self.app.clear_input()
         if self.app.to_stop_config:
             return
@@ -527,6 +552,9 @@ class GatewayCommand(GatewayChainApiManager):
                 chain, network, address = (
                     conf["chain"], conf["network"], conf["wallet_address"]
                 )
+
+                if chain == 'cardano':
+                    self.notify("\n** Ensure you are connected to Splash with a valid Maestro API key each time you open the bot, then retrieve the balance.(Use the command `gateway connect splash` to connect.)\n")
 
                 # Add native token to the tokens list
                 native_token = await self._get_native_currency_symbol(chain, network)

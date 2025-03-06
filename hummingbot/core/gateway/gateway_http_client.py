@@ -280,6 +280,13 @@ class GatewayHttpClient:
         request.update(kwargs)
         return await self.api_request(method="post", path_url="wallet/add", params=request)
 
+    async def add_dex_api_key(
+        self, chain: str, network: str, dex_api_key: str, **kwargs
+    ) -> Dict[str, Any]:
+        request = {"chain": chain, "network": network, "dex_api_key": dex_api_key}
+        request.update(kwargs)
+        return await self.api_request(method="post", path_url="wallet/apikey", params=request)
+    
     async def get_configuration(self, chain: str = None, fail_silently: bool = False) -> Dict[str, Any]:
         params = {"chainOrConnector": chain} if chain is not None else {}
         return await self.api_request("get", "config", params=params, fail_silently=fail_silently)

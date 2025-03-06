@@ -504,6 +504,9 @@ class GatewayAMMBase(ConnectorBase):
 
     @property
     def status_dict(self) -> Dict[str, bool]:
+        if len(self._account_balances) <= 0:
+            asyncio.create_task(self._update_balances())
+            
         return {
             "account_balance": len(self._account_balances) > 0 if self._trading_required else True,
             "native_currency": self._native_currency is not None,

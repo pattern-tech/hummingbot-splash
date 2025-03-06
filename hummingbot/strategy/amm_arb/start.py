@@ -11,7 +11,7 @@ from hummingbot.core.utils.fixed_rate_source import FixedRateSource
 from hummingbot.strategy.amm_arb.amm_arb import AmmArbStrategy
 from hummingbot.strategy.amm_arb.amm_arb_config_map import amm_arb_config_map
 from hummingbot.strategy.market_trading_pair_tuple import MarketTradingPairTuple
-
+from hummingbot.connector.gateway.amm.gateway_cardano_amm import GatewayCardanoAMM
 
 def start(self):
     connector_1 = amm_arb_config_map.get("connector_1").value.lower()
@@ -59,6 +59,8 @@ def start(self):
             amm_connector: GatewayEthereumAMM = cast(GatewayEthereumAMM, amm_market_info.market)
         elif Chain.SOLANA.chain == amm_market_info.market.chain:
             amm_connector: GatewaySolanaAMM = cast(GatewaySolanaAMM, amm_market_info.market)
+        elif Chain.CARDANO.chain == amm_market_info.market.chain:
+            amm_connector: GatewayCardanoAMM = cast(GatewayCardanoAMM, amm_market_info.market)
         else:
             raise ValueError(f"Unsupported chain: {amm_market_info.market.chain}")
         GatewayPriceShim.get_instance().patch_prices(

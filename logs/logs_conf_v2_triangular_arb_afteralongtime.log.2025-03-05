@@ -1,0 +1,661 @@
+2025-03-05 00:46:09,825 - 17 - hummingbot.client.hummingbot_application - INFO - Creating the clock with tick size: 1.0
+2025-03-05 00:46:09,831 - 17 - hummingbot.client.hummingbot_application - INFO - start command initiated.
+2025-03-05 00:46:09,963 - 17 - GatewayCardanoAMM - INFO - Network status has changed to NetworkStatus.CONNECTED. Starting networking...
+2025-03-05 00:46:10,026 - 17 - hummingbot.strategy.script_strategy_base - WARNING - kucoin is not ready. Please wait...
+2025-03-05 00:46:10,027 - 17 - hummingbot.strategy.script_strategy_base - WARNING - splash_cardano_mainnet is not ready. Please wait...
+2025-03-05 00:46:10,563 - 17 - hummingbot.client.ui.hummingbot_cli - ERROR - Unhandled error in prompt_toolkit: Error on POST https://localhost:15888/cardano/balances Error: {'message': 'Unknown error.', 'httpErrorCode': 503, 'errorCode': 1099, 'stack': 'Error: SyntaxError: Unexpected end of JSON input\n    at Cardano.getAddressUtxos (/home/gateway/dist/src/chains/cardano/cardano.js:169:19)\n    at async CardanoController.balances (/home/gateway/dist/src/chains/cardano/cardano.controllers.js:10:21)\n    at async Object.<anonymous> (/home/gateway/dist/src/chains/cardano/cardano.routes.js:43:16)'}
+NoneType: None
+2025-03-05 00:46:11,000 - 17 - hummingbot.strategy.script_strategy_base - WARNING - kucoin is not ready. Please wait...
+2025-03-05 00:46:11,459 - 17 - hummingbot.connector.exchange.kucoin.kucoin_exchange.KucoinExchange - INFO - Network status has changed to NetworkStatus.CONNECTED. Starting networking...
+2025-03-05 00:46:12,000 - 17 - hummingbot.strategy.script_strategy_base - WARNING - kucoin is not ready. Please wait...
+2025-03-05 00:46:12,559 - 17 - hummingbot.core.data_type.order_book_tracker - INFO - Initialized order book for ADA-USDT. 1/2 completed.
+2025-03-05 00:46:13,002 - 17 - hummingbot.strategy.script_strategy_base - WARNING - kucoin is not ready. Please wait...
+2025-03-05 00:46:13,547 - 17 - hummingbot.connector.exchange.kucoin.kucoin_api_user_stream_data_source.KucoinAPIUserStreamDataSource - INFO - Subscribed to private order changes and balance updates channels...
+2025-03-05 00:46:13,609 - 17 - hummingbot.connector.exchange.kucoin.kucoin_api_order_book_data_source.KucoinAPIOrderBookDataSource - INFO - Subscribed to public order book and trade channels...
+2025-03-05 00:46:13,975 - 17 - hummingbot.core.data_type.order_book_tracker - INFO - Initialized order book for ERG-USDT. 2/2 completed.
+2025-03-05 00:46:14,035 - 17 - hummingbot.strategy.script_strategy_base - WARNING - kucoin is not ready. Please wait...
+2025-03-05 00:46:17,001 - 17 - hummingbot.strategy_v2.executors.executor_orchestrator - INFO - this is the action received controller_id='J5yLac1z39BMzN9Gy9tJtzpTb2ug7XaMKc9CY81sHhkb' executor_config=TriangularArbExecutorConfig(id='J5yLac1z39BMzN9Gy9tJtzpTb2ug7XaMKc9CY81sHhkb', type='triangular_arb_executor', timestamp=1741135576.0014427, controller_id='main', arb_asset='ERG', arb_asset_wrapped='RSERG', proxy_asset='ADA', stable_asset='USDT', buying_market=ConnectorPair(connector_name='splash_cardano_mainnet', trading_pair='RSERG-ADA'), proxy_market=ConnectorPair(connector_name='kucoin', trading_pair='ADA-USDT'), selling_market=ConnectorPair(connector_name='kucoin', trading_pair='ERG-USDT'), order_amount=Decimal('2'), min_profitability_percent=Decimal('1312321'), buy_amount=Decimal('0'), proxy_amount=Decimal('0'), sell_amount=Decimal('0'), max_retries=12, confirm_round_callback=<bound method TriangularArbV2.confirm_round of <scripts.v2_triangular_arb.TriangularArbV2 object at 0x7c838ff2e200>>, set_stop=<bound method TriangularArbV2.set_stop of <scripts.v2_triangular_arb.TriangularArbV2 object at 0x7c838ff2e200>>, stopper_init=True) 
+2025-03-05 00:46:17,002 - 17 - hummingbot.strategy_v2.executors.executor_orchestrator - INFO - matched the triangular arb executer
+2025-03-05 00:46:17,002 - 17 - hummingbot.strategy_v2.executors.triangular_arb_executor.triangular_arb_executor - INFO - came to the init
+2025-03-05 00:46:17,003 - 17 - hummingbot.strategy_v2.executors.triangular_arb_executor.triangular_arb_executor - INFO - ran the super
+2025-03-05 00:46:17,003 - 17 - hummingbot.strategy_v2.executors.triangular_arb_executor.triangular_arb_executor - INFO - in start
+2025-03-05 00:46:17,003 - 17 - hummingbot.strategy_v2.executors.triangular_arb_executor.triangular_arb_executor - INFO - calling the control loop
+2025-03-05 00:46:17,003 - 17 - hummingbot.strategy_v2.executors.triangular_arb_executor.triangular_arb_executor - INFO - called the control loop
+2025-03-05 00:46:17,004 - 17 - hummingbot.strategy_v2.executors.triangular_arb_executor.triangular_arb_executor - INFO - running the super
+2025-03-05 00:46:17,004 - 17 - hummingbot.strategy_v2.executors.executor_orchestrator - INFO - called the start
+2025-03-05 00:46:17,004 - 17 - hummingbot.strategy.script_strategy_base - INFO - is direction forward: True
+2025-03-05 00:46:17,007 - 17 - hummingbot.strategy_v2.executors.triangular_arb_executor.triangular_arb_executor - INFO - in control loop
+2025-03-05 00:46:17,009 - 17 - hummingbot.strategy_v2.executors.triangular_arb_executor.triangular_arb_executor - INFO - got into the triangular on_start
+2025-03-05 00:46:17,009 - 17 - hummingbot.strategy_v2.executors.triangular_arb_executor.triangular_arb_executor - INFO - entered the controller tasker the triangular arbitrage 
+2025-03-05 00:46:17,015 - 17 - hummingbot.connector.exchange.kucoin.kucoin_exchange.KucoinExchange - WARNING - Buy order amount 0 is lower than the minimum order size 1. The order will not be created, increase the amount to be higher than the minimum order size.
+2025-03-05 00:46:17,016 - 17 - hummingbot.connector.exchange.kucoin.kucoin_exchange.KucoinExchange - WARNING - Sell order amount 0 is lower than the minimum order size 0.1. The order will not be created, increase the amount to be higher than the minimum order size.
+2025-03-05 00:46:17,025 - 17 - hummingbot.core.event.event_reporter - EVENT_LOG - {"timestamp": 1741135577.0, "order_id": "BAAUT62f8db792dafc2b2c063085b6a0a0cfdbb7", "order_type": "OrderType.MARKET", "event_name": "MarketOrderFailureEvent", "event_source": "kucoin"}
+2025-03-05 00:46:17,025 - 17 - hummingbot.connector.client_order_tracker - INFO - Order BAAUT62f8db792dafc2b2c063085b6a0a0cfdbb7 has failed. Order Update: OrderUpdate(trading_pair='ADA-USDT', update_timestamp=1741135577.0, new_state=<OrderState.FAILED: 6>, client_order_id='BAAUT62f8db792dafc2b2c063085b6a0a0cfdbb7', exchange_order_id=None, misc_updates=None)
+2025-03-05 00:46:17,030 - 17 - hummingbot.core.event.event_reporter - EVENT_LOG - {"timestamp": 1741135577.0, "order_id": "SEGUT62f8db792db9b2b2c063085b6a0a0cfdbb7", "order_type": "OrderType.MARKET", "event_name": "MarketOrderFailureEvent", "event_source": "kucoin"}
+2025-03-05 00:46:17,030 - 17 - hummingbot.connector.client_order_tracker - INFO - Order SEGUT62f8db792db9b2b2c063085b6a0a0cfdbb7 has failed. Order Update: OrderUpdate(trading_pair='ERG-USDT', update_timestamp=1741135577.0, new_state=<OrderState.FAILED: 6>, client_order_id='SEGUT62f8db792db9b2b2c063085b6a0a0cfdbb7', exchange_order_id=None, misc_updates=None)
+2025-03-05 00:46:17,030 - 17 - hummingbot.strategy_v2.executors.triangular_arb_executor.triangular_arb_executor - INFO - called the on start False
+2025-03-05 00:46:17,031 - 17 - hummingbot.strategy_v2.executors.triangular_arb_executor.triangular_arb_executor - INFO - calling the control task
+2025-03-05 00:46:17,031 - 17 - hummingbot.strategy_v2.executors.triangular_arb_executor.triangular_arb_executor - INFO - entered the controller tasker the triangular arbitrage 
+2025-03-05 00:46:17,031 - 17 - hummingbot.strategy_v2.executors.triangular_arb_executor.triangular_arb_executor - INFO - called the control task
+2025-03-05 00:46:17,441 - 17 - GatewayCardanoAMM - ERROR - Error submitting BUY swap order to splash on mainnet for 0.0 RSERG-ADA 1.000000000000000.
+Traceback (most recent call last):
+  File "/home/hummingbot/hummingbot/connector/gateway/amm/gateway_amm_base.py", line 384, in _create_order
+    order_result: Dict[str, Any] = await self._get_gateway_instance().amm_trade(
+  File "/home/hummingbot/hummingbot/core/gateway/gateway_http_client.py", line 519, in amm_trade
+    return await self.api_request("post", f"{connector}/trade", request_payload)
+  File "/home/hummingbot/hummingbot/core/gateway/gateway_http_client.py", line 234, in api_request
+    raise e
+  File "/home/hummingbot/hummingbot/core/gateway/gateway_http_client.py", line 222, in api_request
+    raise ValueError(f"Error on {method.upper()} {url} Error: {parsed_response}")
+ValueError: Error on POST https://localhost:15888/splash/trade Error: {'message': 'Unknown error.', 'httpErrorCode': 503, 'errorCode': 1099, 'stack': 'Error: Invalid swap amount\n    at Cardano.swap (/home/gateway/dist/src/chains/cardano/cardano.js:324:19)\n    at Splash.executeTrade (/home/gateway/dist/src/connectors/splash/splash.js:68:37)\n    at async Object.<anonymous> (/home/gateway/dist/src/connectors/splash/splash.routes.js:34:16)'}
+2025-03-05 00:46:17,452 - 17 - hummingbot.core.event.event_reporter - EVENT_LOG - {"timestamp": 1741135577.0, "order_id": "buy-RSERG-ADA-1741135577012692", "order_type": "OrderType.LIMIT", "event_name": "MarketOrderFailureEvent", "event_source": "splash_cardano_mainnet"}
+2025-03-05 00:46:17,452 - 17 - hummingbot.connector.client_order_tracker - INFO - Order buy-RSERG-ADA-1741135577012692 has failed. Order Update: OrderUpdate(trading_pair='RSERG-ADA', update_timestamp=1741135577.0, new_state=<OrderState.FAILED: 6>, client_order_id='buy-RSERG-ADA-1741135577012692', exchange_order_id=None, misc_updates=None)
+2025-03-05 00:46:18,032 - 17 - hummingbot.strategy_v2.executors.triangular_arb_executor.triangular_arb_executor - INFO - calling the control task
+2025-03-05 00:46:18,033 - 17 - hummingbot.strategy_v2.executors.triangular_arb_executor.triangular_arb_executor - INFO - entered the controller tasker the triangular arbitrage 
+2025-03-05 00:46:18,034 - 17 - hummingbot.strategy_v2.executors.triangular_arb_executor.triangular_arb_executor - INFO - called the control task
+2025-03-05 00:46:19,034 - 17 - hummingbot.strategy_v2.executors.triangular_arb_executor.triangular_arb_executor - INFO - calling the control task
+2025-03-05 00:46:19,035 - 17 - hummingbot.strategy_v2.executors.triangular_arb_executor.triangular_arb_executor - INFO - entered the controller tasker the triangular arbitrage 
+2025-03-05 00:46:19,035 - 17 - hummingbot.strategy_v2.executors.triangular_arb_executor.triangular_arb_executor - INFO - called the control task
+2025-03-05 00:46:20,035 - 17 - hummingbot.strategy_v2.executors.triangular_arb_executor.triangular_arb_executor - INFO - calling the control task
+2025-03-05 00:46:20,036 - 17 - hummingbot.strategy_v2.executors.triangular_arb_executor.triangular_arb_executor - INFO - entered the controller tasker the triangular arbitrage 
+2025-03-05 00:46:20,036 - 17 - hummingbot.strategy_v2.executors.triangular_arb_executor.triangular_arb_executor - INFO - called the control task
+2025-03-05 00:46:21,037 - 17 - hummingbot.strategy_v2.executors.triangular_arb_executor.triangular_arb_executor - INFO - calling the control task
+2025-03-05 00:46:21,037 - 17 - hummingbot.strategy_v2.executors.triangular_arb_executor.triangular_arb_executor - INFO - entered the controller tasker the triangular arbitrage 
+2025-03-05 00:46:21,038 - 17 - hummingbot.strategy_v2.executors.triangular_arb_executor.triangular_arb_executor - INFO - called the control task
+2025-03-05 00:46:21,525 - 17 - hummingbot.strategy.script_strategy_base - INFO - FORWARD | arb price in stable: 1.0496
+2025-03-05 00:46:21,526 - 17 - hummingbot.strategy.script_strategy_base - INFO - FORWARD | proxy price in stable: 0.9326000000000001
+2025-03-05 00:46:21,526 - 17 - hummingbot.strategy.script_strategy_base - INFO - FORWARD | wrapped price in proxy: 1.14171384270890411888
+2025-03-05 00:46:21,526 - 17 - hummingbot.strategy.script_strategy_base - INFO - FORWARD | proxy amount: 2.28342768541780823776
+2025-03-05 00:46:21,526 - 17 - hummingbot.strategy.script_strategy_base - INFO - FORWARD | stable amount: 2.129524659420648190877744542
+2025-03-05 00:46:21,526 - 17 - hummingbot.strategy.script_strategy_base - INFO - FORWARD | arb amount: 2.028891634356562681857607224
+2025-03-05 00:46:21,526 - 17 - hummingbot.strategy.script_strategy_base - INFO - FORWARD  : ArbitragePercent(percent=Decimal('-1.424010719316968263809738691'), buy_amount=Decimal('2.28342768541780823776'), proxy_amount=Decimal('2.28342768541780823776'), sell_amount=Decimal('2.028891634356562681857607224'))
+2025-03-05 00:46:21,527 - 17 - hummingbot.strategy.script_strategy_base - INFO - is direction forward: False
+2025-03-05 00:46:22,040 - 17 - hummingbot.strategy_v2.executors.triangular_arb_executor.triangular_arb_executor - INFO - calling the control task
+2025-03-05 00:46:22,040 - 17 - hummingbot.strategy_v2.executors.triangular_arb_executor.triangular_arb_executor - INFO - entered the controller tasker the triangular arbitrage 
+2025-03-05 00:46:22,040 - 17 - hummingbot.strategy_v2.executors.triangular_arb_executor.triangular_arb_executor - INFO - called the control task
+2025-03-05 00:46:22,512 - 17 - hummingbot.client.hummingbot_application - INFO - stop command initiated.
+2025-03-05 00:46:22,512 - 17 - hummingbot.strategy.script_strategy_base - INFO - on stop on strat
+2025-03-05 00:46:22,512 - 17 - hummingbot.strategy_v2.executors.triangular_arb_executor.triangular_arb_executor - INFO - got into the exe tri early stop
+2025-03-05 00:46:22,513 - 17 - hummingbot.strategy_v2.executors.triangular_arb_executor.triangular_arb_executor - INFO - got into the exe tri on stop
+2025-03-05 00:46:22,513 - 17 - hummingbot.strategy_v2.executors.triangular_arb_executor.triangular_arb_executor - INFO - terminating the status
+2025-03-05 00:46:22,513 - 17 - hummingbot.strategy_v2.executors.triangular_arb_executor.triangular_arb_executor - INFO - connector removing <hummingbot.connector.exchange.kucoin.kucoin_exchange.KucoinExchange object at 0x7c838edc6e80>
+2025-03-05 00:46:22,514 - 17 - hummingbot.strategy_v2.executors.triangular_arb_executor.triangular_arb_executor - INFO - connector removing <hummingbot.connector.exchange.kucoin.kucoin_exchange.KucoinExchange object at 0x7c838edc6e80>
+2025-03-05 00:46:22,514 - 17 - hummingbot.strategy_v2.executors.triangular_arb_executor.triangular_arb_executor - INFO - connector removing <hummingbot.connector.exchange.kucoin.kucoin_exchange.KucoinExchange object at 0x7c838edc6e80>
+2025-03-05 00:46:22,514 - 17 - hummingbot.strategy_v2.executors.triangular_arb_executor.triangular_arb_executor - INFO - connector removing <hummingbot.connector.exchange.kucoin.kucoin_exchange.KucoinExchange object at 0x7c838edc6e80>
+2025-03-05 00:46:22,515 - 17 - hummingbot.strategy_v2.executors.triangular_arb_executor.triangular_arb_executor - INFO - connector removing <hummingbot.connector.exchange.kucoin.kucoin_exchange.KucoinExchange object at 0x7c838edc6e80>
+2025-03-05 00:46:22,515 - 17 - hummingbot.strategy_v2.executors.triangular_arb_executor.triangular_arb_executor - INFO - connector removing <hummingbot.connector.exchange.kucoin.kucoin_exchange.KucoinExchange object at 0x7c838edc6e80>
+2025-03-05 00:46:22,515 - 17 - hummingbot.strategy_v2.executors.triangular_arb_executor.triangular_arb_executor - INFO - connector removing <hummingbot.connector.exchange.kucoin.kucoin_exchange.KucoinExchange object at 0x7c838edc6e80>
+2025-03-05 00:46:22,515 - 17 - hummingbot.strategy_v2.executors.triangular_arb_executor.triangular_arb_executor - INFO - connector removing <hummingbot.connector.gateway.amm.gateway_cardano_amm.GatewayCardanoAMM object at 0x7c838ff2d6c0>
+2025-03-05 00:46:22,516 - 17 - hummingbot.strategy_v2.executors.triangular_arb_executor.triangular_arb_executor - INFO - connector removing <hummingbot.connector.gateway.amm.gateway_cardano_amm.GatewayCardanoAMM object at 0x7c838ff2d6c0>
+2025-03-05 00:46:22,516 - 17 - hummingbot.strategy_v2.executors.triangular_arb_executor.triangular_arb_executor - INFO - connector removing <hummingbot.connector.gateway.amm.gateway_cardano_amm.GatewayCardanoAMM object at 0x7c838ff2d6c0>
+2025-03-05 00:46:22,516 - 17 - hummingbot.strategy_v2.executors.triangular_arb_executor.triangular_arb_executor - INFO - connector removing <hummingbot.connector.gateway.amm.gateway_cardano_amm.GatewayCardanoAMM object at 0x7c838ff2d6c0>
+2025-03-05 00:46:22,516 - 17 - hummingbot.strategy_v2.executors.triangular_arb_executor.triangular_arb_executor - INFO - connector removing <hummingbot.connector.gateway.amm.gateway_cardano_amm.GatewayCardanoAMM object at 0x7c838ff2d6c0>
+2025-03-05 00:46:22,516 - 17 - hummingbot.strategy_v2.executors.triangular_arb_executor.triangular_arb_executor - INFO - connector removing <hummingbot.connector.gateway.amm.gateway_cardano_amm.GatewayCardanoAMM object at 0x7c838ff2d6c0>
+2025-03-05 00:46:22,517 - 17 - hummingbot.strategy_v2.executors.triangular_arb_executor.triangular_arb_executor - INFO - connector removing <hummingbot.connector.gateway.amm.gateway_cardano_amm.GatewayCardanoAMM object at 0x7c838ff2d6c0>
+2025-03-05 00:46:22,518 - 17 - hummingbot.strategy_v2.executors.triangular_arb_executor.triangular_arb_executor - INFO - terminating the status
+2025-03-05 00:46:22,518 - 17 - hummingbot.strategy_v2.executors.triangular_arb_executor.triangular_arb_executor - INFO - connector removing <hummingbot.connector.exchange.kucoin.kucoin_exchange.KucoinExchange object at 0x7c838edc6e80>
+2025-03-05 00:46:22,518 - 17 - hummingbot.strategy_v2.executors.triangular_arb_executor.triangular_arb_executor - INFO - connector removing <hummingbot.connector.exchange.kucoin.kucoin_exchange.KucoinExchange object at 0x7c838edc6e80>
+2025-03-05 00:46:22,518 - 17 - hummingbot.strategy_v2.executors.triangular_arb_executor.triangular_arb_executor - INFO - connector removing <hummingbot.connector.exchange.kucoin.kucoin_exchange.KucoinExchange object at 0x7c838edc6e80>
+2025-03-05 00:46:22,518 - 17 - hummingbot.strategy_v2.executors.triangular_arb_executor.triangular_arb_executor - INFO - connector removing <hummingbot.connector.exchange.kucoin.kucoin_exchange.KucoinExchange object at 0x7c838edc6e80>
+2025-03-05 00:46:22,519 - 17 - hummingbot.strategy_v2.executors.triangular_arb_executor.triangular_arb_executor - INFO - connector removing <hummingbot.connector.exchange.kucoin.kucoin_exchange.KucoinExchange object at 0x7c838edc6e80>
+2025-03-05 00:46:22,519 - 17 - hummingbot.strategy_v2.executors.triangular_arb_executor.triangular_arb_executor - INFO - connector removing <hummingbot.connector.exchange.kucoin.kucoin_exchange.KucoinExchange object at 0x7c838edc6e80>
+2025-03-05 00:46:22,519 - 17 - hummingbot.strategy_v2.executors.triangular_arb_executor.triangular_arb_executor - INFO - connector removing <hummingbot.connector.exchange.kucoin.kucoin_exchange.KucoinExchange object at 0x7c838edc6e80>
+2025-03-05 00:46:22,519 - 17 - hummingbot.strategy_v2.executors.triangular_arb_executor.triangular_arb_executor - INFO - connector removing <hummingbot.connector.gateway.amm.gateway_cardano_amm.GatewayCardanoAMM object at 0x7c838ff2d6c0>
+2025-03-05 00:46:22,519 - 17 - hummingbot.strategy_v2.executors.triangular_arb_executor.triangular_arb_executor - INFO - connector removing <hummingbot.connector.gateway.amm.gateway_cardano_amm.GatewayCardanoAMM object at 0x7c838ff2d6c0>
+2025-03-05 00:46:22,519 - 17 - hummingbot.strategy_v2.executors.triangular_arb_executor.triangular_arb_executor - INFO - connector removing <hummingbot.connector.gateway.amm.gateway_cardano_amm.GatewayCardanoAMM object at 0x7c838ff2d6c0>
+2025-03-05 00:46:22,520 - 17 - hummingbot.strategy_v2.executors.triangular_arb_executor.triangular_arb_executor - INFO - connector removing <hummingbot.connector.gateway.amm.gateway_cardano_amm.GatewayCardanoAMM object at 0x7c838ff2d6c0>
+2025-03-05 00:46:22,520 - 17 - hummingbot.strategy_v2.executors.triangular_arb_executor.triangular_arb_executor - INFO - connector removing <hummingbot.connector.gateway.amm.gateway_cardano_amm.GatewayCardanoAMM object at 0x7c838ff2d6c0>
+2025-03-05 00:46:22,520 - 17 - hummingbot.strategy_v2.executors.triangular_arb_executor.triangular_arb_executor - INFO - connector removing <hummingbot.connector.gateway.amm.gateway_cardano_amm.GatewayCardanoAMM object at 0x7c838ff2d6c0>
+2025-03-05 00:46:22,520 - 17 - hummingbot.strategy_v2.executors.triangular_arb_executor.triangular_arb_executor - INFO - connector removing <hummingbot.connector.gateway.amm.gateway_cardano_amm.GatewayCardanoAMM object at 0x7c838ff2d6c0>
+2025-03-05 00:46:22,578 - 17 - hummingbot.strategy.script_strategy_base - INFO - on stop on base v2
+2025-03-05 00:46:22,578 - 17 - hummingbot.strategy_v2.executors.triangular_arb_executor.triangular_arb_executor - INFO - got into the exe tri early stop
+2025-03-05 00:46:22,579 - 17 - hummingbot.strategy_v2.executors.triangular_arb_executor.triangular_arb_executor - INFO - got into the exe tri on stop
+2025-03-05 00:46:23,041 - 17 - hummingbot.strategy_v2.executors.triangular_arb_executor.triangular_arb_executor - INFO - calling the on stop on the control loop
+2025-03-05 00:46:23,042 - 17 - hummingbot.strategy_v2.executors.triangular_arb_executor.triangular_arb_executor - INFO - got into the exe tri on stop
+2025-03-05 00:46:23,126 - 17 - GatewayCardanoAMM - WARNING - Error on POST https://localhost:15888/splash/price Error: {'message': 'Unknown error.', 'httpErrorCode': 503, 'errorCode': 1099, 'stack': 'Error: Failed to the estimate the fee Error: not enough funds for specified selection\n    at Cardano.estimateFee (/home/gateway/dist/src/chains/cardano/cardano.js:443:19)\n    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)\n    at async Cardano.createPriceResponse (/home/gateway/dist/src/chains/cardano/cardano.js:534:28)\n    at async Object.<anonymous> (/home/gateway/dist/src/connectors/splash/splash.routes.js:20:16)'}
+2025-03-05 00:46:23,127 - 17 - hummingbot.strategy.script_strategy_base - ERROR - estimating the arb percent failed due to unsupported operand type(s) for *: 'NoneType' and 'decimal.Decimal'
+2025-03-05 00:46:24,002 - 17 - hummingbot.strategy_v2.executors.executor_orchestrator - INFO - this is the action received [] 
+2025-03-05 00:46:24,003 - 17 - hummingbot.core.clock - ERROR - Unexpected error running clock tick.
+Traceback (most recent call last):
+  File "hummingbot/core/clock.pyx", line 119, in hummingbot.core.clock.Clock.run_til
+    child_iterator.c_tick(self._current_tick)
+  File "hummingbot/strategy/strategy_py_base.pyx", line 44, in hummingbot.strategy.strategy_py_base.StrategyPyBase.c_tick
+    self.tick(timestamp)
+  File "/home/hummingbot/hummingbot/strategy/script_strategy_base.py", line 75, in tick
+    self.on_tick()
+  File "/home/hummingbot/hummingbot/strategy/strategy_v2_base.py", line 298, in on_tick
+    self.executor_orchestrator.execute_action(action)
+  File "/home/hummingbot/hummingbot/strategy_v2/executors/executor_orchestrator.py", line 202, in execute_action
+    controller_id = action.controller_id
+AttributeError: 'list' object has no attribute 'controller_id'
+2025-03-05 00:46:28,002 - 17 - hummingbot.strategy_v2.executors.executor_orchestrator - INFO - this is the action received None 
+2025-03-05 00:46:28,003 - 17 - hummingbot.core.clock - ERROR - Unexpected error running clock tick.
+Traceback (most recent call last):
+  File "hummingbot/core/clock.pyx", line 119, in hummingbot.core.clock.Clock.run_til
+    child_iterator.c_tick(self._current_tick)
+  File "hummingbot/strategy/strategy_py_base.pyx", line 44, in hummingbot.strategy.strategy_py_base.StrategyPyBase.c_tick
+    self.tick(timestamp)
+  File "/home/hummingbot/hummingbot/strategy/script_strategy_base.py", line 75, in tick
+    self.on_tick()
+  File "/home/hummingbot/hummingbot/strategy/strategy_v2_base.py", line 298, in on_tick
+    self.executor_orchestrator.execute_action(action)
+  File "/home/hummingbot/hummingbot/strategy_v2/executors/executor_orchestrator.py", line 202, in execute_action
+    controller_id = action.controller_id
+AttributeError: 'NoneType' object has no attribute 'controller_id'
+2025-03-05 00:46:29,002 - 17 - hummingbot.strategy_v2.executors.executor_orchestrator - INFO - this is the action received None 
+2025-03-05 00:46:29,002 - 17 - hummingbot.core.clock - ERROR - Unexpected error running clock tick.
+Traceback (most recent call last):
+  File "hummingbot/core/clock.pyx", line 119, in hummingbot.core.clock.Clock.run_til
+    child_iterator.c_tick(self._current_tick)
+  File "hummingbot/strategy/strategy_py_base.pyx", line 44, in hummingbot.strategy.strategy_py_base.StrategyPyBase.c_tick
+    self.tick(timestamp)
+  File "/home/hummingbot/hummingbot/strategy/script_strategy_base.py", line 75, in tick
+    self.on_tick()
+  File "/home/hummingbot/hummingbot/strategy/strategy_v2_base.py", line 298, in on_tick
+    self.executor_orchestrator.execute_action(action)
+  File "/home/hummingbot/hummingbot/strategy_v2/executors/executor_orchestrator.py", line 202, in execute_action
+    controller_id = action.controller_id
+AttributeError: 'NoneType' object has no attribute 'controller_id'
+2025-03-05 00:46:30,002 - 17 - hummingbot.strategy_v2.executors.executor_orchestrator - INFO - this is the action received None 
+2025-03-05 00:46:30,002 - 17 - hummingbot.core.clock - ERROR - Unexpected error running clock tick.
+Traceback (most recent call last):
+  File "hummingbot/core/clock.pyx", line 119, in hummingbot.core.clock.Clock.run_til
+    child_iterator.c_tick(self._current_tick)
+  File "hummingbot/strategy/strategy_py_base.pyx", line 44, in hummingbot.strategy.strategy_py_base.StrategyPyBase.c_tick
+    self.tick(timestamp)
+  File "/home/hummingbot/hummingbot/strategy/script_strategy_base.py", line 75, in tick
+    self.on_tick()
+  File "/home/hummingbot/hummingbot/strategy/strategy_v2_base.py", line 298, in on_tick
+    self.executor_orchestrator.execute_action(action)
+  File "/home/hummingbot/hummingbot/strategy_v2/executors/executor_orchestrator.py", line 202, in execute_action
+    controller_id = action.controller_id
+AttributeError: 'NoneType' object has no attribute 'controller_id'
+2025-03-05 00:46:31,002 - 17 - hummingbot.strategy_v2.executors.executor_orchestrator - INFO - this is the action received None 
+2025-03-05 00:46:31,003 - 17 - hummingbot.core.clock - ERROR - Unexpected error running clock tick.
+Traceback (most recent call last):
+  File "hummingbot/core/clock.pyx", line 119, in hummingbot.core.clock.Clock.run_til
+    child_iterator.c_tick(self._current_tick)
+  File "hummingbot/strategy/strategy_py_base.pyx", line 44, in hummingbot.strategy.strategy_py_base.StrategyPyBase.c_tick
+    self.tick(timestamp)
+  File "/home/hummingbot/hummingbot/strategy/script_strategy_base.py", line 75, in tick
+    self.on_tick()
+  File "/home/hummingbot/hummingbot/strategy/strategy_v2_base.py", line 298, in on_tick
+    self.executor_orchestrator.execute_action(action)
+  File "/home/hummingbot/hummingbot/strategy_v2/executors/executor_orchestrator.py", line 202, in execute_action
+    controller_id = action.controller_id
+AttributeError: 'NoneType' object has no attribute 'controller_id'
+2025-03-05 00:46:32,003 - 17 - hummingbot.strategy_v2.executors.executor_orchestrator - INFO - this is the action received None 
+2025-03-05 00:46:32,003 - 17 - hummingbot.core.clock - ERROR - Unexpected error running clock tick.
+Traceback (most recent call last):
+  File "hummingbot/core/clock.pyx", line 119, in hummingbot.core.clock.Clock.run_til
+    child_iterator.c_tick(self._current_tick)
+  File "hummingbot/strategy/strategy_py_base.pyx", line 44, in hummingbot.strategy.strategy_py_base.StrategyPyBase.c_tick
+    self.tick(timestamp)
+  File "/home/hummingbot/hummingbot/strategy/script_strategy_base.py", line 75, in tick
+    self.on_tick()
+  File "/home/hummingbot/hummingbot/strategy/strategy_v2_base.py", line 298, in on_tick
+    self.executor_orchestrator.execute_action(action)
+  File "/home/hummingbot/hummingbot/strategy_v2/executors/executor_orchestrator.py", line 202, in execute_action
+    controller_id = action.controller_id
+AttributeError: 'NoneType' object has no attribute 'controller_id'
+2025-03-05 00:46:33,002 - 17 - hummingbot.strategy_v2.executors.executor_orchestrator - INFO - this is the action received None 
+2025-03-05 00:46:33,003 - 17 - hummingbot.core.clock - ERROR - Unexpected error running clock tick.
+Traceback (most recent call last):
+  File "hummingbot/core/clock.pyx", line 119, in hummingbot.core.clock.Clock.run_til
+    child_iterator.c_tick(self._current_tick)
+  File "hummingbot/strategy/strategy_py_base.pyx", line 44, in hummingbot.strategy.strategy_py_base.StrategyPyBase.c_tick
+    self.tick(timestamp)
+  File "/home/hummingbot/hummingbot/strategy/script_strategy_base.py", line 75, in tick
+    self.on_tick()
+  File "/home/hummingbot/hummingbot/strategy/strategy_v2_base.py", line 298, in on_tick
+    self.executor_orchestrator.execute_action(action)
+  File "/home/hummingbot/hummingbot/strategy_v2/executors/executor_orchestrator.py", line 202, in execute_action
+    controller_id = action.controller_id
+AttributeError: 'NoneType' object has no attribute 'controller_id'
+2025-03-05 00:46:34,059 - 17 - hummingbot.strategy_v2.executors.executor_orchestrator - INFO - this is the action received None 
+2025-03-05 00:46:34,059 - 17 - hummingbot.core.clock - ERROR - Unexpected error running clock tick.
+Traceback (most recent call last):
+  File "hummingbot/core/clock.pyx", line 119, in hummingbot.core.clock.Clock.run_til
+    child_iterator.c_tick(self._current_tick)
+  File "hummingbot/strategy/strategy_py_base.pyx", line 44, in hummingbot.strategy.strategy_py_base.StrategyPyBase.c_tick
+    self.tick(timestamp)
+  File "/home/hummingbot/hummingbot/strategy/script_strategy_base.py", line 75, in tick
+    self.on_tick()
+  File "/home/hummingbot/hummingbot/strategy/strategy_v2_base.py", line 298, in on_tick
+    self.executor_orchestrator.execute_action(action)
+  File "/home/hummingbot/hummingbot/strategy_v2/executors/executor_orchestrator.py", line 202, in execute_action
+    controller_id = action.controller_id
+AttributeError: 'NoneType' object has no attribute 'controller_id'
+2025-03-05 00:46:34,449 - 17 - hummingbot.client.hummingbot_application - INFO - stop command initiated.
+2025-03-05 00:46:34,450 - 17 - hummingbot.strategy.script_strategy_base - INFO - on stop on strat
+2025-03-05 00:46:34,450 - 17 - hummingbot.strategy_v2.executors.triangular_arb_executor.triangular_arb_executor - INFO - got into the exe tri early stop
+2025-03-05 00:46:34,450 - 17 - hummingbot.strategy_v2.executors.triangular_arb_executor.triangular_arb_executor - INFO - got into the exe tri on stop
+2025-03-05 00:46:34,451 - 17 - hummingbot.strategy.script_strategy_base - INFO - on stop on base v2
+2025-03-05 00:46:34,451 - 17 - hummingbot.strategy_v2.executors.triangular_arb_executor.triangular_arb_executor - INFO - got into the exe tri early stop
+2025-03-05 00:46:34,452 - 17 - hummingbot.strategy_v2.executors.triangular_arb_executor.triangular_arb_executor - INFO - got into the exe tri on stop
+2025-03-05 00:46:35,002 - 17 - hummingbot.strategy_v2.executors.executor_orchestrator - INFO - this is the action received None 
+2025-03-05 00:46:35,003 - 17 - hummingbot.core.clock - ERROR - Unexpected error running clock tick.
+Traceback (most recent call last):
+  File "hummingbot/core/clock.pyx", line 119, in hummingbot.core.clock.Clock.run_til
+    child_iterator.c_tick(self._current_tick)
+  File "hummingbot/strategy/strategy_py_base.pyx", line 44, in hummingbot.strategy.strategy_py_base.StrategyPyBase.c_tick
+    self.tick(timestamp)
+  File "/home/hummingbot/hummingbot/strategy/script_strategy_base.py", line 75, in tick
+    self.on_tick()
+  File "/home/hummingbot/hummingbot/strategy/strategy_v2_base.py", line 298, in on_tick
+    self.executor_orchestrator.execute_action(action)
+  File "/home/hummingbot/hummingbot/strategy_v2/executors/executor_orchestrator.py", line 202, in execute_action
+    controller_id = action.controller_id
+AttributeError: 'NoneType' object has no attribute 'controller_id'
+2025-03-05 00:46:36,002 - 17 - hummingbot.strategy_v2.executors.executor_orchestrator - INFO - this is the action received None 
+2025-03-05 00:46:36,003 - 17 - hummingbot.core.clock - ERROR - Unexpected error running clock tick.
+Traceback (most recent call last):
+  File "hummingbot/core/clock.pyx", line 119, in hummingbot.core.clock.Clock.run_til
+    child_iterator.c_tick(self._current_tick)
+  File "hummingbot/strategy/strategy_py_base.pyx", line 44, in hummingbot.strategy.strategy_py_base.StrategyPyBase.c_tick
+    self.tick(timestamp)
+  File "/home/hummingbot/hummingbot/strategy/script_strategy_base.py", line 75, in tick
+    self.on_tick()
+  File "/home/hummingbot/hummingbot/strategy/strategy_v2_base.py", line 298, in on_tick
+    self.executor_orchestrator.execute_action(action)
+  File "/home/hummingbot/hummingbot/strategy_v2/executors/executor_orchestrator.py", line 202, in execute_action
+    controller_id = action.controller_id
+AttributeError: 'NoneType' object has no attribute 'controller_id'
+2025-03-05 00:46:37,002 - 17 - hummingbot.strategy_v2.executors.executor_orchestrator - INFO - this is the action received None 
+2025-03-05 00:46:37,002 - 17 - hummingbot.core.clock - ERROR - Unexpected error running clock tick.
+Traceback (most recent call last):
+  File "hummingbot/core/clock.pyx", line 119, in hummingbot.core.clock.Clock.run_til
+    child_iterator.c_tick(self._current_tick)
+  File "hummingbot/strategy/strategy_py_base.pyx", line 44, in hummingbot.strategy.strategy_py_base.StrategyPyBase.c_tick
+    self.tick(timestamp)
+  File "/home/hummingbot/hummingbot/strategy/script_strategy_base.py", line 75, in tick
+    self.on_tick()
+  File "/home/hummingbot/hummingbot/strategy/strategy_v2_base.py", line 298, in on_tick
+    self.executor_orchestrator.execute_action(action)
+  File "/home/hummingbot/hummingbot/strategy_v2/executors/executor_orchestrator.py", line 202, in execute_action
+    controller_id = action.controller_id
+AttributeError: 'NoneType' object has no attribute 'controller_id'
+2025-03-05 00:46:38,002 - 17 - hummingbot.strategy_v2.executors.executor_orchestrator - INFO - this is the action received None 
+2025-03-05 00:46:38,002 - 17 - hummingbot.core.clock - ERROR - Unexpected error running clock tick.
+Traceback (most recent call last):
+  File "hummingbot/core/clock.pyx", line 119, in hummingbot.core.clock.Clock.run_til
+    child_iterator.c_tick(self._current_tick)
+  File "hummingbot/strategy/strategy_py_base.pyx", line 44, in hummingbot.strategy.strategy_py_base.StrategyPyBase.c_tick
+    self.tick(timestamp)
+  File "/home/hummingbot/hummingbot/strategy/script_strategy_base.py", line 75, in tick
+    self.on_tick()
+  File "/home/hummingbot/hummingbot/strategy/strategy_v2_base.py", line 298, in on_tick
+    self.executor_orchestrator.execute_action(action)
+  File "/home/hummingbot/hummingbot/strategy_v2/executors/executor_orchestrator.py", line 202, in execute_action
+    controller_id = action.controller_id
+AttributeError: 'NoneType' object has no attribute 'controller_id'
+2025-03-05 00:46:39,002 - 17 - hummingbot.strategy_v2.executors.executor_orchestrator - INFO - this is the action received None 
+2025-03-05 00:46:39,002 - 17 - hummingbot.core.clock - ERROR - Unexpected error running clock tick.
+Traceback (most recent call last):
+  File "hummingbot/core/clock.pyx", line 119, in hummingbot.core.clock.Clock.run_til
+    child_iterator.c_tick(self._current_tick)
+  File "hummingbot/strategy/strategy_py_base.pyx", line 44, in hummingbot.strategy.strategy_py_base.StrategyPyBase.c_tick
+    self.tick(timestamp)
+  File "/home/hummingbot/hummingbot/strategy/script_strategy_base.py", line 75, in tick
+    self.on_tick()
+  File "/home/hummingbot/hummingbot/strategy/strategy_v2_base.py", line 298, in on_tick
+    self.executor_orchestrator.execute_action(action)
+  File "/home/hummingbot/hummingbot/strategy_v2/executors/executor_orchestrator.py", line 202, in execute_action
+    controller_id = action.controller_id
+AttributeError: 'NoneType' object has no attribute 'controller_id'
+2025-03-05 00:46:40,002 - 17 - hummingbot.strategy_v2.executors.executor_orchestrator - INFO - this is the action received None 
+2025-03-05 00:46:40,002 - 17 - hummingbot.core.clock - ERROR - Unexpected error running clock tick.
+Traceback (most recent call last):
+  File "hummingbot/core/clock.pyx", line 119, in hummingbot.core.clock.Clock.run_til
+    child_iterator.c_tick(self._current_tick)
+  File "hummingbot/strategy/strategy_py_base.pyx", line 44, in hummingbot.strategy.strategy_py_base.StrategyPyBase.c_tick
+    self.tick(timestamp)
+  File "/home/hummingbot/hummingbot/strategy/script_strategy_base.py", line 75, in tick
+    self.on_tick()
+  File "/home/hummingbot/hummingbot/strategy/strategy_v2_base.py", line 298, in on_tick
+    self.executor_orchestrator.execute_action(action)
+  File "/home/hummingbot/hummingbot/strategy_v2/executors/executor_orchestrator.py", line 202, in execute_action
+    controller_id = action.controller_id
+AttributeError: 'NoneType' object has no attribute 'controller_id'
+2025-03-05 00:46:41,002 - 17 - hummingbot.strategy_v2.executors.executor_orchestrator - INFO - this is the action received None 
+2025-03-05 00:46:41,002 - 17 - hummingbot.core.clock - ERROR - Unexpected error running clock tick.
+Traceback (most recent call last):
+  File "hummingbot/core/clock.pyx", line 119, in hummingbot.core.clock.Clock.run_til
+    child_iterator.c_tick(self._current_tick)
+  File "hummingbot/strategy/strategy_py_base.pyx", line 44, in hummingbot.strategy.strategy_py_base.StrategyPyBase.c_tick
+    self.tick(timestamp)
+  File "/home/hummingbot/hummingbot/strategy/script_strategy_base.py", line 75, in tick
+    self.on_tick()
+  File "/home/hummingbot/hummingbot/strategy/strategy_v2_base.py", line 298, in on_tick
+    self.executor_orchestrator.execute_action(action)
+  File "/home/hummingbot/hummingbot/strategy_v2/executors/executor_orchestrator.py", line 202, in execute_action
+    controller_id = action.controller_id
+AttributeError: 'NoneType' object has no attribute 'controller_id'
+2025-03-05 00:46:42,002 - 17 - hummingbot.strategy_v2.executors.executor_orchestrator - INFO - this is the action received None 
+2025-03-05 00:46:42,003 - 17 - hummingbot.core.clock - ERROR - Unexpected error running clock tick.
+Traceback (most recent call last):
+  File "hummingbot/core/clock.pyx", line 119, in hummingbot.core.clock.Clock.run_til
+    child_iterator.c_tick(self._current_tick)
+  File "hummingbot/strategy/strategy_py_base.pyx", line 44, in hummingbot.strategy.strategy_py_base.StrategyPyBase.c_tick
+    self.tick(timestamp)
+  File "/home/hummingbot/hummingbot/strategy/script_strategy_base.py", line 75, in tick
+    self.on_tick()
+  File "/home/hummingbot/hummingbot/strategy/strategy_v2_base.py", line 298, in on_tick
+    self.executor_orchestrator.execute_action(action)
+  File "/home/hummingbot/hummingbot/strategy_v2/executors/executor_orchestrator.py", line 202, in execute_action
+    controller_id = action.controller_id
+AttributeError: 'NoneType' object has no attribute 'controller_id'
+2025-03-05 00:46:43,003 - 17 - hummingbot.strategy_v2.executors.executor_orchestrator - INFO - this is the action received None 
+2025-03-05 00:46:43,003 - 17 - hummingbot.core.clock - ERROR - Unexpected error running clock tick.
+Traceback (most recent call last):
+  File "hummingbot/core/clock.pyx", line 119, in hummingbot.core.clock.Clock.run_til
+    child_iterator.c_tick(self._current_tick)
+  File "hummingbot/strategy/strategy_py_base.pyx", line 44, in hummingbot.strategy.strategy_py_base.StrategyPyBase.c_tick
+    self.tick(timestamp)
+  File "/home/hummingbot/hummingbot/strategy/script_strategy_base.py", line 75, in tick
+    self.on_tick()
+  File "/home/hummingbot/hummingbot/strategy/strategy_v2_base.py", line 298, in on_tick
+    self.executor_orchestrator.execute_action(action)
+  File "/home/hummingbot/hummingbot/strategy_v2/executors/executor_orchestrator.py", line 202, in execute_action
+    controller_id = action.controller_id
+AttributeError: 'NoneType' object has no attribute 'controller_id'
+2025-03-05 00:46:44,034 - 17 - hummingbot.strategy_v2.executors.executor_orchestrator - INFO - this is the action received None 
+2025-03-05 00:46:44,035 - 17 - hummingbot.core.clock - ERROR - Unexpected error running clock tick.
+Traceback (most recent call last):
+  File "hummingbot/core/clock.pyx", line 119, in hummingbot.core.clock.Clock.run_til
+    child_iterator.c_tick(self._current_tick)
+  File "hummingbot/strategy/strategy_py_base.pyx", line 44, in hummingbot.strategy.strategy_py_base.StrategyPyBase.c_tick
+    self.tick(timestamp)
+  File "/home/hummingbot/hummingbot/strategy/script_strategy_base.py", line 75, in tick
+    self.on_tick()
+  File "/home/hummingbot/hummingbot/strategy/strategy_v2_base.py", line 298, in on_tick
+    self.executor_orchestrator.execute_action(action)
+  File "/home/hummingbot/hummingbot/strategy_v2/executors/executor_orchestrator.py", line 202, in execute_action
+    controller_id = action.controller_id
+AttributeError: 'NoneType' object has no attribute 'controller_id'
+2025-03-05 00:46:44,383 - 17 - hummingbot.client.hummingbot_application - INFO - stop command initiated.
+2025-03-05 00:46:44,384 - 17 - hummingbot.strategy.script_strategy_base - INFO - on stop on strat
+2025-03-05 00:46:44,384 - 17 - hummingbot.strategy_v2.executors.triangular_arb_executor.triangular_arb_executor - INFO - got into the exe tri early stop
+2025-03-05 00:46:44,385 - 17 - hummingbot.strategy_v2.executors.triangular_arb_executor.triangular_arb_executor - INFO - got into the exe tri on stop
+2025-03-05 00:46:44,386 - 17 - hummingbot.strategy.script_strategy_base - INFO - on stop on base v2
+2025-03-05 00:46:44,386 - 17 - hummingbot.strategy_v2.executors.triangular_arb_executor.triangular_arb_executor - INFO - got into the exe tri early stop
+2025-03-05 00:46:44,387 - 17 - hummingbot.strategy_v2.executors.triangular_arb_executor.triangular_arb_executor - INFO - got into the exe tri on stop
+2025-03-05 00:46:45,002 - 17 - hummingbot.strategy_v2.executors.executor_orchestrator - INFO - this is the action received None 
+2025-03-05 00:46:45,003 - 17 - hummingbot.core.clock - ERROR - Unexpected error running clock tick.
+Traceback (most recent call last):
+  File "hummingbot/core/clock.pyx", line 119, in hummingbot.core.clock.Clock.run_til
+    child_iterator.c_tick(self._current_tick)
+  File "hummingbot/strategy/strategy_py_base.pyx", line 44, in hummingbot.strategy.strategy_py_base.StrategyPyBase.c_tick
+    self.tick(timestamp)
+  File "/home/hummingbot/hummingbot/strategy/script_strategy_base.py", line 75, in tick
+    self.on_tick()
+  File "/home/hummingbot/hummingbot/strategy/strategy_v2_base.py", line 298, in on_tick
+    self.executor_orchestrator.execute_action(action)
+  File "/home/hummingbot/hummingbot/strategy_v2/executors/executor_orchestrator.py", line 202, in execute_action
+    controller_id = action.controller_id
+AttributeError: 'NoneType' object has no attribute 'controller_id'
+2025-03-05 00:46:46,002 - 17 - hummingbot.strategy_v2.executors.executor_orchestrator - INFO - this is the action received None 
+2025-03-05 00:46:46,003 - 17 - hummingbot.core.clock - ERROR - Unexpected error running clock tick.
+Traceback (most recent call last):
+  File "hummingbot/core/clock.pyx", line 119, in hummingbot.core.clock.Clock.run_til
+    child_iterator.c_tick(self._current_tick)
+  File "hummingbot/strategy/strategy_py_base.pyx", line 44, in hummingbot.strategy.strategy_py_base.StrategyPyBase.c_tick
+    self.tick(timestamp)
+  File "/home/hummingbot/hummingbot/strategy/script_strategy_base.py", line 75, in tick
+    self.on_tick()
+  File "/home/hummingbot/hummingbot/strategy/strategy_v2_base.py", line 298, in on_tick
+    self.executor_orchestrator.execute_action(action)
+  File "/home/hummingbot/hummingbot/strategy_v2/executors/executor_orchestrator.py", line 202, in execute_action
+    controller_id = action.controller_id
+AttributeError: 'NoneType' object has no attribute 'controller_id'
+2025-03-05 00:46:46,316 - 17 - hummingbot.connector.time_synchronizer - NETWORK - Error getting server time.
+Traceback (most recent call last):
+  File "/opt/conda/envs/hummingbot/lib/python3.10/site-packages/aiohttp/connector.py", line 1116, in _wrap_create_connection
+    sock = await aiohappyeyeballs.start_connection(
+  File "/opt/conda/envs/hummingbot/lib/python3.10/site-packages/aiohappyeyeballs/impl.py", line 78, in start_connection
+    sock, _, _ = await _staggered.staggered_race(
+  File "/opt/conda/envs/hummingbot/lib/python3.10/site-packages/aiohappyeyeballs/_staggered.py", line 160, in staggered_race
+    done = await _wait_one(
+  File "/opt/conda/envs/hummingbot/lib/python3.10/site-packages/aiohappyeyeballs/_staggered.py", line 41, in _wait_one
+    return await wait_next
+asyncio.exceptions.CancelledError
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/opt/conda/envs/hummingbot/lib/python3.10/site-packages/aiohttp/client.py", line 703, in _request
+    conn = await self._connector.connect(
+  File "/opt/conda/envs/hummingbot/lib/python3.10/site-packages/aiohttp/connector.py", line 548, in connect
+    proto = await self._create_connection(req, traces, timeout)
+  File "/opt/conda/envs/hummingbot/lib/python3.10/site-packages/aiohttp/connector.py", line 1056, in _create_connection
+    _, proto = await self._create_direct_connection(req, traces, timeout)
+  File "/opt/conda/envs/hummingbot/lib/python3.10/site-packages/aiohttp/connector.py", line 1411, in _create_direct_connection
+    raise last_exc
+  File "/opt/conda/envs/hummingbot/lib/python3.10/site-packages/aiohttp/connector.py", line 1380, in _create_direct_connection
+    transp, proto = await self._wrap_create_connection(
+  File "/opt/conda/envs/hummingbot/lib/python3.10/site-packages/aiohttp/connector.py", line 1113, in _wrap_create_connection
+    async with ceil_timeout(
+  File "/opt/conda/envs/hummingbot/lib/python3.10/site-packages/async_timeout/__init__.py", line 179, in __aexit__
+    self._do_exit(exc_type)
+  File "/opt/conda/envs/hummingbot/lib/python3.10/site-packages/async_timeout/__init__.py", line 265, in _do_exit
+    raise asyncio.TimeoutError
+asyncio.exceptions.TimeoutError
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/home/hummingbot/hummingbot/connector/time_synchronizer.py", line 66, in update_server_time_offset_with_time_provider
+    server_time_ms: float = await time_provider
+  File "/home/hummingbot/hummingbot/connector/exchange/binance/binance_web_utils.py", line 69, in get_current_server_time
+    response = await rest_assistant.execute_request(
+  File "/home/hummingbot/hummingbot/core/web_assistant/rest_assistant.py", line 47, in execute_request
+    response = await self.execute_request_and_get_response(
+  File "/home/hummingbot/hummingbot/core/web_assistant/rest_assistant.py", line 94, in execute_request_and_get_response
+    response = await self.call(request=request, timeout=timeout)
+  File "/home/hummingbot/hummingbot/core/web_assistant/rest_assistant.py", line 108, in call
+    resp = await wait_for(self._connection.call(request), timeout)
+  File "/opt/conda/envs/hummingbot/lib/python3.10/asyncio/tasks.py", line 408, in wait_for
+    return await fut
+  File "/home/hummingbot/hummingbot/core/web_assistant/connections/rest_connection.py", line 10, in call
+    aiohttp_resp = await self._client_session.request(
+  File "/opt/conda/envs/hummingbot/lib/python3.10/site-packages/aiohttp/client.py", line 707, in _request
+    raise ConnectionTimeoutError(
+aiohttp.client_exceptions.ConnectionTimeoutError: Connection timeout to host https://api.binance.com/api/v3/time
+2025-03-05 00:46:46,317 - 17 - hummingbot.connector.time_synchronizer - WARNING - Could not refresh server time. Check network connection.
+2025-03-05 00:46:47,002 - 17 - hummingbot.strategy_v2.executors.executor_orchestrator - INFO - this is the action received None 
+2025-03-05 00:46:47,002 - 17 - hummingbot.core.clock - ERROR - Unexpected error running clock tick.
+Traceback (most recent call last):
+  File "hummingbot/core/clock.pyx", line 119, in hummingbot.core.clock.Clock.run_til
+    child_iterator.c_tick(self._current_tick)
+  File "hummingbot/strategy/strategy_py_base.pyx", line 44, in hummingbot.strategy.strategy_py_base.StrategyPyBase.c_tick
+    self.tick(timestamp)
+  File "/home/hummingbot/hummingbot/strategy/script_strategy_base.py", line 75, in tick
+    self.on_tick()
+  File "/home/hummingbot/hummingbot/strategy/strategy_v2_base.py", line 298, in on_tick
+    self.executor_orchestrator.execute_action(action)
+  File "/home/hummingbot/hummingbot/strategy_v2/executors/executor_orchestrator.py", line 202, in execute_action
+    controller_id = action.controller_id
+AttributeError: 'NoneType' object has no attribute 'controller_id'
+2025-03-05 00:46:48,002 - 17 - hummingbot.strategy_v2.executors.executor_orchestrator - INFO - this is the action received None 
+2025-03-05 00:46:48,003 - 17 - hummingbot.core.clock - ERROR - Unexpected error running clock tick.
+Traceback (most recent call last):
+  File "hummingbot/core/clock.pyx", line 119, in hummingbot.core.clock.Clock.run_til
+    child_iterator.c_tick(self._current_tick)
+  File "hummingbot/strategy/strategy_py_base.pyx", line 44, in hummingbot.strategy.strategy_py_base.StrategyPyBase.c_tick
+    self.tick(timestamp)
+  File "/home/hummingbot/hummingbot/strategy/script_strategy_base.py", line 75, in tick
+    self.on_tick()
+  File "/home/hummingbot/hummingbot/strategy/strategy_v2_base.py", line 298, in on_tick
+    self.executor_orchestrator.execute_action(action)
+  File "/home/hummingbot/hummingbot/strategy_v2/executors/executor_orchestrator.py", line 202, in execute_action
+    controller_id = action.controller_id
+AttributeError: 'NoneType' object has no attribute 'controller_id'
+2025-03-05 00:46:49,002 - 17 - hummingbot.strategy_v2.executors.executor_orchestrator - INFO - this is the action received None 
+2025-03-05 00:46:49,002 - 17 - hummingbot.core.clock - ERROR - Unexpected error running clock tick.
+Traceback (most recent call last):
+  File "hummingbot/core/clock.pyx", line 119, in hummingbot.core.clock.Clock.run_til
+    child_iterator.c_tick(self._current_tick)
+  File "hummingbot/strategy/strategy_py_base.pyx", line 44, in hummingbot.strategy.strategy_py_base.StrategyPyBase.c_tick
+    self.tick(timestamp)
+  File "/home/hummingbot/hummingbot/strategy/script_strategy_base.py", line 75, in tick
+    self.on_tick()
+  File "/home/hummingbot/hummingbot/strategy/strategy_v2_base.py", line 298, in on_tick
+    self.executor_orchestrator.execute_action(action)
+  File "/home/hummingbot/hummingbot/strategy_v2/executors/executor_orchestrator.py", line 202, in execute_action
+    controller_id = action.controller_id
+AttributeError: 'NoneType' object has no attribute 'controller_id'
+2025-03-05 00:46:50,215 - 17 - hummingbot.strategy_v2.executors.executor_orchestrator - INFO - this is the action received None 
+2025-03-05 00:46:50,216 - 17 - hummingbot.core.clock - ERROR - Unexpected error running clock tick.
+Traceback (most recent call last):
+  File "hummingbot/core/clock.pyx", line 119, in hummingbot.core.clock.Clock.run_til
+    child_iterator.c_tick(self._current_tick)
+  File "hummingbot/strategy/strategy_py_base.pyx", line 44, in hummingbot.strategy.strategy_py_base.StrategyPyBase.c_tick
+    self.tick(timestamp)
+  File "/home/hummingbot/hummingbot/strategy/script_strategy_base.py", line 75, in tick
+    self.on_tick()
+  File "/home/hummingbot/hummingbot/strategy/strategy_v2_base.py", line 298, in on_tick
+    self.executor_orchestrator.execute_action(action)
+  File "/home/hummingbot/hummingbot/strategy_v2/executors/executor_orchestrator.py", line 202, in execute_action
+    controller_id = action.controller_id
+AttributeError: 'NoneType' object has no attribute 'controller_id'
+2025-03-05 00:46:51,003 - 17 - hummingbot.strategy_v2.executors.executor_orchestrator - INFO - this is the action received None 
+2025-03-05 00:46:51,003 - 17 - hummingbot.core.clock - ERROR - Unexpected error running clock tick.
+Traceback (most recent call last):
+  File "hummingbot/core/clock.pyx", line 119, in hummingbot.core.clock.Clock.run_til
+    child_iterator.c_tick(self._current_tick)
+  File "hummingbot/strategy/strategy_py_base.pyx", line 44, in hummingbot.strategy.strategy_py_base.StrategyPyBase.c_tick
+    self.tick(timestamp)
+  File "/home/hummingbot/hummingbot/strategy/script_strategy_base.py", line 75, in tick
+    self.on_tick()
+  File "/home/hummingbot/hummingbot/strategy/strategy_v2_base.py", line 298, in on_tick
+    self.executor_orchestrator.execute_action(action)
+  File "/home/hummingbot/hummingbot/strategy_v2/executors/executor_orchestrator.py", line 202, in execute_action
+    controller_id = action.controller_id
+AttributeError: 'NoneType' object has no attribute 'controller_id'
+2025-03-05 00:46:52,027 - 17 - hummingbot.strategy_v2.executors.executor_orchestrator - INFO - this is the action received None 
+2025-03-05 00:46:52,028 - 17 - hummingbot.core.clock - ERROR - Unexpected error running clock tick.
+Traceback (most recent call last):
+  File "hummingbot/core/clock.pyx", line 119, in hummingbot.core.clock.Clock.run_til
+    child_iterator.c_tick(self._current_tick)
+  File "hummingbot/strategy/strategy_py_base.pyx", line 44, in hummingbot.strategy.strategy_py_base.StrategyPyBase.c_tick
+    self.tick(timestamp)
+  File "/home/hummingbot/hummingbot/strategy/script_strategy_base.py", line 75, in tick
+    self.on_tick()
+  File "/home/hummingbot/hummingbot/strategy/strategy_v2_base.py", line 298, in on_tick
+    self.executor_orchestrator.execute_action(action)
+  File "/home/hummingbot/hummingbot/strategy_v2/executors/executor_orchestrator.py", line 202, in execute_action
+    controller_id = action.controller_id
+AttributeError: 'NoneType' object has no attribute 'controller_id'
+2025-03-05 00:46:53,002 - 17 - hummingbot.strategy_v2.executors.executor_orchestrator - INFO - this is the action received None 
+2025-03-05 00:46:53,002 - 17 - hummingbot.core.clock - ERROR - Unexpected error running clock tick.
+Traceback (most recent call last):
+  File "hummingbot/core/clock.pyx", line 119, in hummingbot.core.clock.Clock.run_til
+    child_iterator.c_tick(self._current_tick)
+  File "hummingbot/strategy/strategy_py_base.pyx", line 44, in hummingbot.strategy.strategy_py_base.StrategyPyBase.c_tick
+    self.tick(timestamp)
+  File "/home/hummingbot/hummingbot/strategy/script_strategy_base.py", line 75, in tick
+    self.on_tick()
+  File "/home/hummingbot/hummingbot/strategy/strategy_v2_base.py", line 298, in on_tick
+    self.executor_orchestrator.execute_action(action)
+  File "/home/hummingbot/hummingbot/strategy_v2/executors/executor_orchestrator.py", line 202, in execute_action
+    controller_id = action.controller_id
+AttributeError: 'NoneType' object has no attribute 'controller_id'
+2025-03-05 00:46:54,002 - 17 - hummingbot.strategy_v2.executors.executor_orchestrator - INFO - this is the action received None 
+2025-03-05 00:46:54,002 - 17 - hummingbot.core.clock - ERROR - Unexpected error running clock tick.
+Traceback (most recent call last):
+  File "hummingbot/core/clock.pyx", line 119, in hummingbot.core.clock.Clock.run_til
+    child_iterator.c_tick(self._current_tick)
+  File "hummingbot/strategy/strategy_py_base.pyx", line 44, in hummingbot.strategy.strategy_py_base.StrategyPyBase.c_tick
+    self.tick(timestamp)
+  File "/home/hummingbot/hummingbot/strategy/script_strategy_base.py", line 75, in tick
+    self.on_tick()
+  File "/home/hummingbot/hummingbot/strategy/strategy_v2_base.py", line 298, in on_tick
+    self.executor_orchestrator.execute_action(action)
+  File "/home/hummingbot/hummingbot/strategy_v2/executors/executor_orchestrator.py", line 202, in execute_action
+    controller_id = action.controller_id
+AttributeError: 'NoneType' object has no attribute 'controller_id'
+2025-03-05 00:46:55,009 - 17 - hummingbot.strategy_v2.executors.executor_orchestrator - INFO - this is the action received None 
+2025-03-05 00:46:55,009 - 17 - hummingbot.core.clock - ERROR - Unexpected error running clock tick.
+Traceback (most recent call last):
+  File "hummingbot/core/clock.pyx", line 119, in hummingbot.core.clock.Clock.run_til
+    child_iterator.c_tick(self._current_tick)
+  File "hummingbot/strategy/strategy_py_base.pyx", line 44, in hummingbot.strategy.strategy_py_base.StrategyPyBase.c_tick
+    self.tick(timestamp)
+  File "/home/hummingbot/hummingbot/strategy/script_strategy_base.py", line 75, in tick
+    self.on_tick()
+  File "/home/hummingbot/hummingbot/strategy/strategy_v2_base.py", line 298, in on_tick
+    self.executor_orchestrator.execute_action(action)
+  File "/home/hummingbot/hummingbot/strategy_v2/executors/executor_orchestrator.py", line 202, in execute_action
+    controller_id = action.controller_id
+AttributeError: 'NoneType' object has no attribute 'controller_id'
+2025-03-05 00:46:56,003 - 17 - hummingbot.strategy_v2.executors.executor_orchestrator - INFO - this is the action received None 
+2025-03-05 00:46:56,003 - 17 - hummingbot.core.clock - ERROR - Unexpected error running clock tick.
+Traceback (most recent call last):
+  File "hummingbot/core/clock.pyx", line 119, in hummingbot.core.clock.Clock.run_til
+    child_iterator.c_tick(self._current_tick)
+  File "hummingbot/strategy/strategy_py_base.pyx", line 44, in hummingbot.strategy.strategy_py_base.StrategyPyBase.c_tick
+    self.tick(timestamp)
+  File "/home/hummingbot/hummingbot/strategy/script_strategy_base.py", line 75, in tick
+    self.on_tick()
+  File "/home/hummingbot/hummingbot/strategy/strategy_v2_base.py", line 298, in on_tick
+    self.executor_orchestrator.execute_action(action)
+  File "/home/hummingbot/hummingbot/strategy_v2/executors/executor_orchestrator.py", line 202, in execute_action
+    controller_id = action.controller_id
+AttributeError: 'NoneType' object has no attribute 'controller_id'
+2025-03-05 00:46:57,008 - 17 - hummingbot.strategy_v2.executors.executor_orchestrator - INFO - this is the action received None 
+2025-03-05 00:46:57,008 - 17 - hummingbot.core.clock - ERROR - Unexpected error running clock tick.
+Traceback (most recent call last):
+  File "hummingbot/core/clock.pyx", line 119, in hummingbot.core.clock.Clock.run_til
+    child_iterator.c_tick(self._current_tick)
+  File "hummingbot/strategy/strategy_py_base.pyx", line 44, in hummingbot.strategy.strategy_py_base.StrategyPyBase.c_tick
+    self.tick(timestamp)
+  File "/home/hummingbot/hummingbot/strategy/script_strategy_base.py", line 75, in tick
+    self.on_tick()
+  File "/home/hummingbot/hummingbot/strategy/strategy_v2_base.py", line 298, in on_tick
+    self.executor_orchestrator.execute_action(action)
+  File "/home/hummingbot/hummingbot/strategy_v2/executors/executor_orchestrator.py", line 202, in execute_action
+    controller_id = action.controller_id
+AttributeError: 'NoneType' object has no attribute 'controller_id'
+2025-03-05 00:46:58,018 - 17 - hummingbot.strategy_v2.executors.executor_orchestrator - INFO - this is the action received None 
+2025-03-05 00:46:58,019 - 17 - hummingbot.core.clock - ERROR - Unexpected error running clock tick.
+Traceback (most recent call last):
+  File "hummingbot/core/clock.pyx", line 119, in hummingbot.core.clock.Clock.run_til
+    child_iterator.c_tick(self._current_tick)
+  File "hummingbot/strategy/strategy_py_base.pyx", line 44, in hummingbot.strategy.strategy_py_base.StrategyPyBase.c_tick
+    self.tick(timestamp)
+  File "/home/hummingbot/hummingbot/strategy/script_strategy_base.py", line 75, in tick
+    self.on_tick()
+  File "/home/hummingbot/hummingbot/strategy/strategy_v2_base.py", line 298, in on_tick
+    self.executor_orchestrator.execute_action(action)
+  File "/home/hummingbot/hummingbot/strategy_v2/executors/executor_orchestrator.py", line 202, in execute_action
+    controller_id = action.controller_id
+AttributeError: 'NoneType' object has no attribute 'controller_id'
+2025-03-05 00:46:59,011 - 17 - hummingbot.strategy_v2.executors.executor_orchestrator - INFO - this is the action received None 
+2025-03-05 00:46:59,012 - 17 - hummingbot.core.clock - ERROR - Unexpected error running clock tick.
+Traceback (most recent call last):
+  File "hummingbot/core/clock.pyx", line 119, in hummingbot.core.clock.Clock.run_til
+    child_iterator.c_tick(self._current_tick)
+  File "hummingbot/strategy/strategy_py_base.pyx", line 44, in hummingbot.strategy.strategy_py_base.StrategyPyBase.c_tick
+    self.tick(timestamp)
+  File "/home/hummingbot/hummingbot/strategy/script_strategy_base.py", line 75, in tick
+    self.on_tick()
+  File "/home/hummingbot/hummingbot/strategy/strategy_v2_base.py", line 298, in on_tick
+    self.executor_orchestrator.execute_action(action)
+  File "/home/hummingbot/hummingbot/strategy_v2/executors/executor_orchestrator.py", line 202, in execute_action
+    controller_id = action.controller_id
+AttributeError: 'NoneType' object has no attribute 'controller_id'
+2025-03-05 00:47:00,040 - 17 - hummingbot.strategy_v2.executors.executor_orchestrator - INFO - this is the action received None 
+2025-03-05 00:47:00,040 - 17 - hummingbot.core.clock - ERROR - Unexpected error running clock tick.
+Traceback (most recent call last):
+  File "hummingbot/core/clock.pyx", line 119, in hummingbot.core.clock.Clock.run_til
+    child_iterator.c_tick(self._current_tick)
+  File "hummingbot/strategy/strategy_py_base.pyx", line 44, in hummingbot.strategy.strategy_py_base.StrategyPyBase.c_tick
+    self.tick(timestamp)
+  File "/home/hummingbot/hummingbot/strategy/script_strategy_base.py", line 75, in tick
+    self.on_tick()
+  File "/home/hummingbot/hummingbot/strategy/strategy_v2_base.py", line 298, in on_tick
+    self.executor_orchestrator.execute_action(action)
+  File "/home/hummingbot/hummingbot/strategy_v2/executors/executor_orchestrator.py", line 202, in execute_action
+    controller_id = action.controller_id
+AttributeError: 'NoneType' object has no attribute 'controller_id'
+2025-03-05 00:47:01,231 - 17 - hummingbot.client.hummingbot_application - ERROR - MQTT is already stopped!

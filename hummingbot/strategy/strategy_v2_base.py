@@ -277,16 +277,23 @@ class StrategyV2Base(ScriptStrategyBase):
         return "perpetual" in connector
 
     async def on_stop(self):
+        self.logger().info("on stop on base v2")
         self.executor_orchestrator.stop()
+        self.logger().info("passed the orch stop")
         self.market_data_provider.stop()
+        self.logger().info("passed the market data stop")
         self.listen_to_executor_actions_task.cancel()
+        self.logger().info("passed the actions stops")
         for controller in self.controllers.values():
             controller.stop()
+        self.logger().info("passed the control loop stop")
         for i in range(self.max_executors_close_attempts):
             if all([executor.is_done for executor in self.get_all_executors()]):
                 continue
             await asyncio.sleep(5.0)
+        self.logger().info("passed the main loop stop")
         self.executor_orchestrator.store_all_executors()
+        self.logger().info("passed allllllllllllllllllll")
 
     def on_tick(self):
         self.update_executors_info()
