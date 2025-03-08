@@ -189,10 +189,14 @@ class ExecutorOrchestrator:
     def store_all_executors(self):
         for controller_id, executors_list in self.active_executors.items():
             for executor in executors_list:
+                self.logger().info("removing this %s", executor)
                 # Store the executor in the database
                 MarketsRecorder.get_instance().store_or_update_executor(executor)
+                self.logger().info("stored or updated this %s", executor)
                 # Remove the executor from the list
                 self.active_executors[controller_id].remove(executor)
+            self.logger().info("exited the first loop")
+        self.logger().info("exited the second loop")
 
     def execute_action(self, action: ExecutorAction):
         """

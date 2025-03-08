@@ -328,11 +328,11 @@ class TriangularArbV2(StrategyV2Base):
         await super().on_stop()
         
         
-    async def on_stop(self):
-        await super().on_stop()
-        if self.mqtt_enabled:
-            self._pub({controller_id: {} for controller_id in self.controllers.keys()})
-            self._pub = None
+    # async def on_stop(self):
+    #     await super().on_stop()
+    #     if self.mqtt_enabled:
+    #         self._pub({controller_id: {} for controller_id in self.controllers.keys()})
+    #         self._pub = None
             
     def confirm_round(self):
         print("All orders have been filled")
