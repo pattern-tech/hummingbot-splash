@@ -43,7 +43,6 @@ class TriangularArbExecutor(ExecutorBase):
         return type(self.state) is Completed or type(self.state) is Failed
 
     def __init__(self, strategy: ScriptStrategyBase, config: TriangularArbExecutorConfig, update_interval: float = 1.0):
-        self.logger().info("came to the init")
         super().__init__(
             strategy=strategy,
             connectors=[
@@ -97,7 +96,6 @@ class TriangularArbExecutor(ExecutorBase):
         return self.connectors[self._selling_market.connector_name]
 
     def validate_sufficient_balance(self):
-        self.logger().info("got into validate sufficient balance")
         if self.arb_direction is ArbitrageDirection.FORWARD:
             buying_account_not_ok = self.buying_market().get_balance(self.proxy_asset) < self.buy_amount
             proxy_account_not_ok = self.proxy_market().get_balance(self.stable_asset) < self.proxy_amount
@@ -116,7 +114,7 @@ class TriangularArbExecutor(ExecutorBase):
                 self.logger().error("Not enough budget to open position.")
 
     async def control_task(self):
-        self.logger().info("entered the controller tasker the triangular arbitrage ")
+        
         if isinstance(self.state, GraceFullStop):
             self.logger().error("the bot is stopped, check the logs for errors !")
             return
@@ -432,8 +430,6 @@ class TriangularArbExecutor(ExecutorBase):
             return self._strategy.sell(connector_name, trading_pair, amount, order_type, price, position_action)
 
     def on_stop(self):
-        
-        self.logger().info("got into the exe tri on stop")
         if self._status != RunnableStatus.TERMINATED:
             self.state = GraceFullStop
             self.close_type = CloseType.EARLY_STOP
@@ -443,7 +439,6 @@ class TriangularArbExecutor(ExecutorBase):
             self.stop()
 
     def early_stop(self):
-        self.logger().info("got into the exe tri early stop")
         self.on_stop()
 
     def get_net_pnl_quote(self) -> Decimal:

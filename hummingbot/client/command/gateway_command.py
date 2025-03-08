@@ -438,8 +438,7 @@ class GatewayCommand(GatewayChainApiManager):
             prompt=f"Enter your {chain}-{network} wallet private key >>> ",
             is_password=True
         )
-        self.notify(f"fetched private key {wallet_private_key}")
-        self.logger().info("fetched private key %s", wallet_private_key)
+        
         self.app.clear_input()
         if self.app.to_stop_config:
             return

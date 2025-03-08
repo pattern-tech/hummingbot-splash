@@ -202,10 +202,7 @@ class MarketsRecorder:
                     executor.executor_info.config.set_stop = None
             serialized_config = executor.executor_info.json()
             executor_dict = json.loads(serialized_config)
-            if existing_executor:
-                print("found this exec %s", existing_executor)
-                self.logger().info("found this exec %s", existing_executor)
-                
+            if existing_executor:                
                 # Update existing executor
                 for attr, value in executor_dict.items():
                     setattr(existing_executor, attr, value)

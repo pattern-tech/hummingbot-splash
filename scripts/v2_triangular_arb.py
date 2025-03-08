@@ -5,7 +5,6 @@ from asyncio import Future
 from decimal import Decimal
 from typing import Callable, Dict, List, Set, Union, cast
 
-from hummingbot.client.hummingbot_application import HummingbotApplication
 from pydantic import Field
 from dataclasses import dataclass
 
@@ -100,8 +99,6 @@ class TriangularArbV2(StrategyV2Base):
         self.executor_stopper: Union[Callable[[TriExecuter], None], None] = None
         self.executor_called: bool = False
         self.latest_action_exec_id: str = ""
-        self.hb_app = HummingbotApplication.main_application()
-        self.mqtt_enabled = self.hb_app._mqtt is not None
         
         
     def arbitrage_config(self, direction: ArbitrageDirection, amounts: ArbitragePercent) -> TriangularArbExecutorConfig:
@@ -210,7 +207,6 @@ class TriangularArbV2(StrategyV2Base):
         else:
             self.one_time_trade = True
             self.previous_round_confirmed = False
-            self.logger().info("retiring this action: %s", executor_actions[0])
             return executor_actions[0]
 
     async def estimate_arbitrage_percent(self, direction: ArbitrageDirection) -> ArbitragePercent:
@@ -322,17 +318,9 @@ class TriangularArbV2(StrategyV2Base):
         self.executor_stopper = early_stop
 
     async def on_stop(self):
-        self.logger().info("on stop on strat")
         self.executor_stopper()
         self.executor_called = True
         await super().on_stop()
-        
-        
-    # async def on_stop(self):
-    #     await super().on_stop()
-    #     if self.mqtt_enabled:
-    #         self._pub({controller_id: {} for controller_id in self.controllers.keys()})
-    #         self._pub = None
             
     def confirm_round(self):
         print("All orders have been filled")

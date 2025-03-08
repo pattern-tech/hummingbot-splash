@@ -31,22 +31,6 @@ class StopCommand:
 
         if isinstance(self.strategy, ScriptStrategyBase):
             await self.strategy.on_stop()
-            print("passed the strat on stop")
-            self.strategy_task.cancel()
-            print("passed the task stop")
-            RateOracle.get_instance().stop()
-            print("passed the rate oracle stop")
-            if self.clock:
-                self.clock.remove_iterator(self.strategy)
-            print("removed the iterator")
-            success = await self._cancel_outstanding_orders()
-            print("passed and cancelled the ]outstanding orders")
-            # Give some time for cancellation events to trigger
-            await asyncio.sleep(2)
-            if success:
-                # Only erase markets when cancellation has been successful
-                self.markets = {}
-            print("every thing ok")
             
         if self._trading_required and not skip_order_cancellation:
             # Remove the strategy from clock before cancelling orders, to

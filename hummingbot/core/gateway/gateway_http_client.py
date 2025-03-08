@@ -307,7 +307,6 @@ class GatewayHttpClient:
                 "address": address,
                 "tokenSymbols": token_symbols,
             }
-            self.logger().info("this is the request params %s", request_params)
             if connector is not None:
                 request_params["connector"] = connector
             return await self.api_request(

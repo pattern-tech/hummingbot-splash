@@ -270,6 +270,7 @@ class HummingbotApplication(*commands):
             self.logger().error("Error canceling outstanding orders.", exc_info=True)
             success = False
 
+        asyncio.sleep(5)
         if success:
             self.notify("All outstanding orders canceled.")
         return success
