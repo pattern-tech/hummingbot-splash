@@ -146,6 +146,7 @@ class TriangularArbV2(StrategyV2Base):
         elif self._arb_task.done():
             executor_actions.append(self._arb_task.result())
             self._arb_task = safe_ensure_future(self.try_create_arbitrage_action())
+            self.logger().info("sending this action %s and this called %s and this executer %s", executor_actions,self.executor_called,self.executor_stopper)
         return executor_actions
 
     async def try_create_arbitrage_action(self) -> List[ExecutorAction]:
@@ -155,7 +156,7 @@ class TriangularArbV2(StrategyV2Base):
         )
 
 
-        if self.executor_called:
+        if self.executor_called == True:
             return [StopExecutorAction(executor_id= self.latest_action_exec_id)]
         if self.executor_stopper == None:
             fake_action = CreateExecutorAction(
@@ -175,9 +176,9 @@ class TriangularArbV2(StrategyV2Base):
         #
         # Uncomment this if you want to test the stats and do only one trade once found an opportunity
         #
-        if self.one_time_trade:
-            print("traded one time, not trading anymore")
-            return []
+        # if self.one_time_trade:
+        #     print("traded one time, not trading anymore")
+        #     return []
 
         if not self.previous_round_confirmed:
             print("Wait until next round gets confirmed")
@@ -318,6 +319,7 @@ class TriangularArbV2(StrategyV2Base):
         self.executor_stopper = early_stop
 
     async def on_stop(self):
+        self.logger().info("hey")
         self.executor_stopper()
         self.executor_called = True
         await super().on_stop()

@@ -198,11 +198,7 @@ class ExecutorOrchestrator:
         """
         Execute the action and handle executors based on action type.
         """
-        if action == None:
-            self.stop_executor(action)
-            self.stop()
-        elif isinstance(action, StopExecutorAction):
-            self.stop_executor(action)
+
         controller_id = action.controller_id
         if controller_id not in self.cached_performance:
             self.active_executors[controller_id] = []

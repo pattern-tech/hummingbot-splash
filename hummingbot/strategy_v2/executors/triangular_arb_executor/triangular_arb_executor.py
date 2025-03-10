@@ -81,6 +81,7 @@ class TriangularArbExecutor(ExecutorBase):
             self.sell_amount = config.sell_amount
             self.confirm_round_callback = config.confirm_round_callback
             config.set_stop(self.early_stop)
+            self.stopper_initiated = True
             self.rollbacks: AsyncTrackedOrderFunction = []
             self.state: Idle | InProgress | Completed | Canceled | Failed | GraceFullStop = Idle()
         else:
@@ -95,7 +96,7 @@ class TriangularArbExecutor(ExecutorBase):
     def selling_market(self) -> ConnectorBase:
         return self.connectors[self._selling_market.connector_name]
 
-    def validate_sufficient_balance(self):
+    async def validate_sufficient_balance(self):
         if self.arb_direction is ArbitrageDirection.FORWARD:
             buying_account_not_ok = self.buying_market().get_balance(self.proxy_asset) < self.buy_amount
             proxy_account_not_ok = self.proxy_market().get_balance(self.stable_asset) < self.proxy_amount
@@ -114,6 +115,12 @@ class TriangularArbExecutor(ExecutorBase):
                 self.logger().error("Not enough budget to open position.")
 
     async def control_task(self):
+        self.logger().info("all shit %s", self)
+        if self.config.buy_amount + self.config.sell_amount + self.config.proxy_amount == Decimal(0)  and self.stopper_initiated != True and self.min_profitability_percent == Decimal(0):
+            self.logger().info("initiating the stopper")
+            self.config.set_stop(self.early_stop)
+            self.stopper_initiated = True
+            return
         
         if isinstance(self.state, GraceFullStop):
             self.logger().error("the bot is stopped, check the logs for errors !")
@@ -123,7 +130,6 @@ class TriangularArbExecutor(ExecutorBase):
             await self.init_arbitrage()
 
         if isinstance(self.state, Canceled):
-
             try:
                 if not self.state.rollbacks:
                     self.logger().error("No rollback functions available!")
@@ -227,15 +233,16 @@ class TriangularArbExecutor(ExecutorBase):
             self.confirm_round_callback()
             self.stop()
 
-    async def on_start(self):
-        """
-        This method is responsible for starting the executor and validating if the position is expired. The base method
-        validates if there is enough balance to place the open order.
+    # async def on_start(self):
+    #     self.logger().info("the on start on executer")
+    #     """
+    #     This method is responsible for starting the executor and validating if the position is expired. The base method
+    #     validates if there is enough balance to place the open order.
 
-        :return: None
-        """
-        self.logger().info("got into the triangular on_start")
-        await self.control_task()
+    #     :return: None
+    #     """
+    #     await self.validate_sufficient_balance()
+        
 
     async def init_arbitrage(self):
         buy_order = asyncio.create_task(self.place_buy_order())

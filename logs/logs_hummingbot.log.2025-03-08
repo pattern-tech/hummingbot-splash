@@ -1,0 +1,1106 @@
+2025-03-06 09:14:21,110 - 17 - hummingbot.client.hummingbot_application - ERROR - MQTT is already stopped!
+2025-03-06 11:14:33,797 - 17 - hummingbot.core.utils.async_utils - ERROR - Unhandled error in background task: Non-hexadecimal digit found
+Traceback (most recent call last):
+  File "/home/hummingbot/hummingbot/core/utils/async_utils.py", line 9, in safe_wrapper
+    return await c
+  File "/home/hummingbot/hummingbot/core/utils/async_call_scheduler.py", line 127, in call_async
+    return await self.schedule_async_call(coro, timeout_seconds, app_warning_msg=app_warning_msg)
+  File "/home/hummingbot/hummingbot/core/utils/async_call_scheduler.py", line 116, in schedule_async_call
+    return await fut
+  File "/home/hummingbot/hummingbot/core/utils/async_call_scheduler.py", line 79, in _coro_scheduler
+    fut.set_result(await coro)
+  File "/opt/conda/envs/hummingbot/lib/python3.10/concurrent/futures/thread.py", line 58, in run
+    result = self.fn(*self.args, **self.kwargs)
+  File "/home/hummingbot/hummingbot/client/config/security.py", line 65, in decrypt_all
+    cls.decrypt_connector_config(file)
+  File "/home/hummingbot/hummingbot/client/config/security.py", line 71, in decrypt_connector_config
+    cls._secure_configs[connector_name] = load_connector_config_map_from_file(file_path)
+  File "/home/hummingbot/hummingbot/client/config/config_helpers.py", line 668, in load_connector_config_map_from_file
+    _load_yml_data_into_map(config_data, config_map)
+  File "/home/hummingbot/hummingbot/client/config/config_helpers.py", line 750, in _load_yml_data_into_map
+    config_validation_errors = cm.validate_model()  # try coercing values to appropriate type
+  File "/home/hummingbot/hummingbot/client/config/config_helpers.py", line 199, in validate_model
+    self.decrypt_all_secure_data()
+  File "/home/hummingbot/hummingbot/client/config/config_helpers.py", line 237, in decrypt_all_secure_data
+    decrypted_value = Security.secrets_manager.decrypt_secret_value(attr=traversal_item.attr, value=value)
+  File "/home/hummingbot/hummingbot/client/config/config_crypt.py", line 59, in decrypt_secret_value
+    value = binascii.unhexlify(value)
+binascii.Error: Non-hexadecimal digit found
+2025-03-06 11:14:33,990 - 17 - hummingbot.core.gateway.gateway_status_monitor - INFO - Gateway Service is ONLINE.
+2025-03-06 11:22:57,875 - 17 - hummingbot.client.hummingbot_application - INFO - fetched private key bean gaze rude oval syrup doctor unique banner cement awesome desert peace seven toast absent hurdle shrug lend topple off other option assume heavy
+2025-03-06 11:23:25,604 - 17 - hummingbot.client.hummingbot_application - ERROR - MQTT is already stopped!
+2025-03-06 11:26:36,451 - 17 - hummingbot.core.utils.async_utils - ERROR - Unhandled error in background task: Non-hexadecimal digit found
+Traceback (most recent call last):
+  File "/home/hummingbot/hummingbot/core/utils/async_utils.py", line 9, in safe_wrapper
+    return await c
+  File "/home/hummingbot/hummingbot/core/utils/async_call_scheduler.py", line 127, in call_async
+    return await self.schedule_async_call(coro, timeout_seconds, app_warning_msg=app_warning_msg)
+  File "/home/hummingbot/hummingbot/core/utils/async_call_scheduler.py", line 116, in schedule_async_call
+    return await fut
+  File "/home/hummingbot/hummingbot/core/utils/async_call_scheduler.py", line 79, in _coro_scheduler
+    fut.set_result(await coro)
+  File "/opt/conda/envs/hummingbot/lib/python3.10/concurrent/futures/thread.py", line 58, in run
+    result = self.fn(*self.args, **self.kwargs)
+  File "/home/hummingbot/hummingbot/client/config/security.py", line 65, in decrypt_all
+    cls.decrypt_connector_config(file)
+  File "/home/hummingbot/hummingbot/client/config/security.py", line 71, in decrypt_connector_config
+    cls._secure_configs[connector_name] = load_connector_config_map_from_file(file_path)
+  File "/home/hummingbot/hummingbot/client/config/config_helpers.py", line 668, in load_connector_config_map_from_file
+    _load_yml_data_into_map(config_data, config_map)
+  File "/home/hummingbot/hummingbot/client/config/config_helpers.py", line 750, in _load_yml_data_into_map
+    config_validation_errors = cm.validate_model()  # try coercing values to appropriate type
+  File "/home/hummingbot/hummingbot/client/config/config_helpers.py", line 199, in validate_model
+    self.decrypt_all_secure_data()
+  File "/home/hummingbot/hummingbot/client/config/config_helpers.py", line 237, in decrypt_all_secure_data
+    decrypted_value = Security.secrets_manager.decrypt_secret_value(attr=traversal_item.attr, value=value)
+  File "/home/hummingbot/hummingbot/client/config/config_crypt.py", line 59, in decrypt_secret_value
+    value = binascii.unhexlify(value)
+binascii.Error: Non-hexadecimal digit found
+2025-03-06 11:26:36,579 - 17 - hummingbot.core.gateway.gateway_status_monitor - INFO - Gateway Service is ONLINE.
+2025-03-06 11:27:02,564 - 17 - hummingbot.client.hummingbot_application - INFO - this is the balances : {'network': 'mainnet', 'timestamp': 1741260422562, 'latency': 0, 'balances': {'ADA': '16.923513', 'HUNT': '1.446308', 'SPLASH': '2.535751', 'USDC': '0.56936265', 'RSERG': '0.652605136'}}
+2025-03-06 11:27:02,564 - 17 - hummingbot.core.utils.async_utils - ERROR - Unhandled error in background task: 'total'
+Traceback (most recent call last):
+  File "/home/hummingbot/hummingbot/core/utils/async_utils.py", line 9, in safe_wrapper
+    return await c
+  File "/home/hummingbot/hummingbot/client/command/gateway_command.py", line 352, in _gateway_connect
+    or balances['balances']['total'].get(native_token)
+KeyError: 'total'
+2025-03-06 12:21:22,822 - 17 - hummingbot.client.hummingbot_application - ERROR - MQTT is already stopped!
+2025-03-06 12:22:12,824 - 17 - hummingbot.core.utils.async_utils - ERROR - Unhandled error in background task: Non-hexadecimal digit found
+Traceback (most recent call last):
+  File "/home/hummingbot/hummingbot/core/utils/async_utils.py", line 9, in safe_wrapper
+    return await c
+  File "/home/hummingbot/hummingbot/core/utils/async_call_scheduler.py", line 127, in call_async
+    return await self.schedule_async_call(coro, timeout_seconds, app_warning_msg=app_warning_msg)
+  File "/home/hummingbot/hummingbot/core/utils/async_call_scheduler.py", line 116, in schedule_async_call
+    return await fut
+  File "/home/hummingbot/hummingbot/core/utils/async_call_scheduler.py", line 79, in _coro_scheduler
+    fut.set_result(await coro)
+  File "/opt/conda/envs/hummingbot/lib/python3.10/concurrent/futures/thread.py", line 58, in run
+    result = self.fn(*self.args, **self.kwargs)
+  File "/home/hummingbot/hummingbot/client/config/security.py", line 65, in decrypt_all
+    cls.decrypt_connector_config(file)
+  File "/home/hummingbot/hummingbot/client/config/security.py", line 71, in decrypt_connector_config
+    cls._secure_configs[connector_name] = load_connector_config_map_from_file(file_path)
+  File "/home/hummingbot/hummingbot/client/config/config_helpers.py", line 668, in load_connector_config_map_from_file
+    _load_yml_data_into_map(config_data, config_map)
+  File "/home/hummingbot/hummingbot/client/config/config_helpers.py", line 750, in _load_yml_data_into_map
+    config_validation_errors = cm.validate_model()  # try coercing values to appropriate type
+  File "/home/hummingbot/hummingbot/client/config/config_helpers.py", line 199, in validate_model
+    self.decrypt_all_secure_data()
+  File "/home/hummingbot/hummingbot/client/config/config_helpers.py", line 237, in decrypt_all_secure_data
+    decrypted_value = Security.secrets_manager.decrypt_secret_value(attr=traversal_item.attr, value=value)
+  File "/home/hummingbot/hummingbot/client/config/config_crypt.py", line 59, in decrypt_secret_value
+    value = binascii.unhexlify(value)
+binascii.Error: Non-hexadecimal digit found
+2025-03-06 12:27:50,762 - 17 - hummingbot.client.ui.hummingbot_cli - ERROR - Unhandled error in prompt_toolkit: 
+    Pyperclip could not find a copy/paste mechanism for your system.
+    For more information, please visit https://pyperclip.readthedocs.io/en/latest/introduction.html#not-implemented-error 
+Traceback (most recent call last):
+  File "/opt/conda/envs/hummingbot/lib/python3.10/asyncio/events.py", line 80, in _run
+    self._context.run(self._callback, *self._args)
+  File "/opt/conda/envs/hummingbot/lib/python3.10/site-packages/prompt_toolkit/input/vt100.py", line 168, in callback_wrapper
+    callback()
+  File "/opt/conda/envs/hummingbot/lib/python3.10/site-packages/prompt_toolkit/application/application.py", line 691, in read_from_input
+    self.key_processor.process_keys()
+  File "/opt/conda/envs/hummingbot/lib/python3.10/site-packages/prompt_toolkit/key_binding/key_processor.py", line 274, in process_keys
+    self._process_coroutine.send(key_press)
+  File "/opt/conda/envs/hummingbot/lib/python3.10/site-packages/prompt_toolkit/key_binding/key_processor.py", line 186, in _process
+    self._call_handler(matches[-1], key_sequence=buffer[:])
+  File "/opt/conda/envs/hummingbot/lib/python3.10/site-packages/prompt_toolkit/key_binding/key_processor.py", line 329, in _call_handler
+    handler.call(event)
+  File "/opt/conda/envs/hummingbot/lib/python3.10/site-packages/prompt_toolkit/key_binding/key_bindings.py", line 102, in call
+    result = self.handler(event)
+  File "/opt/conda/envs/hummingbot/lib/python3.10/site-packages/prompt_toolkit/key_binding/bindings/named_commands.py", line 408, in unix_word_rubout
+    event.app.clipboard.set_text(deleted)
+  File "/opt/conda/envs/hummingbot/lib/python3.10/site-packages/prompt_toolkit/clipboard/base.py", line 52, in set_text
+    self.set_data(ClipboardData(text))
+  File "/opt/conda/envs/hummingbot/lib/python3.10/site-packages/prompt_toolkit/clipboard/pyperclip.py", line 25, in set_data
+    pyperclip.copy(data.text)
+  File "/opt/conda/envs/hummingbot/lib/python3.10/site-packages/pyperclip/__init__.py", line 616, in lazy_load_stub_copy
+    return copy(text)
+  File "/opt/conda/envs/hummingbot/lib/python3.10/site-packages/pyperclip/__init__.py", line 301, in __call__
+    raise PyperclipException(EXCEPT_MSG)
+pyperclip.PyperclipException: 
+    Pyperclip could not find a copy/paste mechanism for your system.
+    For more information, please visit https://pyperclip.readthedocs.io/en/latest/introduction.html#not-implemented-error 
+2025-03-06 12:27:53,437 - 17 - hummingbot.client.hummingbot_application - ERROR - MQTT is already stopped!
+2025-03-06 12:38:39,373 - 17 - hummingbot.core.gateway.gateway_status_monitor - INFO - Gateway Service is ONLINE.
+2025-03-06 12:40:33,181 - 17 - hummingbot.client.hummingbot_application - INFO - fetched private key bean gaze rude oval syrup doctor unique banner cement awesome desert peace seven toast absent hurdle shrug lend topple off other option assume heavy
+2025-03-06 12:43:00,351 - 17 - hummingbot.client.hummingbot_application - ERROR - MQTT is already stopped!
+2025-03-06 12:45:40,309 - 17 - hummingbot.core.utils.async_utils - ERROR - Unhandled error in background task: Non-hexadecimal digit found
+Traceback (most recent call last):
+  File "/home/hummingbot/hummingbot/core/utils/async_utils.py", line 9, in safe_wrapper
+    return await c
+  File "/home/hummingbot/hummingbot/core/utils/async_call_scheduler.py", line 127, in call_async
+    return await self.schedule_async_call(coro, timeout_seconds, app_warning_msg=app_warning_msg)
+  File "/home/hummingbot/hummingbot/core/utils/async_call_scheduler.py", line 116, in schedule_async_call
+    return await fut
+  File "/home/hummingbot/hummingbot/core/utils/async_call_scheduler.py", line 79, in _coro_scheduler
+    fut.set_result(await coro)
+  File "/opt/conda/envs/hummingbot/lib/python3.10/concurrent/futures/thread.py", line 58, in run
+    result = self.fn(*self.args, **self.kwargs)
+  File "/home/hummingbot/hummingbot/client/config/security.py", line 65, in decrypt_all
+    cls.decrypt_connector_config(file)
+  File "/home/hummingbot/hummingbot/client/config/security.py", line 71, in decrypt_connector_config
+    cls._secure_configs[connector_name] = load_connector_config_map_from_file(file_path)
+  File "/home/hummingbot/hummingbot/client/config/config_helpers.py", line 668, in load_connector_config_map_from_file
+    _load_yml_data_into_map(config_data, config_map)
+  File "/home/hummingbot/hummingbot/client/config/config_helpers.py", line 750, in _load_yml_data_into_map
+    config_validation_errors = cm.validate_model()  # try coercing values to appropriate type
+  File "/home/hummingbot/hummingbot/client/config/config_helpers.py", line 199, in validate_model
+    self.decrypt_all_secure_data()
+  File "/home/hummingbot/hummingbot/client/config/config_helpers.py", line 237, in decrypt_all_secure_data
+    decrypted_value = Security.secrets_manager.decrypt_secret_value(attr=traversal_item.attr, value=value)
+  File "/home/hummingbot/hummingbot/client/config/config_crypt.py", line 59, in decrypt_secret_value
+    value = binascii.unhexlify(value)
+binascii.Error: Non-hexadecimal digit found
+2025-03-06 12:45:40,497 - 17 - hummingbot.core.gateway.gateway_status_monitor - INFO - Gateway Service is ONLINE.
+2025-03-06 12:46:04,877 - 17 - hummingbot.client.hummingbot_application - INFO - this is the balances : {'network': 'mainnet', 'timestamp': 1741265164875, 'latency': 0, 'balances': {'ADA': '16.923513', 'HUNT': '1.446308', 'SPLASH': '2.535751', 'USDC': '0.56936265', 'RSERG': '0.652605136'}}
+2025-03-06 12:46:04,878 - 17 - hummingbot.core.utils.async_utils - ERROR - Unhandled error in background task: 'splash'
+Traceback (most recent call last):
+  File "/home/hummingbot/hummingbot/core/utils/async_utils.py", line 9, in safe_wrapper
+    return await c
+  File "/home/hummingbot/hummingbot/client/command/gateway_command.py", line 357, in _gateway_connect
+    await self.markets[connector]._update_balances()
+KeyError: 'splash'
+2025-03-06 13:02:33,933 - 17 - hummingbot.client.hummingbot_application - INFO - this is the balances : {'network': 'mainnet', 'timestamp': 1741266153932, 'latency': 0, 'balances': {'ADA': '16.923513', 'HUNT': '1.446308', 'SPLASH': '2.535751', 'USDC': '0.56936265', 'RSERG': '0.652605136'}}
+2025-03-06 13:02:33,933 - 17 - hummingbot.core.utils.async_utils - ERROR - Unhandled error in background task: 'splash'
+Traceback (most recent call last):
+  File "/home/hummingbot/hummingbot/core/utils/async_utils.py", line 9, in safe_wrapper
+    return await c
+  File "/home/hummingbot/hummingbot/client/command/gateway_command.py", line 357, in _gateway_connect
+    await self.markets[connector]._update_balances()
+KeyError: 'splash'
+2025-03-06 13:16:36,275 - 17 - hummingbot.client.hummingbot_application - ERROR - MQTT is already stopped!
+2025-03-06 13:21:45,004 - 17 - hummingbot.core.utils.async_utils - ERROR - Unhandled error in background task: Non-hexadecimal digit found
+Traceback (most recent call last):
+  File "/home/hummingbot/hummingbot/core/utils/async_utils.py", line 9, in safe_wrapper
+    return await c
+  File "/home/hummingbot/hummingbot/core/utils/async_call_scheduler.py", line 127, in call_async
+    return await self.schedule_async_call(coro, timeout_seconds, app_warning_msg=app_warning_msg)
+  File "/home/hummingbot/hummingbot/core/utils/async_call_scheduler.py", line 116, in schedule_async_call
+    return await fut
+  File "/home/hummingbot/hummingbot/core/utils/async_call_scheduler.py", line 79, in _coro_scheduler
+    fut.set_result(await coro)
+  File "/opt/conda/envs/hummingbot/lib/python3.10/concurrent/futures/thread.py", line 58, in run
+    result = self.fn(*self.args, **self.kwargs)
+  File "/home/hummingbot/hummingbot/client/config/security.py", line 65, in decrypt_all
+    cls.decrypt_connector_config(file)
+  File "/home/hummingbot/hummingbot/client/config/security.py", line 71, in decrypt_connector_config
+    cls._secure_configs[connector_name] = load_connector_config_map_from_file(file_path)
+  File "/home/hummingbot/hummingbot/client/config/config_helpers.py", line 668, in load_connector_config_map_from_file
+    _load_yml_data_into_map(config_data, config_map)
+  File "/home/hummingbot/hummingbot/client/config/config_helpers.py", line 750, in _load_yml_data_into_map
+    config_validation_errors = cm.validate_model()  # try coercing values to appropriate type
+  File "/home/hummingbot/hummingbot/client/config/config_helpers.py", line 199, in validate_model
+    self.decrypt_all_secure_data()
+  File "/home/hummingbot/hummingbot/client/config/config_helpers.py", line 237, in decrypt_all_secure_data
+    decrypted_value = Security.secrets_manager.decrypt_secret_value(attr=traversal_item.attr, value=value)
+  File "/home/hummingbot/hummingbot/client/config/config_crypt.py", line 59, in decrypt_secret_value
+    value = binascii.unhexlify(value)
+binascii.Error: Non-hexadecimal digit found
+2025-03-06 13:21:45,178 - 17 - hummingbot.core.gateway.gateway_status_monitor - INFO - Gateway Service is ONLINE.
+2025-03-06 13:22:04,891 - 17 - hummingbot.client.hummingbot_application - INFO - this is the balances : {'network': 'mainnet', 'timestamp': 1741267324890, 'latency': 0, 'balances': {'ADA': '16.923513', 'HUNT': '1.446308', 'SPLASH': '2.535751', 'USDC': '0.56936265', 'RSERG': '0.652605136'}}
+2025-03-06 13:22:04,891 - 17 - hummingbot.core.utils.async_utils - ERROR - Unhandled error in background task: 'splash'
+Traceback (most recent call last):
+  File "/home/hummingbot/hummingbot/core/utils/async_utils.py", line 9, in safe_wrapper
+    return await c
+  File "/home/hummingbot/hummingbot/client/command/gateway_command.py", line 358, in _gateway_connect
+    self.logger().info("first %s",await self.markets[connector]._update_balances())
+KeyError: 'splash'
+2025-03-06 13:24:24,683 - 17 - hummingbot.client.hummingbot_application - ERROR - MQTT is already stopped!
+2025-03-06 13:28:22,709 - 17 - hummingbot.core.utils.async_utils - ERROR - Unhandled error in background task: Non-hexadecimal digit found
+Traceback (most recent call last):
+  File "/home/hummingbot/hummingbot/core/utils/async_utils.py", line 9, in safe_wrapper
+    return await c
+  File "/home/hummingbot/hummingbot/core/utils/async_call_scheduler.py", line 127, in call_async
+    return await self.schedule_async_call(coro, timeout_seconds, app_warning_msg=app_warning_msg)
+  File "/home/hummingbot/hummingbot/core/utils/async_call_scheduler.py", line 116, in schedule_async_call
+    return await fut
+  File "/home/hummingbot/hummingbot/core/utils/async_call_scheduler.py", line 79, in _coro_scheduler
+    fut.set_result(await coro)
+  File "/opt/conda/envs/hummingbot/lib/python3.10/concurrent/futures/thread.py", line 58, in run
+    result = self.fn(*self.args, **self.kwargs)
+  File "/home/hummingbot/hummingbot/client/config/security.py", line 65, in decrypt_all
+    cls.decrypt_connector_config(file)
+  File "/home/hummingbot/hummingbot/client/config/security.py", line 71, in decrypt_connector_config
+    cls._secure_configs[connector_name] = load_connector_config_map_from_file(file_path)
+  File "/home/hummingbot/hummingbot/client/config/config_helpers.py", line 668, in load_connector_config_map_from_file
+    _load_yml_data_into_map(config_data, config_map)
+  File "/home/hummingbot/hummingbot/client/config/config_helpers.py", line 750, in _load_yml_data_into_map
+    config_validation_errors = cm.validate_model()  # try coercing values to appropriate type
+  File "/home/hummingbot/hummingbot/client/config/config_helpers.py", line 199, in validate_model
+    self.decrypt_all_secure_data()
+  File "/home/hummingbot/hummingbot/client/config/config_helpers.py", line 237, in decrypt_all_secure_data
+    decrypted_value = Security.secrets_manager.decrypt_secret_value(attr=traversal_item.attr, value=value)
+  File "/home/hummingbot/hummingbot/client/config/config_crypt.py", line 59, in decrypt_secret_value
+    value = binascii.unhexlify(value)
+binascii.Error: Non-hexadecimal digit found
+2025-03-06 13:28:22,864 - 17 - hummingbot.core.gateway.gateway_status_monitor - INFO - Gateway Service is ONLINE.
+2025-03-06 13:28:36,684 - 17 - hummingbot.client.hummingbot_application - INFO - this is the balances : {'network': 'mainnet', 'timestamp': 1741267716683, 'latency': 0, 'balances': {'ADA': '16.923513', 'HUNT': '1.446308', 'SPLASH': '2.535751', 'USDC': '0.56936265', 'RSERG': '0.652605136'}}
+2025-03-06 13:28:36,685 - 17 - hummingbot.core.utils.async_utils - ERROR - Unhandled error in background task: 'splash_cardano_mainnet'
+Traceback (most recent call last):
+  File "/home/hummingbot/hummingbot/core/utils/async_utils.py", line 9, in safe_wrapper
+    return await c
+  File "/home/hummingbot/hummingbot/client/command/gateway_command.py", line 357, in _gateway_connect
+    print("second %s",await self.markets["splash_cardano_mainnet"]._update_balances())
+KeyError: 'splash_cardano_mainnet'
+2025-03-06 13:35:42,564 - 17 - hummingbot.client.hummingbot_application - INFO - fetched private key bean gaze rude oval syrup doctor unique banner cement awesome desert peace seven toast absent hurdle shrug lend topple off other option assume heavy
+2025-03-06 13:35:43,794 - 17 - hummingbot.core.utils.async_utils - ERROR - Unhandled error in background task: 'splash'
+Traceback (most recent call last):
+  File "/home/hummingbot/hummingbot/core/utils/async_utils.py", line 9, in safe_wrapper
+    return await c
+  File "/home/hummingbot/hummingbot/client/command/gateway_command.py", line 402, in _gateway_connect
+    await self.markets[connector]._update_balances()
+KeyError: 'splash'
+2025-03-06 13:46:11,529 - 17 - hummingbot.client.hummingbot_application - ERROR - MQTT is already stopped!
+2025-03-06 13:50:07,596 - 17 - hummingbot.core.utils.async_utils - ERROR - Unhandled error in background task: Non-hexadecimal digit found
+Traceback (most recent call last):
+  File "/home/hummingbot/hummingbot/core/utils/async_utils.py", line 9, in safe_wrapper
+    return await c
+  File "/home/hummingbot/hummingbot/core/utils/async_call_scheduler.py", line 127, in call_async
+    return await self.schedule_async_call(coro, timeout_seconds, app_warning_msg=app_warning_msg)
+  File "/home/hummingbot/hummingbot/core/utils/async_call_scheduler.py", line 116, in schedule_async_call
+    return await fut
+  File "/home/hummingbot/hummingbot/core/utils/async_call_scheduler.py", line 79, in _coro_scheduler
+    fut.set_result(await coro)
+  File "/opt/conda/envs/hummingbot/lib/python3.10/concurrent/futures/thread.py", line 58, in run
+    result = self.fn(*self.args, **self.kwargs)
+  File "/home/hummingbot/hummingbot/client/config/security.py", line 65, in decrypt_all
+    cls.decrypt_connector_config(file)
+  File "/home/hummingbot/hummingbot/client/config/security.py", line 71, in decrypt_connector_config
+    cls._secure_configs[connector_name] = load_connector_config_map_from_file(file_path)
+  File "/home/hummingbot/hummingbot/client/config/config_helpers.py", line 668, in load_connector_config_map_from_file
+    _load_yml_data_into_map(config_data, config_map)
+  File "/home/hummingbot/hummingbot/client/config/config_helpers.py", line 750, in _load_yml_data_into_map
+    config_validation_errors = cm.validate_model()  # try coercing values to appropriate type
+  File "/home/hummingbot/hummingbot/client/config/config_helpers.py", line 199, in validate_model
+    self.decrypt_all_secure_data()
+  File "/home/hummingbot/hummingbot/client/config/config_helpers.py", line 237, in decrypt_all_secure_data
+    decrypted_value = Security.secrets_manager.decrypt_secret_value(attr=traversal_item.attr, value=value)
+  File "/home/hummingbot/hummingbot/client/config/config_crypt.py", line 59, in decrypt_secret_value
+    value = binascii.unhexlify(value)
+binascii.Error: Non-hexadecimal digit found
+2025-03-06 13:50:07,794 - 17 - hummingbot.core.gateway.gateway_status_monitor - INFO - Gateway Service is ONLINE.
+2025-03-06 13:52:21,566 - 17 - hummingbot.client.hummingbot_application - INFO - fetched private key bean gaze rude oval syrup doctor unique banner cement awesome desert peace seven toast absent hurdle shrug lend topple off other option assume heavy
+2025-03-06 13:53:31,248 - 17 - hummingbot.core.utils.async_utils - ERROR - Unhandled error in background task: 'splash_cardano_mainnet'
+Traceback (most recent call last):
+  File "/home/hummingbot/hummingbot/core/utils/async_utils.py", line 9, in safe_wrapper
+    return await c
+  File "/home/hummingbot/hummingbot/client/command/gateway_command.py", line 357, in _gateway_connect
+    print("second %s",await self.markets["splash_cardano_mainnet"]._update_balances())
+KeyError: 'splash_cardano_mainnet'
+2025-03-06 13:53:40,288 - 17 - hummingbot.client.hummingbot_application - ERROR - MQTT is already stopped!
+2025-03-06 13:57:26,514 - 17 - hummingbot.core.utils.async_utils - ERROR - Unhandled error in background task: Non-hexadecimal digit found
+Traceback (most recent call last):
+  File "/home/hummingbot/hummingbot/core/utils/async_utils.py", line 9, in safe_wrapper
+    return await c
+  File "/home/hummingbot/hummingbot/core/utils/async_call_scheduler.py", line 127, in call_async
+    return await self.schedule_async_call(coro, timeout_seconds, app_warning_msg=app_warning_msg)
+  File "/home/hummingbot/hummingbot/core/utils/async_call_scheduler.py", line 116, in schedule_async_call
+    return await fut
+  File "/home/hummingbot/hummingbot/core/utils/async_call_scheduler.py", line 79, in _coro_scheduler
+    fut.set_result(await coro)
+  File "/opt/conda/envs/hummingbot/lib/python3.10/concurrent/futures/thread.py", line 58, in run
+    result = self.fn(*self.args, **self.kwargs)
+  File "/home/hummingbot/hummingbot/client/config/security.py", line 65, in decrypt_all
+    cls.decrypt_connector_config(file)
+  File "/home/hummingbot/hummingbot/client/config/security.py", line 71, in decrypt_connector_config
+    cls._secure_configs[connector_name] = load_connector_config_map_from_file(file_path)
+  File "/home/hummingbot/hummingbot/client/config/config_helpers.py", line 668, in load_connector_config_map_from_file
+    _load_yml_data_into_map(config_data, config_map)
+  File "/home/hummingbot/hummingbot/client/config/config_helpers.py", line 750, in _load_yml_data_into_map
+    config_validation_errors = cm.validate_model()  # try coercing values to appropriate type
+  File "/home/hummingbot/hummingbot/client/config/config_helpers.py", line 199, in validate_model
+    self.decrypt_all_secure_data()
+  File "/home/hummingbot/hummingbot/client/config/config_helpers.py", line 237, in decrypt_all_secure_data
+    decrypted_value = Security.secrets_manager.decrypt_secret_value(attr=traversal_item.attr, value=value)
+  File "/home/hummingbot/hummingbot/client/config/config_crypt.py", line 59, in decrypt_secret_value
+    value = binascii.unhexlify(value)
+binascii.Error: Non-hexadecimal digit found
+2025-03-06 13:57:26,713 - 17 - hummingbot.core.gateway.gateway_status_monitor - INFO - Gateway Service is ONLINE.
+2025-03-06 14:14:58,683 - 17 - hummingbot.core.utils.async_utils - ERROR - Unhandled error in background task: Non-hexadecimal digit found
+Traceback (most recent call last):
+  File "/home/hummingbot/hummingbot/core/utils/async_utils.py", line 9, in safe_wrapper
+    return await c
+  File "/home/hummingbot/hummingbot/core/utils/async_call_scheduler.py", line 127, in call_async
+    return await self.schedule_async_call(coro, timeout_seconds, app_warning_msg=app_warning_msg)
+  File "/home/hummingbot/hummingbot/core/utils/async_call_scheduler.py", line 116, in schedule_async_call
+    return await fut
+  File "/home/hummingbot/hummingbot/core/utils/async_call_scheduler.py", line 79, in _coro_scheduler
+    fut.set_result(await coro)
+  File "/opt/conda/envs/hummingbot/lib/python3.10/concurrent/futures/thread.py", line 58, in run
+    result = self.fn(*self.args, **self.kwargs)
+  File "/home/hummingbot/hummingbot/client/config/security.py", line 65, in decrypt_all
+    cls.decrypt_connector_config(file)
+  File "/home/hummingbot/hummingbot/client/config/security.py", line 71, in decrypt_connector_config
+    cls._secure_configs[connector_name] = load_connector_config_map_from_file(file_path)
+  File "/home/hummingbot/hummingbot/client/config/config_helpers.py", line 668, in load_connector_config_map_from_file
+    _load_yml_data_into_map(config_data, config_map)
+  File "/home/hummingbot/hummingbot/client/config/config_helpers.py", line 750, in _load_yml_data_into_map
+    config_validation_errors = cm.validate_model()  # try coercing values to appropriate type
+  File "/home/hummingbot/hummingbot/client/config/config_helpers.py", line 199, in validate_model
+    self.decrypt_all_secure_data()
+  File "/home/hummingbot/hummingbot/client/config/config_helpers.py", line 237, in decrypt_all_secure_data
+    decrypted_value = Security.secrets_manager.decrypt_secret_value(attr=traversal_item.attr, value=value)
+  File "/home/hummingbot/hummingbot/client/config/config_crypt.py", line 59, in decrypt_secret_value
+    value = binascii.unhexlify(value)
+binascii.Error: Non-hexadecimal digit found
+2025-03-06 14:14:58,908 - 17 - hummingbot.core.gateway.gateway_status_monitor - INFO - Gateway Service is ONLINE.
+2025-03-06 14:21:41,727 - 17 - hummingbot.core.utils.async_utils - ERROR - Unhandled error in background task: Non-hexadecimal digit found
+Traceback (most recent call last):
+  File "/home/hummingbot/hummingbot/core/utils/async_utils.py", line 9, in safe_wrapper
+    return await c
+  File "/home/hummingbot/hummingbot/core/utils/async_call_scheduler.py", line 127, in call_async
+    return await self.schedule_async_call(coro, timeout_seconds, app_warning_msg=app_warning_msg)
+  File "/home/hummingbot/hummingbot/core/utils/async_call_scheduler.py", line 116, in schedule_async_call
+    return await fut
+  File "/home/hummingbot/hummingbot/core/utils/async_call_scheduler.py", line 79, in _coro_scheduler
+    fut.set_result(await coro)
+  File "/opt/conda/envs/hummingbot/lib/python3.10/concurrent/futures/thread.py", line 58, in run
+    result = self.fn(*self.args, **self.kwargs)
+  File "/home/hummingbot/hummingbot/client/config/security.py", line 65, in decrypt_all
+    cls.decrypt_connector_config(file)
+  File "/home/hummingbot/hummingbot/client/config/security.py", line 71, in decrypt_connector_config
+    cls._secure_configs[connector_name] = load_connector_config_map_from_file(file_path)
+  File "/home/hummingbot/hummingbot/client/config/config_helpers.py", line 668, in load_connector_config_map_from_file
+    _load_yml_data_into_map(config_data, config_map)
+  File "/home/hummingbot/hummingbot/client/config/config_helpers.py", line 750, in _load_yml_data_into_map
+    config_validation_errors = cm.validate_model()  # try coercing values to appropriate type
+  File "/home/hummingbot/hummingbot/client/config/config_helpers.py", line 199, in validate_model
+    self.decrypt_all_secure_data()
+  File "/home/hummingbot/hummingbot/client/config/config_helpers.py", line 237, in decrypt_all_secure_data
+    decrypted_value = Security.secrets_manager.decrypt_secret_value(attr=traversal_item.attr, value=value)
+  File "/home/hummingbot/hummingbot/client/config/config_crypt.py", line 59, in decrypt_secret_value
+    value = binascii.unhexlify(value)
+binascii.Error: Non-hexadecimal digit found
+2025-03-06 14:21:41,894 - 17 - hummingbot.core.gateway.gateway_status_monitor - INFO - Gateway Service is ONLINE.
+2025-03-06 14:22:29,921 - 17 - hummingbot.core.gateway.gateway_http_client - WARNING - Call to https://localhost:15888/cardano/balances failed. See logs for more details.
+2025-03-06 14:22:29,922 - 17 - hummingbot.core.utils.async_utils - ERROR - Unhandled error in background task: Error on POST https://localhost:15888/cardano/balances Error: {'message': 'Unknown error.', 'httpErrorCode': 503, 'errorCode': 1099, 'stack': 'Error: SyntaxError: Unexpected non-whitespace character after JSON at position 821\n    at Cardano.getAddressUtxos (/home/gateway/dist/src/chains/cardano/cardano.js:169:19)\n    at async CardanoController.balances (/home/gateway/dist/src/chains/cardano/cardano.controllers.js:10:21)\n    at async Object.<anonymous> (/home/gateway/dist/src/chains/cardano/cardano.routes.js:43:16)'}
+Traceback (most recent call last):
+  File "/home/hummingbot/hummingbot/core/utils/async_utils.py", line 9, in safe_wrapper
+    return await c
+  File "/home/hummingbot/hummingbot/client/command/gateway_command.py", line 346, in _gateway_connect
+    balances: Dict[str, Any] = await self._get_gateway_instance().get_balances(
+  File "/home/hummingbot/hummingbot/core/gateway/gateway_http_client.py", line 312, in get_balances
+    return await self.api_request(
+  File "/home/hummingbot/hummingbot/core/gateway/gateway_http_client.py", line 234, in api_request
+    raise e
+  File "/home/hummingbot/hummingbot/core/gateway/gateway_http_client.py", line 222, in api_request
+    raise ValueError(f"Error on {method.upper()} {url} Error: {parsed_response}")
+ValueError: Error on POST https://localhost:15888/cardano/balances Error: {'message': 'Unknown error.', 'httpErrorCode': 503, 'errorCode': 1099, 'stack': 'Error: SyntaxError: Unexpected non-whitespace character after JSON at position 821\n    at Cardano.getAddressUtxos (/home/gateway/dist/src/chains/cardano/cardano.js:169:19)\n    at async CardanoController.balances (/home/gateway/dist/src/chains/cardano/cardano.controllers.js:10:21)\n    at async Object.<anonymous> (/home/gateway/dist/src/chains/cardano/cardano.routes.js:43:16)'}
+2025-03-06 14:22:57,542 - 17 - hummingbot.core.gateway.gateway_http_client - WARNING - Call to https://localhost:15888/cardano/balances failed. See logs for more details.
+2025-03-06 14:22:57,542 - 17 - hummingbot.core.utils.async_utils - ERROR - Unhandled error in background task: Error on POST https://localhost:15888/cardano/balances Error: {'message': 'Unknown error.', 'httpErrorCode': 503, 'errorCode': 1099, 'stack': 'Error: SyntaxError: Unexpected non-whitespace character after JSON at position 821\n    at Cardano.getAddressUtxos (/home/gateway/dist/src/chains/cardano/cardano.js:169:19)\n    at async CardanoController.balances (/home/gateway/dist/src/chains/cardano/cardano.controllers.js:10:21)\n    at async Object.<anonymous> (/home/gateway/dist/src/chains/cardano/cardano.routes.js:43:16)'}
+Traceback (most recent call last):
+  File "/home/hummingbot/hummingbot/core/utils/async_utils.py", line 9, in safe_wrapper
+    return await c
+  File "/home/hummingbot/hummingbot/client/command/gateway_command.py", line 346, in _gateway_connect
+    balances: Dict[str, Any] = await self._get_gateway_instance().get_balances(
+  File "/home/hummingbot/hummingbot/core/gateway/gateway_http_client.py", line 312, in get_balances
+    return await self.api_request(
+  File "/home/hummingbot/hummingbot/core/gateway/gateway_http_client.py", line 234, in api_request
+    raise e
+  File "/home/hummingbot/hummingbot/core/gateway/gateway_http_client.py", line 222, in api_request
+    raise ValueError(f"Error on {method.upper()} {url} Error: {parsed_response}")
+ValueError: Error on POST https://localhost:15888/cardano/balances Error: {'message': 'Unknown error.', 'httpErrorCode': 503, 'errorCode': 1099, 'stack': 'Error: SyntaxError: Unexpected non-whitespace character after JSON at position 821\n    at Cardano.getAddressUtxos (/home/gateway/dist/src/chains/cardano/cardano.js:169:19)\n    at async CardanoController.balances (/home/gateway/dist/src/chains/cardano/cardano.controllers.js:10:21)\n    at async Object.<anonymous> (/home/gateway/dist/src/chains/cardano/cardano.routes.js:43:16)'}
+2025-03-06 14:23:23,150 - 17 - hummingbot.client.hummingbot_application - INFO - fetched private key bean gaze rude oval syrup doctor unique banner cement awesome desert peace seven toast absent hurdle shrug lend topple off other option assume heavy
+2025-03-06 14:26:55,083 - 17 - hummingbot.core.utils.async_utils - ERROR - Unhandled error in background task: Non-hexadecimal digit found
+Traceback (most recent call last):
+  File "/home/hummingbot/hummingbot/core/utils/async_utils.py", line 9, in safe_wrapper
+    return await c
+  File "/home/hummingbot/hummingbot/core/utils/async_call_scheduler.py", line 127, in call_async
+    return await self.schedule_async_call(coro, timeout_seconds, app_warning_msg=app_warning_msg)
+  File "/home/hummingbot/hummingbot/core/utils/async_call_scheduler.py", line 116, in schedule_async_call
+    return await fut
+  File "/home/hummingbot/hummingbot/core/utils/async_call_scheduler.py", line 79, in _coro_scheduler
+    fut.set_result(await coro)
+  File "/opt/conda/envs/hummingbot/lib/python3.10/concurrent/futures/thread.py", line 58, in run
+    result = self.fn(*self.args, **self.kwargs)
+  File "/home/hummingbot/hummingbot/client/config/security.py", line 65, in decrypt_all
+    cls.decrypt_connector_config(file)
+  File "/home/hummingbot/hummingbot/client/config/security.py", line 71, in decrypt_connector_config
+    cls._secure_configs[connector_name] = load_connector_config_map_from_file(file_path)
+  File "/home/hummingbot/hummingbot/client/config/config_helpers.py", line 668, in load_connector_config_map_from_file
+    _load_yml_data_into_map(config_data, config_map)
+  File "/home/hummingbot/hummingbot/client/config/config_helpers.py", line 750, in _load_yml_data_into_map
+    config_validation_errors = cm.validate_model()  # try coercing values to appropriate type
+  File "/home/hummingbot/hummingbot/client/config/config_helpers.py", line 199, in validate_model
+    self.decrypt_all_secure_data()
+  File "/home/hummingbot/hummingbot/client/config/config_helpers.py", line 237, in decrypt_all_secure_data
+    decrypted_value = Security.secrets_manager.decrypt_secret_value(attr=traversal_item.attr, value=value)
+  File "/home/hummingbot/hummingbot/client/config/config_crypt.py", line 59, in decrypt_secret_value
+    value = binascii.unhexlify(value)
+binascii.Error: Non-hexadecimal digit found
+2025-03-06 14:26:55,247 - 17 - hummingbot.core.gateway.gateway_status_monitor - INFO - Gateway Service is ONLINE.
+2025-03-06 14:40:28,821 - 17 - hummingbot.core.utils.async_utils - ERROR - Unhandled error in background task: Non-hexadecimal digit found
+Traceback (most recent call last):
+  File "/home/hummingbot/hummingbot/core/utils/async_utils.py", line 9, in safe_wrapper
+    return await c
+  File "/home/hummingbot/hummingbot/core/utils/async_call_scheduler.py", line 127, in call_async
+    return await self.schedule_async_call(coro, timeout_seconds, app_warning_msg=app_warning_msg)
+  File "/home/hummingbot/hummingbot/core/utils/async_call_scheduler.py", line 116, in schedule_async_call
+    return await fut
+  File "/home/hummingbot/hummingbot/core/utils/async_call_scheduler.py", line 79, in _coro_scheduler
+    fut.set_result(await coro)
+  File "/opt/conda/envs/hummingbot/lib/python3.10/concurrent/futures/thread.py", line 58, in run
+    result = self.fn(*self.args, **self.kwargs)
+  File "/home/hummingbot/hummingbot/client/config/security.py", line 65, in decrypt_all
+    cls.decrypt_connector_config(file)
+  File "/home/hummingbot/hummingbot/client/config/security.py", line 71, in decrypt_connector_config
+    cls._secure_configs[connector_name] = load_connector_config_map_from_file(file_path)
+  File "/home/hummingbot/hummingbot/client/config/config_helpers.py", line 668, in load_connector_config_map_from_file
+    _load_yml_data_into_map(config_data, config_map)
+  File "/home/hummingbot/hummingbot/client/config/config_helpers.py", line 750, in _load_yml_data_into_map
+    config_validation_errors = cm.validate_model()  # try coercing values to appropriate type
+  File "/home/hummingbot/hummingbot/client/config/config_helpers.py", line 199, in validate_model
+    self.decrypt_all_secure_data()
+  File "/home/hummingbot/hummingbot/client/config/config_helpers.py", line 237, in decrypt_all_secure_data
+    decrypted_value = Security.secrets_manager.decrypt_secret_value(attr=traversal_item.attr, value=value)
+  File "/home/hummingbot/hummingbot/client/config/config_crypt.py", line 59, in decrypt_secret_value
+    value = binascii.unhexlify(value)
+binascii.Error: Non-hexadecimal digit found
+2025-03-06 14:40:28,951 - 17 - hummingbot.core.gateway.gateway_status_monitor - INFO - Gateway Service is ONLINE.
+2025-03-06 14:49:23,389 - 17 - hummingbot.core.utils.async_utils - ERROR - Unhandled error in background task: Non-hexadecimal digit found
+Traceback (most recent call last):
+  File "/home/hummingbot/hummingbot/core/utils/async_utils.py", line 9, in safe_wrapper
+    return await c
+  File "/home/hummingbot/hummingbot/core/utils/async_call_scheduler.py", line 127, in call_async
+    return await self.schedule_async_call(coro, timeout_seconds, app_warning_msg=app_warning_msg)
+  File "/home/hummingbot/hummingbot/core/utils/async_call_scheduler.py", line 116, in schedule_async_call
+    return await fut
+  File "/home/hummingbot/hummingbot/core/utils/async_call_scheduler.py", line 79, in _coro_scheduler
+    fut.set_result(await coro)
+  File "/opt/conda/envs/hummingbot/lib/python3.10/concurrent/futures/thread.py", line 58, in run
+    result = self.fn(*self.args, **self.kwargs)
+  File "/home/hummingbot/hummingbot/client/config/security.py", line 65, in decrypt_all
+    cls.decrypt_connector_config(file)
+  File "/home/hummingbot/hummingbot/client/config/security.py", line 71, in decrypt_connector_config
+    cls._secure_configs[connector_name] = load_connector_config_map_from_file(file_path)
+  File "/home/hummingbot/hummingbot/client/config/config_helpers.py", line 668, in load_connector_config_map_from_file
+    _load_yml_data_into_map(config_data, config_map)
+  File "/home/hummingbot/hummingbot/client/config/config_helpers.py", line 750, in _load_yml_data_into_map
+    config_validation_errors = cm.validate_model()  # try coercing values to appropriate type
+  File "/home/hummingbot/hummingbot/client/config/config_helpers.py", line 199, in validate_model
+    self.decrypt_all_secure_data()
+  File "/home/hummingbot/hummingbot/client/config/config_helpers.py", line 237, in decrypt_all_secure_data
+    decrypted_value = Security.secrets_manager.decrypt_secret_value(attr=traversal_item.attr, value=value)
+  File "/home/hummingbot/hummingbot/client/config/config_crypt.py", line 59, in decrypt_secret_value
+    value = binascii.unhexlify(value)
+binascii.Error: Non-hexadecimal digit found
+2025-03-06 14:49:23,529 - 17 - hummingbot.core.gateway.gateway_status_monitor - INFO - Gateway Service is ONLINE.
+2025-03-06 23:04:50,810 - 17 - hummingbot.core.utils.async_utils - ERROR - Unhandled error in background task: Non-hexadecimal digit found
+Traceback (most recent call last):
+  File "/home/hummingbot/hummingbot/core/utils/async_utils.py", line 9, in safe_wrapper
+    return await c
+  File "/home/hummingbot/hummingbot/core/utils/async_call_scheduler.py", line 127, in call_async
+    return await self.schedule_async_call(coro, timeout_seconds, app_warning_msg=app_warning_msg)
+  File "/home/hummingbot/hummingbot/core/utils/async_call_scheduler.py", line 116, in schedule_async_call
+    return await fut
+  File "/home/hummingbot/hummingbot/core/utils/async_call_scheduler.py", line 79, in _coro_scheduler
+    fut.set_result(await coro)
+  File "/opt/conda/envs/hummingbot/lib/python3.10/concurrent/futures/thread.py", line 58, in run
+    result = self.fn(*self.args, **self.kwargs)
+  File "/home/hummingbot/hummingbot/client/config/security.py", line 65, in decrypt_all
+    cls.decrypt_connector_config(file)
+  File "/home/hummingbot/hummingbot/client/config/security.py", line 71, in decrypt_connector_config
+    cls._secure_configs[connector_name] = load_connector_config_map_from_file(file_path)
+  File "/home/hummingbot/hummingbot/client/config/config_helpers.py", line 668, in load_connector_config_map_from_file
+    _load_yml_data_into_map(config_data, config_map)
+  File "/home/hummingbot/hummingbot/client/config/config_helpers.py", line 750, in _load_yml_data_into_map
+    config_validation_errors = cm.validate_model()  # try coercing values to appropriate type
+  File "/home/hummingbot/hummingbot/client/config/config_helpers.py", line 199, in validate_model
+    self.decrypt_all_secure_data()
+  File "/home/hummingbot/hummingbot/client/config/config_helpers.py", line 237, in decrypt_all_secure_data
+    decrypted_value = Security.secrets_manager.decrypt_secret_value(attr=traversal_item.attr, value=value)
+  File "/home/hummingbot/hummingbot/client/config/config_crypt.py", line 59, in decrypt_secret_value
+    value = binascii.unhexlify(value)
+binascii.Error: Non-hexadecimal digit found
+2025-03-06 23:04:50,976 - 17 - hummingbot.core.gateway.gateway_status_monitor - INFO - Gateway Service is ONLINE.
+2025-03-06 23:05:26,843 - 17 - hummingbot.core.gateway.gateway_http_client - WARNING - Call to https://localhost:15888/cardano/balances failed. See logs for more details.
+2025-03-06 23:05:26,844 - 17 - hummingbot.core.utils.async_utils - ERROR - Unhandled error in background task: Error on POST https://localhost:15888/cardano/balances Error: {'message': 'Unknown error.', 'httpErrorCode': 503, 'errorCode': 1099, 'stack': 'Error: SyntaxError: Unexpected non-whitespace character after JSON at position 827\n    at Cardano.getAddressUtxos (/home/gateway/dist/src/chains/cardano/cardano.js:169:19)\n    at async CardanoController.balances (/home/gateway/dist/src/chains/cardano/cardano.controllers.js:10:21)\n    at async Object.<anonymous> (/home/gateway/dist/src/chains/cardano/cardano.routes.js:43:16)'}
+Traceback (most recent call last):
+  File "/home/hummingbot/hummingbot/core/utils/async_utils.py", line 9, in safe_wrapper
+    return await c
+  File "/home/hummingbot/hummingbot/client/command/gateway_command.py", line 346, in _gateway_connect
+    balances: Dict[str, Any] = await self._get_gateway_instance().get_balances(
+  File "/home/hummingbot/hummingbot/core/gateway/gateway_http_client.py", line 312, in get_balances
+    return await self.api_request(
+  File "/home/hummingbot/hummingbot/core/gateway/gateway_http_client.py", line 234, in api_request
+    raise e
+  File "/home/hummingbot/hummingbot/core/gateway/gateway_http_client.py", line 222, in api_request
+    raise ValueError(f"Error on {method.upper()} {url} Error: {parsed_response}")
+ValueError: Error on POST https://localhost:15888/cardano/balances Error: {'message': 'Unknown error.', 'httpErrorCode': 503, 'errorCode': 1099, 'stack': 'Error: SyntaxError: Unexpected non-whitespace character after JSON at position 827\n    at Cardano.getAddressUtxos (/home/gateway/dist/src/chains/cardano/cardano.js:169:19)\n    at async CardanoController.balances (/home/gateway/dist/src/chains/cardano/cardano.controllers.js:10:21)\n    at async Object.<anonymous> (/home/gateway/dist/src/chains/cardano/cardano.routes.js:43:16)'}
+2025-03-06 23:05:44,629 - 17 - hummingbot.core.gateway.gateway_http_client - WARNING - Call to https://localhost:15888/cardano/balances failed. See logs for more details.
+2025-03-06 23:05:44,630 - 17 - hummingbot.core.utils.async_utils - ERROR - Unhandled error in background task: Error on POST https://localhost:15888/cardano/balances Error: {'message': 'Unknown error.', 'httpErrorCode': 503, 'errorCode': 1099, 'stack': 'Error: SyntaxError: Unexpected non-whitespace character after JSON at position 827\n    at Cardano.getAddressUtxos (/home/gateway/dist/src/chains/cardano/cardano.js:169:19)\n    at async CardanoController.balances (/home/gateway/dist/src/chains/cardano/cardano.controllers.js:10:21)\n    at async Object.<anonymous> (/home/gateway/dist/src/chains/cardano/cardano.routes.js:43:16)'}
+Traceback (most recent call last):
+  File "/home/hummingbot/hummingbot/core/utils/async_utils.py", line 9, in safe_wrapper
+    return await c
+  File "/home/hummingbot/hummingbot/client/command/gateway_command.py", line 346, in _gateway_connect
+    balances: Dict[str, Any] = await self._get_gateway_instance().get_balances(
+  File "/home/hummingbot/hummingbot/core/gateway/gateway_http_client.py", line 312, in get_balances
+    return await self.api_request(
+  File "/home/hummingbot/hummingbot/core/gateway/gateway_http_client.py", line 234, in api_request
+    raise e
+  File "/home/hummingbot/hummingbot/core/gateway/gateway_http_client.py", line 222, in api_request
+    raise ValueError(f"Error on {method.upper()} {url} Error: {parsed_response}")
+ValueError: Error on POST https://localhost:15888/cardano/balances Error: {'message': 'Unknown error.', 'httpErrorCode': 503, 'errorCode': 1099, 'stack': 'Error: SyntaxError: Unexpected non-whitespace character after JSON at position 827\n    at Cardano.getAddressUtxos (/home/gateway/dist/src/chains/cardano/cardano.js:169:19)\n    at async CardanoController.balances (/home/gateway/dist/src/chains/cardano/cardano.controllers.js:10:21)\n    at async Object.<anonymous> (/home/gateway/dist/src/chains/cardano/cardano.routes.js:43:16)'}
+2025-03-06 23:06:46,531 - 17 - hummingbot.client.hummingbot_application - INFO - fetched private key deRLDMTyZSodB9hZyFVXxaNAjwsbSsHT
+2025-03-06 23:06:46,965 - 17 - hummingbot.core.gateway.gateway_http_client - WARNING - Call to https://localhost:15888/wallet/add failed. See logs for more details.
+2025-03-06 23:06:55,285 - 17 - hummingbot.client.hummingbot_application - INFO - fetched private key bean gaze rude oval syrup doctor unique banner cement awesome desert peace seven toast absent hurdle shrug lend topple off other option assume heavy
+2025-03-06 23:07:06,098 - 17 - hummingbot.client.hummingbot_application - ERROR - MQTT is already stopped!
+2025-03-06 23:07:29,830 - 17 - hummingbot.core.utils.async_utils - ERROR - Unhandled error in background task: Non-hexadecimal digit found
+Traceback (most recent call last):
+  File "/home/hummingbot/hummingbot/core/utils/async_utils.py", line 9, in safe_wrapper
+    return await c
+  File "/home/hummingbot/hummingbot/core/utils/async_call_scheduler.py", line 127, in call_async
+    return await self.schedule_async_call(coro, timeout_seconds, app_warning_msg=app_warning_msg)
+  File "/home/hummingbot/hummingbot/core/utils/async_call_scheduler.py", line 116, in schedule_async_call
+    return await fut
+  File "/home/hummingbot/hummingbot/core/utils/async_call_scheduler.py", line 79, in _coro_scheduler
+    fut.set_result(await coro)
+  File "/opt/conda/envs/hummingbot/lib/python3.10/concurrent/futures/thread.py", line 58, in run
+    result = self.fn(*self.args, **self.kwargs)
+  File "/home/hummingbot/hummingbot/client/config/security.py", line 65, in decrypt_all
+    cls.decrypt_connector_config(file)
+  File "/home/hummingbot/hummingbot/client/config/security.py", line 71, in decrypt_connector_config
+    cls._secure_configs[connector_name] = load_connector_config_map_from_file(file_path)
+  File "/home/hummingbot/hummingbot/client/config/config_helpers.py", line 668, in load_connector_config_map_from_file
+    _load_yml_data_into_map(config_data, config_map)
+  File "/home/hummingbot/hummingbot/client/config/config_helpers.py", line 750, in _load_yml_data_into_map
+    config_validation_errors = cm.validate_model()  # try coercing values to appropriate type
+  File "/home/hummingbot/hummingbot/client/config/config_helpers.py", line 199, in validate_model
+    self.decrypt_all_secure_data()
+  File "/home/hummingbot/hummingbot/client/config/config_helpers.py", line 237, in decrypt_all_secure_data
+    decrypted_value = Security.secrets_manager.decrypt_secret_value(attr=traversal_item.attr, value=value)
+  File "/home/hummingbot/hummingbot/client/config/config_crypt.py", line 59, in decrypt_secret_value
+    value = binascii.unhexlify(value)
+binascii.Error: Non-hexadecimal digit found
+2025-03-06 23:07:29,992 - 17 - hummingbot.core.gateway.gateway_status_monitor - INFO - Gateway Service is ONLINE.
+2025-03-06 23:25:21,087 - 17 - hummingbot.core.utils.async_utils - ERROR - Unhandled error in background task: Non-hexadecimal digit found
+Traceback (most recent call last):
+  File "/home/hummingbot/hummingbot/core/utils/async_utils.py", line 9, in safe_wrapper
+    return await c
+  File "/home/hummingbot/hummingbot/core/utils/async_call_scheduler.py", line 127, in call_async
+    return await self.schedule_async_call(coro, timeout_seconds, app_warning_msg=app_warning_msg)
+  File "/home/hummingbot/hummingbot/core/utils/async_call_scheduler.py", line 116, in schedule_async_call
+    return await fut
+  File "/home/hummingbot/hummingbot/core/utils/async_call_scheduler.py", line 79, in _coro_scheduler
+    fut.set_result(await coro)
+  File "/opt/conda/envs/hummingbot/lib/python3.10/concurrent/futures/thread.py", line 58, in run
+    result = self.fn(*self.args, **self.kwargs)
+  File "/home/hummingbot/hummingbot/client/config/security.py", line 65, in decrypt_all
+    cls.decrypt_connector_config(file)
+  File "/home/hummingbot/hummingbot/client/config/security.py", line 71, in decrypt_connector_config
+    cls._secure_configs[connector_name] = load_connector_config_map_from_file(file_path)
+  File "/home/hummingbot/hummingbot/client/config/config_helpers.py", line 668, in load_connector_config_map_from_file
+    _load_yml_data_into_map(config_data, config_map)
+  File "/home/hummingbot/hummingbot/client/config/config_helpers.py", line 750, in _load_yml_data_into_map
+    config_validation_errors = cm.validate_model()  # try coercing values to appropriate type
+  File "/home/hummingbot/hummingbot/client/config/config_helpers.py", line 199, in validate_model
+    self.decrypt_all_secure_data()
+  File "/home/hummingbot/hummingbot/client/config/config_helpers.py", line 237, in decrypt_all_secure_data
+    decrypted_value = Security.secrets_manager.decrypt_secret_value(attr=traversal_item.attr, value=value)
+  File "/home/hummingbot/hummingbot/client/config/config_crypt.py", line 59, in decrypt_secret_value
+    value = binascii.unhexlify(value)
+binascii.Error: Non-hexadecimal digit found
+2025-03-06 23:25:21,254 - 17 - hummingbot.core.gateway.gateway_status_monitor - INFO - Gateway Service is ONLINE.
+2025-03-06 23:25:41,874 - 17 - hummingbot.core.gateway.gateway_http_client - WARNING - Call to https://localhost:15888/cardano/balances failed. See logs for more details.
+2025-03-06 23:25:41,875 - 17 - hummingbot.core.utils.async_utils - ERROR - Unhandled error in background task: Error on POST https://localhost:15888/cardano/balances Error: {'message': 'Unknown error.', 'httpErrorCode': 503, 'errorCode': 1099, 'stack': 'Error: SyntaxError: Unexpected non-whitespace character after JSON at position 822\n    at Cardano.getAddressUtxos (/home/gateway/dist/src/chains/cardano/cardano.js:169:19)\n    at async CardanoController.balances (/home/gateway/dist/src/chains/cardano/cardano.controllers.js:10:21)\n    at async Object.<anonymous> (/home/gateway/dist/src/chains/cardano/cardano.routes.js:43:16)'}
+Traceback (most recent call last):
+  File "/home/hummingbot/hummingbot/core/utils/async_utils.py", line 9, in safe_wrapper
+    return await c
+  File "/home/hummingbot/hummingbot/client/command/gateway_command.py", line 346, in _gateway_connect
+    balances: Dict[str, Any] = await self._get_gateway_instance().get_balances(
+  File "/home/hummingbot/hummingbot/core/gateway/gateway_http_client.py", line 312, in get_balances
+    return await self.api_request(
+  File "/home/hummingbot/hummingbot/core/gateway/gateway_http_client.py", line 234, in api_request
+    raise e
+  File "/home/hummingbot/hummingbot/core/gateway/gateway_http_client.py", line 222, in api_request
+    raise ValueError(f"Error on {method.upper()} {url} Error: {parsed_response}")
+ValueError: Error on POST https://localhost:15888/cardano/balances Error: {'message': 'Unknown error.', 'httpErrorCode': 503, 'errorCode': 1099, 'stack': 'Error: SyntaxError: Unexpected non-whitespace character after JSON at position 822\n    at Cardano.getAddressUtxos (/home/gateway/dist/src/chains/cardano/cardano.js:169:19)\n    at async CardanoController.balances (/home/gateway/dist/src/chains/cardano/cardano.controllers.js:10:21)\n    at async Object.<anonymous> (/home/gateway/dist/src/chains/cardano/cardano.routes.js:43:16)'}
+2025-03-06 23:32:06,296 - 17 - hummingbot.client.hummingbot_application - INFO - fetched private key bean gaze rude oval syrup doctor unique banner cement awesome desert peace seven toast absent hurdle shrug lend topple off other option assume heavy
+2025-03-07 00:06:08,144 - 17 - hummingbot.core.utils.async_utils - ERROR - Unhandled error in background task: Non-hexadecimal digit found
+Traceback (most recent call last):
+  File "/home/hummingbot/hummingbot/core/utils/async_utils.py", line 9, in safe_wrapper
+    return await c
+  File "/home/hummingbot/hummingbot/core/utils/async_call_scheduler.py", line 127, in call_async
+    return await self.schedule_async_call(coro, timeout_seconds, app_warning_msg=app_warning_msg)
+  File "/home/hummingbot/hummingbot/core/utils/async_call_scheduler.py", line 116, in schedule_async_call
+    return await fut
+  File "/home/hummingbot/hummingbot/core/utils/async_call_scheduler.py", line 79, in _coro_scheduler
+    fut.set_result(await coro)
+  File "/opt/conda/envs/hummingbot/lib/python3.10/concurrent/futures/thread.py", line 58, in run
+    result = self.fn(*self.args, **self.kwargs)
+  File "/home/hummingbot/hummingbot/client/config/security.py", line 65, in decrypt_all
+    cls.decrypt_connector_config(file)
+  File "/home/hummingbot/hummingbot/client/config/security.py", line 71, in decrypt_connector_config
+    cls._secure_configs[connector_name] = load_connector_config_map_from_file(file_path)
+  File "/home/hummingbot/hummingbot/client/config/config_helpers.py", line 668, in load_connector_config_map_from_file
+    _load_yml_data_into_map(config_data, config_map)
+  File "/home/hummingbot/hummingbot/client/config/config_helpers.py", line 750, in _load_yml_data_into_map
+    config_validation_errors = cm.validate_model()  # try coercing values to appropriate type
+  File "/home/hummingbot/hummingbot/client/config/config_helpers.py", line 199, in validate_model
+    self.decrypt_all_secure_data()
+  File "/home/hummingbot/hummingbot/client/config/config_helpers.py", line 237, in decrypt_all_secure_data
+    decrypted_value = Security.secrets_manager.decrypt_secret_value(attr=traversal_item.attr, value=value)
+  File "/home/hummingbot/hummingbot/client/config/config_crypt.py", line 59, in decrypt_secret_value
+    value = binascii.unhexlify(value)
+binascii.Error: Non-hexadecimal digit found
+2025-03-07 00:06:08,314 - 17 - hummingbot.core.gateway.gateway_status_monitor - INFO - Gateway Service is ONLINE.
+2025-03-07 00:06:59,676 - 17 - hummingbot.client.hummingbot_application - INFO - fetched private key bean gaze rude oval syrup doctor unique banner cement awesome desert peace seven toast absent hurdle shrug lend topple off other option assume heavy
+2025-03-07 00:25:38,279 - 17 - hummingbot.core.utils.async_utils - ERROR - Unhandled error in background task: Non-hexadecimal digit found
+Traceback (most recent call last):
+  File "/home/hummingbot/hummingbot/core/utils/async_utils.py", line 9, in safe_wrapper
+    return await c
+  File "/home/hummingbot/hummingbot/core/utils/async_call_scheduler.py", line 127, in call_async
+    return await self.schedule_async_call(coro, timeout_seconds, app_warning_msg=app_warning_msg)
+  File "/home/hummingbot/hummingbot/core/utils/async_call_scheduler.py", line 116, in schedule_async_call
+    return await fut
+  File "/home/hummingbot/hummingbot/core/utils/async_call_scheduler.py", line 79, in _coro_scheduler
+    fut.set_result(await coro)
+  File "/opt/conda/envs/hummingbot/lib/python3.10/concurrent/futures/thread.py", line 58, in run
+    result = self.fn(*self.args, **self.kwargs)
+  File "/home/hummingbot/hummingbot/client/config/security.py", line 65, in decrypt_all
+    cls.decrypt_connector_config(file)
+  File "/home/hummingbot/hummingbot/client/config/security.py", line 71, in decrypt_connector_config
+    cls._secure_configs[connector_name] = load_connector_config_map_from_file(file_path)
+  File "/home/hummingbot/hummingbot/client/config/config_helpers.py", line 668, in load_connector_config_map_from_file
+    _load_yml_data_into_map(config_data, config_map)
+  File "/home/hummingbot/hummingbot/client/config/config_helpers.py", line 750, in _load_yml_data_into_map
+    config_validation_errors = cm.validate_model()  # try coercing values to appropriate type
+  File "/home/hummingbot/hummingbot/client/config/config_helpers.py", line 199, in validate_model
+    self.decrypt_all_secure_data()
+  File "/home/hummingbot/hummingbot/client/config/config_helpers.py", line 237, in decrypt_all_secure_data
+    decrypted_value = Security.secrets_manager.decrypt_secret_value(attr=traversal_item.attr, value=value)
+  File "/home/hummingbot/hummingbot/client/config/config_crypt.py", line 59, in decrypt_secret_value
+    value = binascii.unhexlify(value)
+binascii.Error: Non-hexadecimal digit found
+2025-03-07 00:25:38,446 - 17 - hummingbot.core.gateway.gateway_status_monitor - INFO - Gateway Service is ONLINE.
+2025-03-07 00:26:22,179 - 17 - hummingbot.client.hummingbot_application - INFO - fetched private key bean gaze rude oval syrup doctor unique banner cement awesome desert peace seven toast absent hurdle shrug lend topple off other option assume heavy
+2025-03-07 00:50:00,956 - 17 - hummingbot.core.utils.async_utils - ERROR - Unhandled error in background task: Non-hexadecimal digit found
+Traceback (most recent call last):
+  File "/home/hummingbot/hummingbot/core/utils/async_utils.py", line 9, in safe_wrapper
+    return await c
+  File "/home/hummingbot/hummingbot/core/utils/async_call_scheduler.py", line 127, in call_async
+    return await self.schedule_async_call(coro, timeout_seconds, app_warning_msg=app_warning_msg)
+  File "/home/hummingbot/hummingbot/core/utils/async_call_scheduler.py", line 116, in schedule_async_call
+    return await fut
+  File "/home/hummingbot/hummingbot/core/utils/async_call_scheduler.py", line 79, in _coro_scheduler
+    fut.set_result(await coro)
+  File "/opt/conda/envs/hummingbot/lib/python3.10/concurrent/futures/thread.py", line 58, in run
+    result = self.fn(*self.args, **self.kwargs)
+  File "/home/hummingbot/hummingbot/client/config/security.py", line 65, in decrypt_all
+    cls.decrypt_connector_config(file)
+  File "/home/hummingbot/hummingbot/client/config/security.py", line 71, in decrypt_connector_config
+    cls._secure_configs[connector_name] = load_connector_config_map_from_file(file_path)
+  File "/home/hummingbot/hummingbot/client/config/config_helpers.py", line 668, in load_connector_config_map_from_file
+    _load_yml_data_into_map(config_data, config_map)
+  File "/home/hummingbot/hummingbot/client/config/config_helpers.py", line 750, in _load_yml_data_into_map
+    config_validation_errors = cm.validate_model()  # try coercing values to appropriate type
+  File "/home/hummingbot/hummingbot/client/config/config_helpers.py", line 199, in validate_model
+    self.decrypt_all_secure_data()
+  File "/home/hummingbot/hummingbot/client/config/config_helpers.py", line 237, in decrypt_all_secure_data
+    decrypted_value = Security.secrets_manager.decrypt_secret_value(attr=traversal_item.attr, value=value)
+  File "/home/hummingbot/hummingbot/client/config/config_crypt.py", line 59, in decrypt_secret_value
+    value = binascii.unhexlify(value)
+binascii.Error: Non-hexadecimal digit found
+2025-03-07 00:50:01,381 - 17 - hummingbot.core.gateway.gateway_status_monitor - INFO - Gateway Service is ONLINE.
+2025-03-07 00:50:28,888 - 17 - hummingbot.client.hummingbot_application - INFO - fetched private key bean gaze rude oval syrup doctor unique banner cement awesome desert peace seven toast absent hurdle shrug lend topple off other option assume heavy
+2025-03-07 01:09:27,457 - 17 - hummingbot.core.utils.async_utils - ERROR - Unhandled error in background task: Non-hexadecimal digit found
+Traceback (most recent call last):
+  File "/home/hummingbot/hummingbot/core/utils/async_utils.py", line 9, in safe_wrapper
+    return await c
+  File "/home/hummingbot/hummingbot/core/utils/async_call_scheduler.py", line 127, in call_async
+    return await self.schedule_async_call(coro, timeout_seconds, app_warning_msg=app_warning_msg)
+  File "/home/hummingbot/hummingbot/core/utils/async_call_scheduler.py", line 116, in schedule_async_call
+    return await fut
+  File "/home/hummingbot/hummingbot/core/utils/async_call_scheduler.py", line 79, in _coro_scheduler
+    fut.set_result(await coro)
+  File "/opt/conda/envs/hummingbot/lib/python3.10/concurrent/futures/thread.py", line 58, in run
+    result = self.fn(*self.args, **self.kwargs)
+  File "/home/hummingbot/hummingbot/client/config/security.py", line 65, in decrypt_all
+    cls.decrypt_connector_config(file)
+  File "/home/hummingbot/hummingbot/client/config/security.py", line 71, in decrypt_connector_config
+    cls._secure_configs[connector_name] = load_connector_config_map_from_file(file_path)
+  File "/home/hummingbot/hummingbot/client/config/config_helpers.py", line 668, in load_connector_config_map_from_file
+    _load_yml_data_into_map(config_data, config_map)
+  File "/home/hummingbot/hummingbot/client/config/config_helpers.py", line 750, in _load_yml_data_into_map
+    config_validation_errors = cm.validate_model()  # try coercing values to appropriate type
+  File "/home/hummingbot/hummingbot/client/config/config_helpers.py", line 199, in validate_model
+    self.decrypt_all_secure_data()
+  File "/home/hummingbot/hummingbot/client/config/config_helpers.py", line 237, in decrypt_all_secure_data
+    decrypted_value = Security.secrets_manager.decrypt_secret_value(attr=traversal_item.attr, value=value)
+  File "/home/hummingbot/hummingbot/client/config/config_crypt.py", line 59, in decrypt_secret_value
+    value = binascii.unhexlify(value)
+binascii.Error: Non-hexadecimal digit found
+2025-03-07 01:09:27,636 - 17 - hummingbot.core.gateway.gateway_status_monitor - INFO - Gateway Service is ONLINE.
+2025-03-07 01:09:49,431 - 17 - hummingbot.client.hummingbot_application - INFO - fetched private key bean gaze rude oval syrup doctor unique banner cement awesome desert peace seven toast absent hurdle shrug lend topple off other option assume heavy
+2025-03-07 01:25:00,857 - 17 - hummingbot.core.utils.async_utils - ERROR - Unhandled error in background task: Non-hexadecimal digit found
+Traceback (most recent call last):
+  File "/home/hummingbot/hummingbot/core/utils/async_utils.py", line 9, in safe_wrapper
+    return await c
+  File "/home/hummingbot/hummingbot/core/utils/async_call_scheduler.py", line 127, in call_async
+    return await self.schedule_async_call(coro, timeout_seconds, app_warning_msg=app_warning_msg)
+  File "/home/hummingbot/hummingbot/core/utils/async_call_scheduler.py", line 116, in schedule_async_call
+    return await fut
+  File "/home/hummingbot/hummingbot/core/utils/async_call_scheduler.py", line 79, in _coro_scheduler
+    fut.set_result(await coro)
+  File "/opt/conda/envs/hummingbot/lib/python3.10/concurrent/futures/thread.py", line 58, in run
+    result = self.fn(*self.args, **self.kwargs)
+  File "/home/hummingbot/hummingbot/client/config/security.py", line 65, in decrypt_all
+    cls.decrypt_connector_config(file)
+  File "/home/hummingbot/hummingbot/client/config/security.py", line 71, in decrypt_connector_config
+    cls._secure_configs[connector_name] = load_connector_config_map_from_file(file_path)
+  File "/home/hummingbot/hummingbot/client/config/config_helpers.py", line 668, in load_connector_config_map_from_file
+    _load_yml_data_into_map(config_data, config_map)
+  File "/home/hummingbot/hummingbot/client/config/config_helpers.py", line 750, in _load_yml_data_into_map
+    config_validation_errors = cm.validate_model()  # try coercing values to appropriate type
+  File "/home/hummingbot/hummingbot/client/config/config_helpers.py", line 199, in validate_model
+    self.decrypt_all_secure_data()
+  File "/home/hummingbot/hummingbot/client/config/config_helpers.py", line 237, in decrypt_all_secure_data
+    decrypted_value = Security.secrets_manager.decrypt_secret_value(attr=traversal_item.attr, value=value)
+  File "/home/hummingbot/hummingbot/client/config/config_crypt.py", line 59, in decrypt_secret_value
+    value = binascii.unhexlify(value)
+binascii.Error: Non-hexadecimal digit found
+2025-03-07 01:25:01,017 - 17 - hummingbot.core.gateway.gateway_status_monitor - INFO - Gateway Service is ONLINE.
+2025-03-07 01:25:22,896 - 17 - hummingbot.client.hummingbot_application - INFO - fetched private key bean gaze rude oval syrup doctor unique banner cement awesome desert peace seven toast absent hurdle shrug lend topple off other option assume heavy
+2025-03-07 01:34:46,979 - 16 - hummingbot.core.utils.async_utils - ERROR - Unhandled error in background task: Non-hexadecimal digit found
+Traceback (most recent call last):
+  File "/home/hummingbot/hummingbot/core/utils/async_utils.py", line 9, in safe_wrapper
+    return await c
+  File "/home/hummingbot/hummingbot/core/utils/async_call_scheduler.py", line 127, in call_async
+    return await self.schedule_async_call(coro, timeout_seconds, app_warning_msg=app_warning_msg)
+  File "/home/hummingbot/hummingbot/core/utils/async_call_scheduler.py", line 116, in schedule_async_call
+    return await fut
+  File "/home/hummingbot/hummingbot/core/utils/async_call_scheduler.py", line 79, in _coro_scheduler
+    fut.set_result(await coro)
+  File "/opt/conda/envs/hummingbot/lib/python3.10/concurrent/futures/thread.py", line 58, in run
+    result = self.fn(*self.args, **self.kwargs)
+  File "/home/hummingbot/hummingbot/client/config/security.py", line 65, in decrypt_all
+    cls.decrypt_connector_config(file)
+  File "/home/hummingbot/hummingbot/client/config/security.py", line 71, in decrypt_connector_config
+    cls._secure_configs[connector_name] = load_connector_config_map_from_file(file_path)
+  File "/home/hummingbot/hummingbot/client/config/config_helpers.py", line 668, in load_connector_config_map_from_file
+    _load_yml_data_into_map(config_data, config_map)
+  File "/home/hummingbot/hummingbot/client/config/config_helpers.py", line 750, in _load_yml_data_into_map
+    config_validation_errors = cm.validate_model()  # try coercing values to appropriate type
+  File "/home/hummingbot/hummingbot/client/config/config_helpers.py", line 199, in validate_model
+    self.decrypt_all_secure_data()
+  File "/home/hummingbot/hummingbot/client/config/config_helpers.py", line 237, in decrypt_all_secure_data
+    decrypted_value = Security.secrets_manager.decrypt_secret_value(attr=traversal_item.attr, value=value)
+  File "/home/hummingbot/hummingbot/client/config/config_crypt.py", line 59, in decrypt_secret_value
+    value = binascii.unhexlify(value)
+binascii.Error: Non-hexadecimal digit found
+2025-03-07 01:34:47,150 - 16 - hummingbot.core.gateway.gateway_status_monitor - INFO - Gateway Service is ONLINE.
+2025-03-07 01:35:09,556 - 16 - hummingbot.client.hummingbot_application - INFO - fetched private key bean gaze rude oval syrup doctor unique banner cement awesome desert peace seven toast absent hurdle shrug lend topple off other option assume heavy
+2025-03-07 01:41:15,285 - 17 - hummingbot.core.gateway.gateway_status_monitor - INFO - Gateway Service is ONLINE.
+2025-03-07 01:41:37,082 - 17 - hummingbot.client.hummingbot_application - INFO - fetched private key bean gaze rude oval syrup doctor unique banner cement awesome desert peace seven toast absent hurdle shrug lend topple off other option assume heavy
+2025-03-07 01:49:27,587 - 17 - hummingbot.core.utils.async_utils - ERROR - Unhandled error in background task: Non-hexadecimal digit found
+Traceback (most recent call last):
+  File "/home/hummingbot/hummingbot/core/utils/async_utils.py", line 9, in safe_wrapper
+    return await c
+  File "/home/hummingbot/hummingbot/core/utils/async_call_scheduler.py", line 127, in call_async
+    return await self.schedule_async_call(coro, timeout_seconds, app_warning_msg=app_warning_msg)
+  File "/home/hummingbot/hummingbot/core/utils/async_call_scheduler.py", line 116, in schedule_async_call
+    return await fut
+  File "/home/hummingbot/hummingbot/core/utils/async_call_scheduler.py", line 79, in _coro_scheduler
+    fut.set_result(await coro)
+  File "/opt/conda/envs/hummingbot/lib/python3.10/concurrent/futures/thread.py", line 58, in run
+    result = self.fn(*self.args, **self.kwargs)
+  File "/home/hummingbot/hummingbot/client/config/security.py", line 65, in decrypt_all
+    cls.decrypt_connector_config(file)
+  File "/home/hummingbot/hummingbot/client/config/security.py", line 71, in decrypt_connector_config
+    cls._secure_configs[connector_name] = load_connector_config_map_from_file(file_path)
+  File "/home/hummingbot/hummingbot/client/config/config_helpers.py", line 668, in load_connector_config_map_from_file
+    _load_yml_data_into_map(config_data, config_map)
+  File "/home/hummingbot/hummingbot/client/config/config_helpers.py", line 750, in _load_yml_data_into_map
+    config_validation_errors = cm.validate_model()  # try coercing values to appropriate type
+  File "/home/hummingbot/hummingbot/client/config/config_helpers.py", line 199, in validate_model
+    self.decrypt_all_secure_data()
+  File "/home/hummingbot/hummingbot/client/config/config_helpers.py", line 237, in decrypt_all_secure_data
+    decrypted_value = Security.secrets_manager.decrypt_secret_value(attr=traversal_item.attr, value=value)
+  File "/home/hummingbot/hummingbot/client/config/config_crypt.py", line 59, in decrypt_secret_value
+    value = binascii.unhexlify(value)
+binascii.Error: Non-hexadecimal digit found
+2025-03-07 01:49:27,752 - 17 - hummingbot.core.gateway.gateway_status_monitor - INFO - Gateway Service is ONLINE.
+2025-03-07 01:49:50,903 - 17 - hummingbot.client.hummingbot_application - INFO - fetched private key bean gaze rude oval syrup doctor unique banner cement awesome desert peace seven toast absent hurdle shrug lend topple off other option assume heavy
+2025-03-07 13:51:37,724 - 17 - hummingbot.core.utils.async_utils - ERROR - Unhandled error in background task: Non-hexadecimal digit found
+Traceback (most recent call last):
+  File "/home/hummingbot/hummingbot/core/utils/async_utils.py", line 9, in safe_wrapper
+    return await c
+  File "/home/hummingbot/hummingbot/core/utils/async_call_scheduler.py", line 127, in call_async
+    return await self.schedule_async_call(coro, timeout_seconds, app_warning_msg=app_warning_msg)
+  File "/home/hummingbot/hummingbot/core/utils/async_call_scheduler.py", line 116, in schedule_async_call
+    return await fut
+  File "/home/hummingbot/hummingbot/core/utils/async_call_scheduler.py", line 79, in _coro_scheduler
+    fut.set_result(await coro)
+  File "/opt/conda/envs/hummingbot/lib/python3.10/concurrent/futures/thread.py", line 58, in run
+    result = self.fn(*self.args, **self.kwargs)
+  File "/home/hummingbot/hummingbot/client/config/security.py", line 65, in decrypt_all
+    cls.decrypt_connector_config(file)
+  File "/home/hummingbot/hummingbot/client/config/security.py", line 71, in decrypt_connector_config
+    cls._secure_configs[connector_name] = load_connector_config_map_from_file(file_path)
+  File "/home/hummingbot/hummingbot/client/config/config_helpers.py", line 668, in load_connector_config_map_from_file
+    _load_yml_data_into_map(config_data, config_map)
+  File "/home/hummingbot/hummingbot/client/config/config_helpers.py", line 750, in _load_yml_data_into_map
+    config_validation_errors = cm.validate_model()  # try coercing values to appropriate type
+  File "/home/hummingbot/hummingbot/client/config/config_helpers.py", line 199, in validate_model
+    self.decrypt_all_secure_data()
+  File "/home/hummingbot/hummingbot/client/config/config_helpers.py", line 237, in decrypt_all_secure_data
+    decrypted_value = Security.secrets_manager.decrypt_secret_value(attr=traversal_item.attr, value=value)
+  File "/home/hummingbot/hummingbot/client/config/config_crypt.py", line 59, in decrypt_secret_value
+    value = binascii.unhexlify(value)
+binascii.Error: Non-hexadecimal digit found
+2025-03-07 13:51:37,898 - 17 - hummingbot.core.gateway.gateway_status_monitor - INFO - Gateway Service is ONLINE.
+2025-03-07 13:52:22,172 - 17 - hummingbot.core.gateway.gateway_http_client - INFO - this is the request params {'network': 'mainnet', 'address': 'addr1qxezkuean46f8xm9fq6w45n5y0mlqwcyggu8ejks8q2up9lq6k097swcyl0r4mp0uqw9a4rx692cczyy5zek6epsd0ds8rpg3v', 'tokenSymbols': ['ADA']}
+2025-03-07 13:52:22,912 - 17 - hummingbot.core.gateway.gateway_http_client - WARNING - Call to https://localhost:15888/cardano/balances failed. See logs for more details.
+2025-03-07 13:52:22,912 - 17 - hummingbot.core.utils.async_utils - ERROR - Unhandled error in background task: Error on POST https://localhost:15888/cardano/balances Error: {'message': 'Unknown error.', 'httpErrorCode': 503, 'errorCode': 1099, 'stack': 'Error: SyntaxError: Unexpected non-whitespace character after JSON at position 831\n    at Cardano.getAddressUtxos (/home/gateway/dist/src/chains/cardano/cardano.js:169:19)\n    at async CardanoController.balances (/home/gateway/dist/src/chains/cardano/cardano.controllers.js:10:21)\n    at async Object.<anonymous> (/home/gateway/dist/src/chains/cardano/cardano.routes.js:43:16)'}
+Traceback (most recent call last):
+  File "/home/hummingbot/hummingbot/core/utils/async_utils.py", line 9, in safe_wrapper
+    return await c
+  File "/home/hummingbot/hummingbot/client/command/gateway_command.py", line 346, in _gateway_connect
+    balances: Dict[str, Any] = await self._get_gateway_instance().get_balances(
+  File "/home/hummingbot/hummingbot/core/gateway/gateway_http_client.py", line 313, in get_balances
+    return await self.api_request(
+  File "/home/hummingbot/hummingbot/core/gateway/gateway_http_client.py", line 234, in api_request
+    raise e
+  File "/home/hummingbot/hummingbot/core/gateway/gateway_http_client.py", line 222, in api_request
+    raise ValueError(f"Error on {method.upper()} {url} Error: {parsed_response}")
+ValueError: Error on POST https://localhost:15888/cardano/balances Error: {'message': 'Unknown error.', 'httpErrorCode': 503, 'errorCode': 1099, 'stack': 'Error: SyntaxError: Unexpected non-whitespace character after JSON at position 831\n    at Cardano.getAddressUtxos (/home/gateway/dist/src/chains/cardano/cardano.js:169:19)\n    at async CardanoController.balances (/home/gateway/dist/src/chains/cardano/cardano.controllers.js:10:21)\n    at async Object.<anonymous> (/home/gateway/dist/src/chains/cardano/cardano.routes.js:43:16)'}
+2025-03-07 21:14:21,852 - 17 - hummingbot.client.hummingbot_application - ERROR - MQTT is already stopped!
+2025-03-07 21:15:42,739 - 17 - hummingbot.core.gateway.gateway_status_monitor - INFO - Gateway Service is ONLINE.
+2025-03-07 21:17:56,293 - 17 - hummingbot.client.hummingbot_application - INFO - fetched private key bean gaze rude oval syrup doctor unique banner cement awesome desert peace seven toast absent hurdle shrug lend topple off other option assume heavy
+2025-03-07 21:18:11,149 - 17 - hummingbot.core.gateway.gateway_http_client - INFO - this is the request params {'network': 'mainnet', 'address': 'addr1qxezkuean46f8xm9fq6w45n5y0mlqwcyggu8ejks8q2up9lq6k097swcyl0r4mp0uqw9a4rx692cczyy5zek6epsd0ds8rpg3v', 'tokenSymbols': ['ADA']}
+2025-03-07 22:14:58,626 - 17 - hummingbot.core.utils.async_utils - ERROR - Unhandled error in background task: Non-hexadecimal digit found
+Traceback (most recent call last):
+  File "/home/hummingbot/hummingbot/core/utils/async_utils.py", line 9, in safe_wrapper
+    return await c
+  File "/home/hummingbot/hummingbot/core/utils/async_call_scheduler.py", line 127, in call_async
+    return await self.schedule_async_call(coro, timeout_seconds, app_warning_msg=app_warning_msg)
+  File "/home/hummingbot/hummingbot/core/utils/async_call_scheduler.py", line 116, in schedule_async_call
+    return await fut
+  File "/home/hummingbot/hummingbot/core/utils/async_call_scheduler.py", line 79, in _coro_scheduler
+    fut.set_result(await coro)
+  File "/opt/conda/envs/hummingbot/lib/python3.10/concurrent/futures/thread.py", line 58, in run
+    result = self.fn(*self.args, **self.kwargs)
+  File "/home/hummingbot/hummingbot/client/config/security.py", line 65, in decrypt_all
+    cls.decrypt_connector_config(file)
+  File "/home/hummingbot/hummingbot/client/config/security.py", line 71, in decrypt_connector_config
+    cls._secure_configs[connector_name] = load_connector_config_map_from_file(file_path)
+  File "/home/hummingbot/hummingbot/client/config/config_helpers.py", line 668, in load_connector_config_map_from_file
+    _load_yml_data_into_map(config_data, config_map)
+  File "/home/hummingbot/hummingbot/client/config/config_helpers.py", line 750, in _load_yml_data_into_map
+    config_validation_errors = cm.validate_model()  # try coercing values to appropriate type
+  File "/home/hummingbot/hummingbot/client/config/config_helpers.py", line 199, in validate_model
+    self.decrypt_all_secure_data()
+  File "/home/hummingbot/hummingbot/client/config/config_helpers.py", line 237, in decrypt_all_secure_data
+    decrypted_value = Security.secrets_manager.decrypt_secret_value(attr=traversal_item.attr, value=value)
+  File "/home/hummingbot/hummingbot/client/config/config_crypt.py", line 59, in decrypt_secret_value
+    value = binascii.unhexlify(value)
+binascii.Error: Non-hexadecimal digit found
+2025-03-07 22:14:58,835 - 17 - hummingbot.core.gateway.gateway_status_monitor - INFO - Gateway Service is ONLINE.
+2025-03-07 22:17:18,192 - 17 - hummingbot.client.hummingbot_application - INFO - fetched private key bean gaze rude oval syrup doctor unique banner cement awesome desert peace seven toast absent hurdle shrug lend topple off other option assume heavy
+2025-03-08 00:00:53,798 - 17 - hummingbot.core.gateway.gateway_status_monitor - INFO - Gateway Service is ONLINE.
+2025-03-08 00:02:40,939 - 17 - hummingbot.client.hummingbot_application - INFO - fetched private key bean gaze rude oval syrup doctor unique banner cement awesome desert peace seven toast absent hurdle shrug lend topple off other option assume heavy
+2025-03-08 01:27:53,533 - 17 - hummingbot.core.utils.async_utils - ERROR - Unhandled error in background task: Non-hexadecimal digit found
+Traceback (most recent call last):
+  File "/home/hummingbot/hummingbot/core/utils/async_utils.py", line 9, in safe_wrapper
+    return await c
+  File "/home/hummingbot/hummingbot/core/utils/async_call_scheduler.py", line 127, in call_async
+    return await self.schedule_async_call(coro, timeout_seconds, app_warning_msg=app_warning_msg)
+  File "/home/hummingbot/hummingbot/core/utils/async_call_scheduler.py", line 116, in schedule_async_call
+    return await fut
+  File "/home/hummingbot/hummingbot/core/utils/async_call_scheduler.py", line 79, in _coro_scheduler
+    fut.set_result(await coro)
+  File "/opt/conda/envs/hummingbot/lib/python3.10/concurrent/futures/thread.py", line 58, in run
+    result = self.fn(*self.args, **self.kwargs)
+  File "/home/hummingbot/hummingbot/client/config/security.py", line 65, in decrypt_all
+    cls.decrypt_connector_config(file)
+  File "/home/hummingbot/hummingbot/client/config/security.py", line 71, in decrypt_connector_config
+    cls._secure_configs[connector_name] = load_connector_config_map_from_file(file_path)
+  File "/home/hummingbot/hummingbot/client/config/config_helpers.py", line 668, in load_connector_config_map_from_file
+    _load_yml_data_into_map(config_data, config_map)
+  File "/home/hummingbot/hummingbot/client/config/config_helpers.py", line 750, in _load_yml_data_into_map
+    config_validation_errors = cm.validate_model()  # try coercing values to appropriate type
+  File "/home/hummingbot/hummingbot/client/config/config_helpers.py", line 199, in validate_model
+    self.decrypt_all_secure_data()
+  File "/home/hummingbot/hummingbot/client/config/config_helpers.py", line 237, in decrypt_all_secure_data
+    decrypted_value = Security.secrets_manager.decrypt_secret_value(attr=traversal_item.attr, value=value)
+  File "/home/hummingbot/hummingbot/client/config/config_crypt.py", line 59, in decrypt_secret_value
+    value = binascii.unhexlify(value)
+binascii.Error: Non-hexadecimal digit found
+2025-03-08 01:27:53,700 - 17 - hummingbot.core.gateway.gateway_status_monitor - INFO - Gateway Service is ONLINE.
+2025-03-08 01:29:39,651 - 17 - hummingbot.client.hummingbot_application - INFO - fetched private key bean gaze rude oval syrup doctor unique banner cement awesome desert peace seven toast absent hurdle shrug lend topple off other option assume heavy
+2025-03-08 01:29:40,486 - 17 - hummingbot.core.gateway.gateway_http_client - WARNING - Call to https://localhost:15888/wallet/add failed. See logs for more details.
+2025-03-08 01:29:40,487 - 17 - hummingbot.core.utils.async_utils - ERROR - Unhandled error in background task: Error on POST https://localhost:15888/wallet/add Error: {'message': 'Unable to retrieve wallet address for provided private key: bean ', 'httpErrorCode': 500, 'errorCode': 1015, 'stack': 'Error: Unable to retrieve wallet address for provided private key: bean \n    at addWallet (/home/gateway/dist/src/wallet/wallet.controllers.js:113:15)\n    at async Object.<anonymous> (/home/gateway/dist/src/wallet/wallet.routes.js:72:16)'}
+Traceback (most recent call last):
+  File "/home/hummingbot/hummingbot/core/utils/async_utils.py", line 9, in safe_wrapper
+    return await c
+  File "/home/hummingbot/hummingbot/client/command/gateway_command.py", line 321, in _gateway_connect
+    wallet_address, additional_prompt_values = await self._prompt_for_wallet_address(
+  File "/home/hummingbot/hummingbot/client/command/gateway_command.py", line 456, in _prompt_for_wallet_address
+    response: Dict[str, Any] = await self._get_gateway_instance().add_wallet(
+  File "/home/hummingbot/hummingbot/core/gateway/gateway_http_client.py", line 281, in add_wallet
+    return await self.api_request(method="post", path_url="wallet/add", params=request)
+  File "/home/hummingbot/hummingbot/core/gateway/gateway_http_client.py", line 234, in api_request
+    raise e
+  File "/home/hummingbot/hummingbot/core/gateway/gateway_http_client.py", line 222, in api_request
+    raise ValueError(f"Error on {method.upper()} {url} Error: {parsed_response}")
+ValueError: Error on POST https://localhost:15888/wallet/add Error: {'message': 'Unable to retrieve wallet address for provided private key: bean ', 'httpErrorCode': 500, 'errorCode': 1015, 'stack': 'Error: Unable to retrieve wallet address for provided private key: bean \n    at addWallet (/home/gateway/dist/src/wallet/wallet.controllers.js:113:15)\n    at async Object.<anonymous> (/home/gateway/dist/src/wallet/wallet.routes.js:72:16)'}
+2025-03-08 01:29:44,464 - 17 - hummingbot.core.gateway.gateway_http_client - INFO - this is the request params {'network': 'mainnet', 'address': 'addr1qxezkuean46f8xm9fq6w45n5y0mlqwcyggu8ejks8q2up9lq6k097swcyl0r4mp0uqw9a4rx692cczyy5zek6epsd0ds8rpg3v', 'tokenSymbols': ['ADA']}
+2025-03-08 01:29:45,067 - 17 - hummingbot.core.gateway.gateway_http_client - WARNING - Call to https://localhost:15888/cardano/balances failed. See logs for more details.
+2025-03-08 01:30:24,924 - 17 - hummingbot.client.hummingbot_application - INFO - fetched private key bean gaze rude oval syrup doctor unique banner cement awesome desert peace seven toast absent hurdle shrug lend topple off other option assume heavy
+2025-03-08 01:30:25,661 - 17 - hummingbot.core.gateway.gateway_http_client - WARNING - Call to https://localhost:15888/wallet/add failed. See logs for more details.
+2025-03-08 01:30:25,662 - 17 - hummingbot.core.utils.async_utils - ERROR - Unhandled error in background task: Error on POST https://localhost:15888/wallet/add Error: {'message': 'Unable to retrieve wallet address for provided private key: bean ', 'httpErrorCode': 500, 'errorCode': 1015, 'stack': 'Error: Unable to retrieve wallet address for provided private key: bean \n    at addWallet (/home/gateway/dist/src/wallet/wallet.controllers.js:113:15)\n    at async Object.<anonymous> (/home/gateway/dist/src/wallet/wallet.routes.js:72:16)'}
+Traceback (most recent call last):
+  File "/home/hummingbot/hummingbot/core/utils/async_utils.py", line 9, in safe_wrapper
+    return await c
+  File "/home/hummingbot/hummingbot/client/command/gateway_command.py", line 321, in _gateway_connect
+    wallet_address, additional_prompt_values = await self._prompt_for_wallet_address(
+  File "/home/hummingbot/hummingbot/client/command/gateway_command.py", line 456, in _prompt_for_wallet_address
+    response: Dict[str, Any] = await self._get_gateway_instance().add_wallet(
+  File "/home/hummingbot/hummingbot/core/gateway/gateway_http_client.py", line 281, in add_wallet
+    return await self.api_request(method="post", path_url="wallet/add", params=request)
+  File "/home/hummingbot/hummingbot/core/gateway/gateway_http_client.py", line 234, in api_request
+    raise e
+  File "/home/hummingbot/hummingbot/core/gateway/gateway_http_client.py", line 222, in api_request
+    raise ValueError(f"Error on {method.upper()} {url} Error: {parsed_response}")
+ValueError: Error on POST https://localhost:15888/wallet/add Error: {'message': 'Unable to retrieve wallet address for provided private key: bean ', 'httpErrorCode': 500, 'errorCode': 1015, 'stack': 'Error: Unable to retrieve wallet address for provided private key: bean \n    at addWallet (/home/gateway/dist/src/wallet/wallet.controllers.js:113:15)\n    at async Object.<anonymous> (/home/gateway/dist/src/wallet/wallet.routes.js:72:16)'}
+2025-03-08 01:31:12,523 - 17 - hummingbot.client.hummingbot_application - ERROR - MQTT is already stopped!
+2025-03-08 01:31:58,284 - 17 - hummingbot.core.utils.async_utils - ERROR - Unhandled error in background task: Non-hexadecimal digit found
+Traceback (most recent call last):
+  File "/home/hummingbot/hummingbot/core/utils/async_utils.py", line 9, in safe_wrapper
+    return await c
+  File "/home/hummingbot/hummingbot/core/utils/async_call_scheduler.py", line 127, in call_async
+    return await self.schedule_async_call(coro, timeout_seconds, app_warning_msg=app_warning_msg)
+  File "/home/hummingbot/hummingbot/core/utils/async_call_scheduler.py", line 116, in schedule_async_call
+    return await fut
+  File "/home/hummingbot/hummingbot/core/utils/async_call_scheduler.py", line 79, in _coro_scheduler
+    fut.set_result(await coro)
+  File "/opt/conda/envs/hummingbot/lib/python3.10/concurrent/futures/thread.py", line 58, in run
+    result = self.fn(*self.args, **self.kwargs)
+  File "/home/hummingbot/hummingbot/client/config/security.py", line 65, in decrypt_all
+    cls.decrypt_connector_config(file)
+  File "/home/hummingbot/hummingbot/client/config/security.py", line 71, in decrypt_connector_config
+    cls._secure_configs[connector_name] = load_connector_config_map_from_file(file_path)
+  File "/home/hummingbot/hummingbot/client/config/config_helpers.py", line 668, in load_connector_config_map_from_file
+    _load_yml_data_into_map(config_data, config_map)
+  File "/home/hummingbot/hummingbot/client/config/config_helpers.py", line 750, in _load_yml_data_into_map
+    config_validation_errors = cm.validate_model()  # try coercing values to appropriate type
+  File "/home/hummingbot/hummingbot/client/config/config_helpers.py", line 199, in validate_model
+    self.decrypt_all_secure_data()
+  File "/home/hummingbot/hummingbot/client/config/config_helpers.py", line 237, in decrypt_all_secure_data
+    decrypted_value = Security.secrets_manager.decrypt_secret_value(attr=traversal_item.attr, value=value)
+  File "/home/hummingbot/hummingbot/client/config/config_crypt.py", line 59, in decrypt_secret_value
+    value = binascii.unhexlify(value)
+binascii.Error: Non-hexadecimal digit found
+2025-03-08 01:31:58,475 - 17 - hummingbot.core.gateway.gateway_status_monitor - INFO - Gateway Service is ONLINE.
+2025-03-08 01:33:49,056 - 17 - hummingbot.client.hummingbot_application - INFO - fetched private key bean gaze rude oval syrup doctor unique banner cement awesome desert peace seven toast absent hurdle shrug lend topple off other option assume heavy
+2025-03-08 01:33:49,867 - 17 - hummingbot.core.gateway.gateway_http_client - WARNING - Call to https://localhost:15888/wallet/add failed. See logs for more details.
+2025-03-08 01:33:49,868 - 17 - hummingbot.core.utils.async_utils - ERROR - Unhandled error in background task: Error on POST https://localhost:15888/wallet/add Error: {'message': 'Unable to retrieve wallet address for provided private key: bean ', 'httpErrorCode': 500, 'errorCode': 1015, 'stack': 'Error: Unable to retrieve wallet address for provided private key: bean \n    at addWallet (/home/gateway/dist/src/wallet/wallet.controllers.js:113:15)\n    at async Object.<anonymous> (/home/gateway/dist/src/wallet/wallet.routes.js:72:16)'}
+Traceback (most recent call last):
+  File "/home/hummingbot/hummingbot/core/utils/async_utils.py", line 9, in safe_wrapper
+    return await c
+  File "/home/hummingbot/hummingbot/client/command/gateway_command.py", line 321, in _gateway_connect
+    wallet_address, additional_prompt_values = await self._prompt_for_wallet_address(
+  File "/home/hummingbot/hummingbot/client/command/gateway_command.py", line 456, in _prompt_for_wallet_address
+    response: Dict[str, Any] = await self._get_gateway_instance().add_wallet(
+  File "/home/hummingbot/hummingbot/core/gateway/gateway_http_client.py", line 281, in add_wallet
+    return await self.api_request(method="post", path_url="wallet/add", params=request)
+  File "/home/hummingbot/hummingbot/core/gateway/gateway_http_client.py", line 234, in api_request
+    raise e
+  File "/home/hummingbot/hummingbot/core/gateway/gateway_http_client.py", line 222, in api_request
+    raise ValueError(f"Error on {method.upper()} {url} Error: {parsed_response}")
+ValueError: Error on POST https://localhost:15888/wallet/add Error: {'message': 'Unable to retrieve wallet address for provided private key: bean ', 'httpErrorCode': 500, 'errorCode': 1015, 'stack': 'Error: Unable to retrieve wallet address for provided private key: bean \n    at addWallet (/home/gateway/dist/src/wallet/wallet.controllers.js:113:15)\n    at async Object.<anonymous> (/home/gateway/dist/src/wallet/wallet.routes.js:72:16)'}
+2025-03-08 10:57:41,720 - 17 - hummingbot.client.hummingbot_application - ERROR - MQTT is already stopped!
+2025-03-08 11:01:40,533 - 17 - hummingbot.core.gateway.gateway_status_monitor - INFO - Gateway Service is ONLINE.
+2025-03-08 11:08:11,128 - 17 - hummingbot.core.gateway.gateway_http_client - WARNING - Call to https://localhost:15888/wallet/apikey failed. See logs for more details.
+2025-03-08 11:08:11,129 - 17 - hummingbot.core.utils.async_utils - ERROR - Unhandled error in background task: 
+Traceback (most recent call last):
+  File "/opt/conda/envs/hummingbot/lib/python3.10/site-packages/aiohttp/client_reqrep.py", line 1059, in start
+    message, payload = await protocol.read()  # type: ignore[union-attr]
+  File "/opt/conda/envs/hummingbot/lib/python3.10/site-packages/aiohttp/streams.py", line 672, in read
+    await self._waiter
+asyncio.exceptions.CancelledError
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/home/hummingbot/hummingbot/core/utils/async_utils.py", line 9, in safe_wrapper
+    return await c
+  File "/home/hummingbot/hummingbot/client/command/gateway_command.py", line 280, in _gateway_connect
+    await self._get_gateway_instance().add_dex_api_key(chain, network, maestro_api_key)
+  File "/home/hummingbot/hummingbot/core/gateway/gateway_http_client.py", line 288, in add_dex_api_key
+    return await self.api_request(method="post", path_url="wallet/apikey", params=request)
+  File "/home/hummingbot/hummingbot/core/gateway/gateway_http_client.py", line 234, in api_request
+    raise e
+  File "/home/hummingbot/hummingbot/core/gateway/gateway_http_client.py", line 200, in api_request
+    response = await client.post(url, json=params)
+  File "/opt/conda/envs/hummingbot/lib/python3.10/site-packages/aiohttp/client.py", line 730, in _request
+    await resp.start(conn)
+  File "/opt/conda/envs/hummingbot/lib/python3.10/site-packages/aiohttp/client_reqrep.py", line 1054, in start
+    with self._timer:
+  File "/opt/conda/envs/hummingbot/lib/python3.10/site-packages/aiohttp/helpers.py", line 671, in __exit__
+    raise asyncio.TimeoutError from exc_val
+asyncio.exceptions.TimeoutError
+2025-03-08 11:11:58,031 - 17 - hummingbot.client.hummingbot_application - INFO - fetched private key bean gaze rude oval syrup doctor unique banner cement awesome desert peace seven toast absent hurdle shrug lend topple off other option assume heavy
+2025-03-08 11:19:21,830 - 17 - hummingbot.core.utils.async_utils - ERROR - Unhandled error in background task: Non-hexadecimal digit found
+Traceback (most recent call last):
+  File "/home/hummingbot/hummingbot/core/utils/async_utils.py", line 9, in safe_wrapper
+    return await c
+  File "/home/hummingbot/hummingbot/core/utils/async_call_scheduler.py", line 127, in call_async
+    return await self.schedule_async_call(coro, timeout_seconds, app_warning_msg=app_warning_msg)
+  File "/home/hummingbot/hummingbot/core/utils/async_call_scheduler.py", line 116, in schedule_async_call
+    return await fut
+  File "/home/hummingbot/hummingbot/core/utils/async_call_scheduler.py", line 79, in _coro_scheduler
+    fut.set_result(await coro)
+  File "/opt/conda/envs/hummingbot/lib/python3.10/concurrent/futures/thread.py", line 58, in run
+    result = self.fn(*self.args, **self.kwargs)
+  File "/home/hummingbot/hummingbot/client/config/security.py", line 65, in decrypt_all
+    cls.decrypt_connector_config(file)
+  File "/home/hummingbot/hummingbot/client/config/security.py", line 71, in decrypt_connector_config
+    cls._secure_configs[connector_name] = load_connector_config_map_from_file(file_path)
+  File "/home/hummingbot/hummingbot/client/config/config_helpers.py", line 668, in load_connector_config_map_from_file
+    _load_yml_data_into_map(config_data, config_map)
+  File "/home/hummingbot/hummingbot/client/config/config_helpers.py", line 750, in _load_yml_data_into_map
+    config_validation_errors = cm.validate_model()  # try coercing values to appropriate type
+  File "/home/hummingbot/hummingbot/client/config/config_helpers.py", line 199, in validate_model
+    self.decrypt_all_secure_data()
+  File "/home/hummingbot/hummingbot/client/config/config_helpers.py", line 237, in decrypt_all_secure_data
+    decrypted_value = Security.secrets_manager.decrypt_secret_value(attr=traversal_item.attr, value=value)
+  File "/home/hummingbot/hummingbot/client/config/config_crypt.py", line 59, in decrypt_secret_value
+    value = binascii.unhexlify(value)
+binascii.Error: Non-hexadecimal digit found
+2025-03-08 11:19:22,012 - 17 - hummingbot.core.gateway.gateway_status_monitor - INFO - Gateway Service is ONLINE.
+2025-03-08 11:20:11,811 - 17 - hummingbot.core.gateway.gateway_http_client - INFO - this is the request params {'network': 'mainnet', 'address': 'addr1qxezkuean46f8xm9fq6w45n5y0mlqwcyggu8ejks8q2up9lq6k097swcyl0r4mp0uqw9a4rx692cczyy5zek6epsd0ds8rpg3v', 'tokenSymbols': ['ADA']}
+2025-03-08 11:20:20,433 - 17 - hummingbot.core.gateway.gateway_http_client - INFO - this is the request params {'network': 'mainnet', 'address': 'addr1qxezkuean46f8xm9fq6w45n5y0mlqwcyggu8ejks8q2up9lq6k097swcyl0r4mp0uqw9a4rx692cczyy5zek6epsd0ds8rpg3v', 'tokenSymbols': ['ADA']}
+2025-03-08 12:11:32,157 - 17 - hummingbot.client.hummingbot_application - ERROR - MQTT is already stopped!
+2025-03-08 16:53:34,510 - 17 - hummingbot.core.utils.async_utils - ERROR - Unhandled error in background task: Non-hexadecimal digit found
+Traceback (most recent call last):
+  File "/home/hummingbot/hummingbot/core/utils/async_utils.py", line 9, in safe_wrapper
+    return await c
+  File "/home/hummingbot/hummingbot/core/utils/async_call_scheduler.py", line 127, in call_async
+    return await self.schedule_async_call(coro, timeout_seconds, app_warning_msg=app_warning_msg)
+  File "/home/hummingbot/hummingbot/core/utils/async_call_scheduler.py", line 116, in schedule_async_call
+    return await fut
+  File "/home/hummingbot/hummingbot/core/utils/async_call_scheduler.py", line 79, in _coro_scheduler
+    fut.set_result(await coro)
+  File "/opt/conda/envs/hummingbot/lib/python3.10/concurrent/futures/thread.py", line 58, in run
+    result = self.fn(*self.args, **self.kwargs)
+  File "/home/hummingbot/hummingbot/client/config/security.py", line 65, in decrypt_all
+    cls.decrypt_connector_config(file)
+  File "/home/hummingbot/hummingbot/client/config/security.py", line 71, in decrypt_connector_config
+    cls._secure_configs[connector_name] = load_connector_config_map_from_file(file_path)
+  File "/home/hummingbot/hummingbot/client/config/config_helpers.py", line 668, in load_connector_config_map_from_file
+    _load_yml_data_into_map(config_data, config_map)
+  File "/home/hummingbot/hummingbot/client/config/config_helpers.py", line 750, in _load_yml_data_into_map
+    config_validation_errors = cm.validate_model()  # try coercing values to appropriate type
+  File "/home/hummingbot/hummingbot/client/config/config_helpers.py", line 199, in validate_model
+    self.decrypt_all_secure_data()
+  File "/home/hummingbot/hummingbot/client/config/config_helpers.py", line 237, in decrypt_all_secure_data
+    decrypted_value = Security.secrets_manager.decrypt_secret_value(attr=traversal_item.attr, value=value)
+  File "/home/hummingbot/hummingbot/client/config/config_crypt.py", line 59, in decrypt_secret_value
+    value = binascii.unhexlify(value)
+binascii.Error: Non-hexadecimal digit found
+2025-03-08 16:53:34,689 - 17 - hummingbot.core.gateway.gateway_status_monitor - INFO - Gateway Service is ONLINE.
