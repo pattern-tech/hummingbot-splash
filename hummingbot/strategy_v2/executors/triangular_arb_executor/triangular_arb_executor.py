@@ -120,6 +120,8 @@ class TriangularArbExecutor(ExecutorBase):
             self.logger().info("initiating the stopper")
             self.config.set_stop(self.early_stop)
             self.stopper_initiated = True
+            self.confirm_round_callback()
+            self.stop()
             return
         
         if isinstance(self.state, GraceFullStop):
@@ -127,6 +129,7 @@ class TriangularArbExecutor(ExecutorBase):
             return
 
         if isinstance(self.state, Idle):
+            
             await self.init_arbitrage()
 
         if isinstance(self.state, Canceled):

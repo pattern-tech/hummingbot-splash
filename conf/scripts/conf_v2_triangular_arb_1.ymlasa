@@ -1,0 +1,14 @@
+markets: {}
+candles_config: []
+controllers_config: []
+config_update_interval: 60
+script_file_name: v2_triangular_arb.py
+cex_connector_main: kucoin
+cex_connector_proxy: kucoin
+dex_connector: splash_cardano_mainnet
+arb_asset: ERG
+arb_asset_wrapped: RSERG
+proxy_asset: ADA
+stable_asset: ''
+min_arbitrage_percent: 0.01
+min_arbitrage_volume: 2

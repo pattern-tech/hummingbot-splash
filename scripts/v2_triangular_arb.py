@@ -171,6 +171,7 @@ class TriangularArbV2(StrategyV2Base):
                     ),
                 )
             )
+            
             fake_action.controller_id = fake_action.executor_config.id
             self.latest_action_exec_id = fake_action.executor_config.id
             return fake_action
@@ -320,7 +321,6 @@ class TriangularArbV2(StrategyV2Base):
         self.executor_stopper = early_stop
 
     async def on_stop(self):
-        self.logger().info("hey")
         self.executor_stopper()
         self.executor_called = True
         await super().on_stop()
