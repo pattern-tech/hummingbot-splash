@@ -36,6 +36,7 @@ class TriangularArbExecutorConfig(ExecutorConfigBase):
     confirm_round_callback: Callable[[Strategy], None]
     set_stop: Callable[[TriExecuter], None]
     stopper_init: bool
+    real_arbitrage_percentage: Decimal
     
 
 @dataclass

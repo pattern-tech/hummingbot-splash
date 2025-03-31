@@ -81,7 +81,8 @@ class TriangularArbExecutor(ExecutorBase):
             self.sell_amount = config.sell_amount
             self.confirm_round_callback = config.confirm_round_callback
             config.set_stop(self.early_stop)
-            self.stopper_initiated = True
+            self.stopper_initiated = False
+            self.real_arbitrage_percentage = config.real_arbitrage_percentage
             self.rollbacks: AsyncTrackedOrderFunction = []
             self.state: Idle | InProgress | Completed | Canceled | Failed | GraceFullStop = Idle()
         else:
@@ -115,8 +116,7 @@ class TriangularArbExecutor(ExecutorBase):
                 self.logger().error("Not enough budget to open position.")
 
     async def control_task(self):
-        self.logger().info("all shit %s", self)
-        if self.config.buy_amount + self.config.sell_amount + self.config.proxy_amount == Decimal(0)  and self.stopper_initiated != True and self.min_profitability_percent == Decimal(0):
+        if self.config.buy_amount + self.config.sell_amount + self.config.proxy_amount == Decimal(0)  and self.stopper_initiated != True and self.real_arbitrage_percentage == Decimal(0):
             self.logger().info("initiating the stopper")
             self.config.set_stop(self.early_stop)
             self.stopper_initiated = True

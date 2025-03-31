@@ -128,6 +128,7 @@ class TriangularArbV2(StrategyV2Base):
             confirm_round_callback=self.confirm_round,
             set_stop=self.set_stop,
             stopper_init=True if self.executor_stopper == None else False,
+            real_arbitrage_percentage=amounts.percent
         )
 
     def on_tick(self):
