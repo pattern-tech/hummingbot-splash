@@ -21,7 +21,7 @@ class StopCommand:
 
     async def stop_loop(self,  # type: HummingbotApplication
                         skip_order_cancellation: bool = False):
-        self.logger().info("stop command initiated.")
+        self.logger().debug("stop command initiated.")
         self.notify("\nWinding down...")
 
         # Restore App Nap on macOS.

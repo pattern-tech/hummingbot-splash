@@ -147,7 +147,7 @@ class TriangularArbV2(StrategyV2Base):
         elif self._arb_task.done():
             executor_actions.append(self._arb_task.result())
             self._arb_task = safe_ensure_future(self.try_create_arbitrage_action())
-            self.logger().info("sending this action %s and this called %s and this executer %s", executor_actions,self.executor_called,self.executor_stopper)
+            self.logger().debug("sending this action %s and this called %s and this executer %s", executor_actions,self.executor_called,self.executor_stopper)
         return executor_actions
 
     async def try_create_arbitrage_action(self) -> List[ExecutorAction]:

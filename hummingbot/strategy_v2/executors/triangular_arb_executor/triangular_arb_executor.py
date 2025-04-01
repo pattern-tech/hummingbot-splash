@@ -117,7 +117,7 @@ class TriangularArbExecutor(ExecutorBase):
 
     async def control_task(self):
         if self.config.buy_amount + self.config.sell_amount + self.config.proxy_amount == Decimal(0)  and self.stopper_initiated != True and self.real_arbitrage_percentage == Decimal(0):
-            self.logger().info("initiating the stopper")
+            self.logger().debug("initiating the stopper")
             self.config.set_stop(self.early_stop)
             self.stopper_initiated = True
             self.confirm_round_callback()
@@ -235,16 +235,6 @@ class TriangularArbExecutor(ExecutorBase):
             )
             self.confirm_round_callback()
             self.stop()
-
-    # async def on_start(self):
-    #     self.logger().info("the on start on executer")
-    #     """
-    #     This method is responsible for starting the executor and validating if the position is expired. The base method
-    #     validates if there is enough balance to place the open order.
-
-    #     :return: None
-    #     """
-    #     await self.validate_sufficient_balance()
         
 
     async def init_arbitrage(self):
