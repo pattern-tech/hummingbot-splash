@@ -7,27 +7,37 @@ import numpy as np
 import pandas as pd
 
 from hummingbot.connector.exchange_base import ExchangeBase
+
 from hummingbot.connector.exchange_base cimport ExchangeBase
 from hummingbot.core.clock cimport Clock
+
 from hummingbot.core.data_type.common import OrderType, PriceType, TradeType
+
 from hummingbot.core.data_type.limit_order cimport LimitOrder
+
 from hummingbot.core.data_type.limit_order import LimitOrder
 from hummingbot.core.network_iterator import NetworkStatus
 from hummingbot.core.utils import map_df_to_str
+
 from hummingbot.strategy.asset_price_delegate cimport AssetPriceDelegate
+
 from hummingbot.strategy.asset_price_delegate import AssetPriceDelegate
 from hummingbot.strategy.hanging_orders_tracker import CreatedPairOfOrders, HangingOrdersTracker
 from hummingbot.strategy.market_trading_pair_tuple import MarketTradingPairTuple
+
 from hummingbot.strategy.order_book_asset_price_delegate cimport OrderBookAssetPriceDelegate
+
 from hummingbot.strategy.strategy_base import StrategyBase
 from hummingbot.strategy.utils import order_age
+
 from .data_types import PriceSize, Proposal
 from .inventory_cost_price_delegate import InventoryCostPriceDelegate
-from .inventory_skew_calculator cimport c_calculate_bid_ask_ratios_from_base_asset_ratio
-from .inventory_skew_calculator import calculate_total_order_size
-from .pure_market_making_order_tracker import PureMarketMakingOrderTracker
-from .moving_price_band import MovingPriceBand
 
+from .inventory_skew_calculator cimport c_calculate_bid_ask_ratios_from_base_asset_ratio
+
+from .inventory_skew_calculator import calculate_total_order_size
+from .moving_price_band import MovingPriceBand
+from .pure_market_making_order_tracker import PureMarketMakingOrderTracker
 
 NaN = float("nan")
 s_decimal_zero = Decimal(0)
@@ -661,7 +671,8 @@ cdef class PureMarketMakingStrategy(StrategyBase):
         # append inventory skew stats.
         if self._inventory_skew_enabled:
             inventory_skew_df = map_df_to_str(self.inventory_skew_stats_data_frame())
-            assets_df = assets_df.append(inventory_skew_df)
+            assets_df = pd.concat(
+                [assets_df, inventory_skew_df], join="inner")
 
         first_col_length = max(*assets_df[0].apply(len))
         df_lines = assets_df.to_string(index=False, header=False,

@@ -1,5 +1,5 @@
 from decimal import Decimal
-from typing import Dict, Optional, Union
+from typing import Dict, List, Optional, Union
 
 from pydantic import BaseModel
 
@@ -8,6 +8,7 @@ from hummingbot.strategy_v2.executors.arbitrage_executor.data_types import Arbit
 from hummingbot.strategy_v2.executors.data_types import ExecutorConfigBase
 from hummingbot.strategy_v2.executors.dca_executor.data_types import DCAExecutorConfig
 from hummingbot.strategy_v2.executors.position_executor.data_types import PositionExecutorConfig
+from hummingbot.strategy_v2.executors.triangular_arb_executor.data_types import TriangularArbExecutorConfig
 from hummingbot.strategy_v2.executors.twap_executor.data_types import TWAPExecutorConfig
 from hummingbot.strategy_v2.executors.xemm_executor.data_types import XEMMExecutorConfig
 from hummingbot.strategy_v2.models.base import RunnableStatus
@@ -21,7 +22,7 @@ class ExecutorInfo(BaseModel):
     close_timestamp: Optional[float]
     close_type: Optional[CloseType]
     status: RunnableStatus
-    config: Union[PositionExecutorConfig, XEMMExecutorConfig, ArbitrageExecutorConfig, DCAExecutorConfig, TWAPExecutorConfig, ExecutorConfigBase]
+    config: Union[PositionExecutorConfig, XEMMExecutorConfig, ArbitrageExecutorConfig, DCAExecutorConfig, TWAPExecutorConfig, ExecutorConfigBase, TriangularArbExecutorConfig]
     net_pnl_pct: Decimal
     net_pnl_quote: Decimal
     cum_fees_quote: Decimal
@@ -66,13 +67,14 @@ class ExecutorHandlerInfo(BaseModel):
 
 
 class PerformanceReport(BaseModel):
-    realized_pnl_quote: Decimal
-    unrealized_pnl_quote: Decimal
-    unrealized_pnl_pct: Decimal
-    realized_pnl_pct: Decimal
-    global_pnl_quote: Decimal
-    global_pnl_pct: Decimal
-    volume_traded: Decimal
-    open_order_volume: Decimal
-    inventory_imbalance: Decimal
-    close_type_counts: Dict[CloseType, int]
+    realized_pnl_quote: Decimal = Decimal("0")
+    unrealized_pnl_quote: Decimal = Decimal("0")
+    unrealized_pnl_pct: Decimal = Decimal("0")
+    realized_pnl_pct: Decimal = Decimal("0")
+    global_pnl_quote: Decimal = Decimal("0")
+    global_pnl_pct: Decimal = Decimal("0")
+    volume_traded: Decimal = Decimal("0")
+    open_order_volume: Decimal = Decimal("0")
+    inventory_imbalance: Decimal = Decimal("0")
+    positions_summary: List = []
+    close_type_counts: Dict[CloseType, int] = {}

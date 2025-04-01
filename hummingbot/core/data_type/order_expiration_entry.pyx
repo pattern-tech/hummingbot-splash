@@ -2,8 +2,11 @@
 # distutils: sources=hummingbot/core/cpp/OrderExpirationEntry.cpp
 
 from libcpp.string cimport string
-import pandas as pd
+
 from typing import List
+
+import pandas as pd
+
 
 cdef class OrderExpirationEntry:
     @classmethod

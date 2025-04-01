@@ -1,16 +1,18 @@
 import asyncio
 import time
 from decimal import Decimal
-from typing import Dict, List, Set, Tuple, TYPE_CHECKING, Union
+from typing import TYPE_CHECKING, Dict, List, Set, Tuple, Union
 
 from hummingbot.client.config.trade_fee_schema_loader import TradeFeeSchemaLoader
+from hummingbot.connector.constants import s_decimal_0, s_decimal_NaN
 from hummingbot.connector.in_flight_order_base import InFlightOrderBase
-from hummingbot.connector.utils import split_hb_trading_pair, TradeFillOrderDetails
-from hummingbot.connector.constants import s_decimal_NaN, s_decimal_0
+from hummingbot.connector.utils import TradeFillOrderDetails, split_hb_trading_pair
+
 from hummingbot.core.clock cimport Clock
-from hummingbot.core.data_type.limit_order import LimitOrder
+
 from hummingbot.core.data_type.cancellation_result import CancellationResult
 from hummingbot.core.data_type.common import OrderType, TradeType
+from hummingbot.core.data_type.limit_order import LimitOrder
 from hummingbot.core.data_type.market_order import MarketOrder
 from hummingbot.core.event.event_logger import EventLogger
 from hummingbot.core.event.events import MarketEvent, OrderFilledEvent

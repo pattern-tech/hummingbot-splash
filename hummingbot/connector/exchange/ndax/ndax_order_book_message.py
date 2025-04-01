@@ -1,17 +1,10 @@
 #!/usr/bin/env python
 
 from collections import namedtuple
-from typing import (
-    Dict,
-    List,
-    Optional,
-)
+from typing import Dict, List, Optional
 
+from hummingbot.core.data_type.order_book_message import OrderBookMessage, OrderBookMessageType
 from hummingbot.core.data_type.order_book_row import OrderBookRow
-from hummingbot.core.data_type.order_book_message import (
-    OrderBookMessage,
-    OrderBookMessageType,
-)
 
 NdaxOrderBookEntry = namedtuple("NdaxOrderBookEntry", "mdUpdateId accountId actionDateTime actionType lastTradePrice orderId price productPairCode quantity side")
 NdaxTradeEntry = namedtuple("NdaxTradeEntry", "tradeId productPairCode quantity price order1 order2 tradeTime direction takerSide blockTrade orderClientId")

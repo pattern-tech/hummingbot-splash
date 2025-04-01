@@ -37,8 +37,7 @@ class OkxExchangeTests(AbstractExchangeConnectorTests.ExchangeConnectorTests):
 
     @property
     def latest_prices_url(self):
-        url = web_utils.public_rest_url(path_url=CONSTANTS.OKX_TICKER_PATH)
-        url = f"{url}?instId={self.base_asset}-{self.quote_asset}"
+        url = web_utils.public_rest_url(path_url=CONSTANTS.OKX_TICKERS_PATH)
         regex_url = re.compile(f"^{url}".replace(".", r"\.").replace("?", r"\?"))
         return regex_url
 
@@ -804,7 +803,7 @@ class OkxExchangeTests(AbstractExchangeConnectorTests.ExchangeConnectorTests):
                     "accFillSz": "323",
                     "fillNotionalUsd": "",
                     "fillTime": "0",
-                    "fillFee": str(self.expected_fill_fee.flat_fees[0].amount),
+                    "fillFee": str(-self.expected_fill_fee.flat_fees[0].amount),
                     "fillFeeCcy": self.expected_fill_fee.flat_fees[0].token,
                     "execType": "T",
                     "state": "filled",
@@ -864,7 +863,7 @@ class OkxExchangeTests(AbstractExchangeConnectorTests.ExchangeConnectorTests):
                     "accFillSz": "323",
                     "fillNotionalUsd": "",
                     "fillTime": "0",
-                    "fillFee": str(self.expected_fill_fee.flat_fees[0].amount),
+                    "fillFee": str(-self.expected_fill_fee.flat_fees[0].amount),
                     "fillFeeCcy": self.expected_fill_fee.flat_fees[0].token,
                     "execType": "T",
                     "state": "filled",
@@ -1132,7 +1131,7 @@ class OkxExchangeTests(AbstractExchangeConnectorTests.ExchangeConnectorTests):
                     "slTriggerPxType": "last",
                     "slOrdPx": "",
                     "feeCcy": self.expected_fill_fee.flat_fees[0].token,
-                    "fee": str(self.expected_fill_fee.flat_fees[0].amount),
+                    "fee": str(-self.expected_fill_fee.flat_fees[0].amount),
                     "rebateCcy": "",
                     "rebate": "",
                     "tgtCcy": "",
@@ -1162,7 +1161,7 @@ class OkxExchangeTests(AbstractExchangeConnectorTests.ExchangeConnectorTests):
                     "posSide": "long",
                     "execType": "M",
                     "feeCcy": self.expected_fill_fee.flat_fees[0].token,
-                    "fee": str(self.expected_fill_fee.flat_fees[0].amount),
+                    "fee": str(-self.expected_fill_fee.flat_fees[0].amount),
                     "ts": "1597026383085"
                 },
             ]
@@ -1187,7 +1186,7 @@ class OkxExchangeTests(AbstractExchangeConnectorTests.ExchangeConnectorTests):
                     "posSide": "long",
                     "execType": "M",
                     "feeCcy": self.expected_fill_fee.flat_fees[0].token,
-                    "fee": str(self.expected_fill_fee.flat_fees[0].amount),
+                    "fee": str(-self.expected_fill_fee.flat_fees[0].amount),
                     "ts": "1597026383085"
                 },
             ]

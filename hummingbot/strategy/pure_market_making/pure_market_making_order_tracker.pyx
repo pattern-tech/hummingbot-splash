@@ -1,13 +1,11 @@
-from typing import (
-    Dict,
-    List,
-    Tuple
-)
+from typing import Dict, List, Tuple
 
 from hummingbot.core.data_type.limit_order cimport LimitOrder
-from hummingbot.core.data_type.limit_order import LimitOrder
+
 from hummingbot.connector.connector_base import ConnectorBase
+from hummingbot.core.data_type.limit_order import LimitOrder
 from hummingbot.strategy.market_trading_pair_tuple import MarketTradingPairTuple
+
 from hummingbot.strategy.order_tracker cimport OrderTracker
 
 NaN = float("nan")

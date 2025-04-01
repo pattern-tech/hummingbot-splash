@@ -5,7 +5,9 @@ from pydantic import Field, validator
 
 from hummingbot.client.config.config_data_types import ClientFieldData
 from hummingbot.core.data_type.common import OrderType, PositionMode, PriceType, TradeType
+from hummingbot.core.data_type.trade_fee import TokenAmount
 from hummingbot.strategy_v2.controllers.controller_base import ControllerBase, ControllerConfigBase
+from hummingbot.strategy_v2.executors.data_types import ConnectorPair
 from hummingbot.strategy_v2.executors.position_executor.data_types import TrailingStop, TripleBarrierConfig
 from hummingbot.strategy_v2.models.executor_actions import CreateExecutorAction, ExecutorAction, StopExecutorAction
 from hummingbot.strategy_v2.models.executors import CloseType
@@ -88,7 +90,7 @@ class MarketMakingControllerConfigBase(ControllerConfigBase):
             prompt=lambda mi: "Enter the take profit (as a decimal, e.g., 0.01 for 1%): ",
             prompt_on_new=True))
     time_limit: Optional[int] = Field(
-        default=60 * 45, gt=0,
+        default=None, gt=0,
         client_data=ClientFieldData(
             is_updatable=True,
             prompt=lambda mi: "Enter the time limit in seconds (e.g., 2700 for 45 minutes): ",
@@ -221,6 +223,8 @@ class MarketMakingControllerBase(ControllerBase):
     def __init__(self, config: MarketMakingControllerConfigBase, *args, **kwargs):
         super().__init__(config, *args, **kwargs)
         self.config = config
+        self.market_data_provider.initialize_rate_sources([ConnectorPair(
+            connector_name=config.connector_name, trading_pair=config.trading_pair)])
 
     def determine_executor_actions(self) -> List[ExecutorAction]:
         """
@@ -303,8 +307,8 @@ class MarketMakingControllerBase(ControllerBase):
         level = self.get_level_from_level_id(level_id)
         trade_type = self.get_trade_type_from_level_id(level_id)
         spreads, amounts_quote = self.config.get_spreads_and_amounts_in_quote(trade_type)
-        reference_price = self.processed_data["reference_price"]
-        spread_in_pct = Decimal(spreads[int(level)]) * self.processed_data["spread_multiplier"]
+        reference_price = Decimal(self.processed_data["reference_price"])
+        spread_in_pct = Decimal(spreads[int(level)]) * Decimal(self.processed_data["spread_multiplier"])
         side_multiplier = Decimal("-1") if trade_type == TradeType.BUY else Decimal("1")
         order_price = reference_price * (1 + side_multiplier * spread_in_pct)
         return order_price, Decimal(amounts_quote[int(level)]) / order_price
@@ -330,3 +334,13 @@ class MarketMakingControllerBase(ControllerBase):
         sell_ids_missing = [self.get_level_id_from_side(TradeType.SELL, level) for level in range(len(self.config.sell_spreads))
                             if self.get_level_id_from_side(TradeType.SELL, level) not in active_levels_ids]
         return buy_ids_missing + sell_ids_missing
+
+    def get_balance_requirements(self) -> List[TokenAmount]:
+        """
+        Get the balance requirements for the controller.
+        """
+        base_asset, quote_asset = self.config.trading_pair.split("-")
+        _, amounts_quote = self.config.get_spreads_and_amounts_in_quote(TradeType.BUY)
+        _, amounts_base = self.config.get_spreads_and_amounts_in_quote(TradeType.SELL)
+        return [TokenAmount(base_asset, Decimal(sum(amounts_base) / self.processed_data["reference_price"])),
+                TokenAmount(quote_asset, Decimal(sum(amounts_quote)))]

@@ -237,6 +237,17 @@ class OkxExchange(ExchangePyBase):
 
         return final_result
 
+    async def get_last_traded_prices(self, trading_pairs: List[str] = None) -> Dict[str, float]:
+        params = {"instType": "SPOT"}
+
+        resp_json = await self._api_get(
+            path_url=CONSTANTS.OKX_TICKERS_PATH,
+            params=params,
+        )
+
+        last_traded_prices = {ticker["instId"]: float(ticker["last"]) for ticker in resp_json["data"]}
+        return last_traded_prices
+
     async def _get_last_traded_price(self, trading_pair: str) -> float:
         params = {"instId": await self.exchange_symbol_associated_to_pair(trading_pair=trading_pair)}
 
@@ -345,7 +356,7 @@ class OkxExchange(ExchangePyBase):
                     fee_schema=self.trade_fee_schema(),
                     trade_type=order.trade_type,
                     percent_token=fill_data["feeCcy"],
-                    flat_fees=[TokenAmount(amount=Decimal(fill_data["fee"]), token=fill_data["feeCcy"])]
+                    flat_fees=[TokenAmount(amount=-Decimal(fill_data["fee"]), token=fill_data["feeCcy"])]
                 )
                 trade_update = TradeUpdate(
                     trade_id=str(fill_data["tradeId"]),
@@ -398,7 +409,7 @@ class OkxExchange(ExchangePyBase):
                                 fee_schema=self.trade_fee_schema(),
                                 trade_type=fillable_order.trade_type,
                                 percent_token=data["fillFeeCcy"],
-                                flat_fees=[TokenAmount(amount=Decimal(data["fillFee"]), token=data["fillFeeCcy"])]
+                                flat_fees=[TokenAmount(amount=-Decimal(data["fillFee"]), token=data["fillFeeCcy"])]
                             )
                             trade_update = TradeUpdate(
                                 trade_id=str(trade_id),

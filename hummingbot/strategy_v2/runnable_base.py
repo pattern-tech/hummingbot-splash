@@ -63,9 +63,13 @@ class RunnableBase(ABC):
         The main control loop of the smart component.
         This method is responsible for executing the control task at the specified interval.
         """
-        self.on_start()
+        self.logger().debug("inside the control loop")
+        self.logger().debug("is terminated %s", self.terminated.is_set())
+        await self.on_start()
+        self.logger().debug("passed on start %s", self.terminated.is_set())
         while not self.terminated.is_set():
             try:
+                self.logger().debug("in loop")
                 await self.control_task()
             except Exception as e:
                 self.logger().error(e, exc_info=True)
@@ -80,7 +84,7 @@ class RunnableBase(ABC):
         """
         pass
 
-    def on_start(self):
+    async def on_start(self):
         """
         Method to be executed when the control loop is started.
         This method should be overridden in subclasses to provide specific behavior.

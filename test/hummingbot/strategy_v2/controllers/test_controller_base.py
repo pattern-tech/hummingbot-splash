@@ -61,7 +61,7 @@ class TestControllerBase(IsolatedAsyncioWrapperTestCase):
         # Candles config is updatable
         self.assertEqual(self.controller.config.candles_config[0].interval, "3m")
 
-    async def test_control_task_market_data_privder_not_ready(self):
+    async def test_control_task_market_data_provider_not_ready(self):
         type(self.controller.market_data_provider).ready = PropertyMock(return_value=False)
         self.controller.executors_update_event.set()
         await self.controller.control_task()
@@ -108,3 +108,7 @@ class TestControllerBase(IsolatedAsyncioWrapperTestCase):
         with self.assertRaises(ValueError) as e:
             ControllerConfigBase.parse_candles_config_str(input_str)
         self.assertEqual(str(e.exception), "Invalid max_records value 'notanumber' in segment 'binance.BTC-USDT.1m.notanumber'. max_records should be an integer.")
+
+    def test_balance_requirements(self):
+        # Test the balance_required method
+        self.assertEqual(self.controller.get_balance_requirements(), [])

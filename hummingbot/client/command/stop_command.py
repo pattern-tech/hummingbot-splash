@@ -21,7 +21,7 @@ class StopCommand:
 
     async def stop_loop(self,  # type: HummingbotApplication
                         skip_order_cancellation: bool = False):
-        self.logger().info("stop command initiated.")
+        self.logger().debug("stop command initiated.")
         self.notify("\nWinding down...")
 
         # Restore App Nap on macOS.
@@ -31,7 +31,7 @@ class StopCommand:
 
         if isinstance(self.strategy, ScriptStrategyBase):
             await self.strategy.on_stop()
-
+            
         if self._trading_required and not skip_order_cancellation:
             # Remove the strategy from clock before cancelling orders, to
             # prevent race condition where the strategy tries to create more

@@ -42,11 +42,13 @@ from hummingbot.model.market_data import MarketData
 from hummingbot.model.market_state import MarketState
 from hummingbot.model.order import Order
 from hummingbot.model.order_status import OrderStatus
+from hummingbot.model.position import Position
 from hummingbot.model.range_position_collected_fees import RangePositionCollectedFees
 from hummingbot.model.range_position_update import RangePositionUpdate
 from hummingbot.model.sql_connection_manager import SQLConnectionManager
 from hummingbot.model.trade_fill import TradeFill
 from hummingbot.strategy_v2.controllers.controller_base import ControllerConfigBase
+from hummingbot.strategy_v2.executors.triangular_arb_executor.data_types import TriangularArbExecutorConfig
 from hummingbot.strategy_v2.models.executors_info import ExecutorInfo
 
 
@@ -195,16 +197,32 @@ class MarketsRecorder:
     def store_or_update_executor(self, executor):
         with self._sql_manager.get_new_session() as session:
             existing_executor = session.query(Executors).filter(Executors.id == executor.config.id).one_or_none()
-
-            if existing_executor:
+            if (isinstance(executor.executor_info.config, TriangularArbExecutorConfig)): 
+                    executor.executor_info.config.confirm_round_callback = None
+                    executor.executor_info.config.set_stop = None
+            serialized_config = executor.executor_info.json()
+            executor_dict = json.loads(serialized_config)
+            if existing_executor:                
                 # Update existing executor
-                for attr, value in vars(executor).items():
+                for attr, value in executor_dict.items():
                     setattr(existing_executor, attr, value)
             else:
                 # Insert new executor
-                serialized_config = executor.executor_info.json()
-                new_executor = Executors(**json.loads(serialized_config))
+                raw_config = executor.executor_info
+                
+                # Necessary for triangular to be json serializable compatible 
+                if (isinstance(raw_config.config, TriangularArbExecutorConfig)): 
+                    raw_config.config.confirm_round_callback = None
+                    raw_config.config.set_stop = None
+
+                serialized_config = raw_config.json()
+                new_executor = Executors(**executor_dict)
                 session.add(new_executor)
+            session.commit()
+
+    def store_position(self, position: Position):
+        with self._sql_manager.get_new_session() as session:
+            session.add(position)
             session.commit()
 
     def store_controller_config(self, controller_config: ControllerConfigBase):
@@ -226,6 +244,11 @@ class MarketsRecorder:
     def get_executors_by_controller(self, controller_id: str = None) -> List[ExecutorInfo]:
         with self._sql_manager.get_new_session() as session:
             executors = session.query(Executors).filter(Executors.controller_id == controller_id).all()
+            return [executor.to_executor_info() for executor in executors]
+
+    def get_all_executors(self) -> List[ExecutorInfo]:
+        with self._sql_manager.get_new_session() as session:
+            executors = session.query(Executors).all()
             return [executor.to_executor_info() for executor in executors]
 
     def get_orders_for_config_and_market(self, config_file_path: str, market: ConnectorBase,
@@ -389,7 +412,6 @@ class MarketsRecorder:
                 market.add_trade_fills_from_market_recorder({TradeFillOrderDetails(trade_fill_record.market,
                                                                                    trade_fill_record.exchange_trade_id,
                                                                                    trade_fill_record.symbol)})
-                self.append_to_csv(trade_fill_record)
 
     def _did_complete_funding_payment(self,
                                       event_tag: int,

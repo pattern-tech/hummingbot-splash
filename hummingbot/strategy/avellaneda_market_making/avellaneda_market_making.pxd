@@ -1,6 +1,7 @@
 # distutils: language=c++
 
 from libc.stdint cimport int64_t
+
 from hummingbot.strategy.__utils__.trailing_indicators.trading_intensity cimport TradingIntensityIndicator
 from hummingbot.strategy.strategy_base cimport StrategyBase
 

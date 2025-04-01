@@ -3,10 +3,13 @@
 from libc.stdint cimport int64_t
 from libcpp.set cimport set
 
-from hummingbot.core.data_type.OrderBookEntry cimport OrderBookEntry
 from hummingbot.core.data_type.order_book cimport OrderBook
+from hummingbot.core.data_type.OrderBookEntry cimport OrderBookEntry
+
 from hummingbot.core.data_type.order_book import OrderBook
+
 from hummingbot.core.event.event_listener cimport EventListener
+
 
 cdef class TradingIntensityIndicator:
     cdef:
