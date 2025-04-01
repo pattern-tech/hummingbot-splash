@@ -4,11 +4,11 @@ from typing import Dict, List, Optional, Union
 from pydantic import BaseModel
 
 from hummingbot.core.data_type.common import TradeType
-from hummingbot.strategy_v2.executors.triangular_arb_executor.data_types import TriangularArbExecutorConfig
 from hummingbot.strategy_v2.executors.arbitrage_executor.data_types import ArbitrageExecutorConfig
 from hummingbot.strategy_v2.executors.data_types import ExecutorConfigBase
 from hummingbot.strategy_v2.executors.dca_executor.data_types import DCAExecutorConfig
 from hummingbot.strategy_v2.executors.position_executor.data_types import PositionExecutorConfig
+from hummingbot.strategy_v2.executors.triangular_arb_executor.data_types import TriangularArbExecutorConfig
 from hummingbot.strategy_v2.executors.twap_executor.data_types import TWAPExecutorConfig
 from hummingbot.strategy_v2.executors.xemm_executor.data_types import XEMMExecutorConfig
 from hummingbot.strategy_v2.models.base import RunnableStatus

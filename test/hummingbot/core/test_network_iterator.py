@@ -1,15 +1,10 @@
-import unittest
 import asyncio
+import unittest
+
 import pandas as pd
 
-from hummingbot.core.clock import (
-    Clock,
-    ClockMode
-)
-from hummingbot.core.network_iterator import (
-    NetworkIterator,
-    NetworkStatus,
-)
+from hummingbot.core.clock import Clock, ClockMode
+from hummingbot.core.network_iterator import NetworkIterator, NetworkStatus
 
 
 class MockNetworkIterator(NetworkIterator):

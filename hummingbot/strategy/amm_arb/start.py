@@ -2,6 +2,7 @@ from decimal import Decimal
 from typing import cast
 
 from hummingbot.client.settings import AllConnectorSettings
+from hummingbot.connector.gateway.amm.gateway_cardano_amm import GatewayCardanoAMM
 from hummingbot.connector.gateway.amm.gateway_ethereum_amm import GatewayEthereumAMM
 from hummingbot.connector.gateway.amm.gateway_solana_amm import GatewaySolanaAMM
 from hummingbot.connector.gateway.common_types import Chain
@@ -11,7 +12,7 @@ from hummingbot.core.utils.fixed_rate_source import FixedRateSource
 from hummingbot.strategy.amm_arb.amm_arb import AmmArbStrategy
 from hummingbot.strategy.amm_arb.amm_arb_config_map import amm_arb_config_map
 from hummingbot.strategy.market_trading_pair_tuple import MarketTradingPairTuple
-from hummingbot.connector.gateway.amm.gateway_cardano_amm import GatewayCardanoAMM
+
 
 def start(self):
     connector_1 = amm_arb_config_map.get("connector_1").value.lower()

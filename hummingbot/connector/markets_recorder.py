@@ -9,7 +9,6 @@ from shutil import move
 from typing import Dict, List, Optional, Tuple, Union
 
 import pandas as pd
-from hummingbot.strategy_v2.executors.triangular_arb_executor.data_types import TriangularArbExecutorConfig
 from sqlalchemy.orm import Query, Session
 
 from hummingbot import data_path
@@ -49,6 +48,7 @@ from hummingbot.model.range_position_update import RangePositionUpdate
 from hummingbot.model.sql_connection_manager import SQLConnectionManager
 from hummingbot.model.trade_fill import TradeFill
 from hummingbot.strategy_v2.controllers.controller_base import ControllerConfigBase
+from hummingbot.strategy_v2.executors.triangular_arb_executor.data_types import TriangularArbExecutorConfig
 from hummingbot.strategy_v2.models.executors_info import ExecutorInfo
 
 

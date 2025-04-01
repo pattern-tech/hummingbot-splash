@@ -3,32 +3,21 @@
 import bisect
 import logging
 import time
-from typing import (
-    Dict,
-    Iterator,
-    List,
-    Optional,
-    Tuple,
-)
+from typing import Dict, Iterator, List, Optional, Tuple
 
 import numpy as np
 import pandas as pd
 
-from cython.operator cimport(
-    address as ref,
-    dereference as deref,
-    postincrement as inc,
-)
+from cython.operator cimport address as ref, dereference as deref, postincrement as inc
 
 from hummingbot.core.data_type.order_book_message import OrderBookMessage
 from hummingbot.core.data_type.order_book_query_result import OrderBookQueryResult
 from hummingbot.core.data_type.order_book_row import OrderBookRow
+
 from hummingbot.core.data_type.OrderBookEntry cimport truncateOverlapEntries
+
+from hummingbot.core.event.events import OrderBookEvent, OrderBookTradeEvent
 from hummingbot.logger import HummingbotLogger
-from hummingbot.core.event.events import (
-    OrderBookEvent,
-    OrderBookTradeEvent
-)
 
 cimport numpy as np
 

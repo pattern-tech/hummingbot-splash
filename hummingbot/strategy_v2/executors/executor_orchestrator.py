@@ -18,9 +18,9 @@ from hummingbot.strategy_v2.executors.dca_executor.dca_executor import DCAExecut
 from hummingbot.strategy_v2.executors.grid_executor.data_types import GridExecutorConfig
 from hummingbot.strategy_v2.executors.grid_executor.grid_executor import GridExecutor
 from hummingbot.strategy_v2.executors.position_executor.data_types import PositionExecutorConfig
+from hummingbot.strategy_v2.executors.position_executor.position_executor import PositionExecutor
 from hummingbot.strategy_v2.executors.triangular_arb_executor.data_types import TriangularArbExecutorConfig
 from hummingbot.strategy_v2.executors.triangular_arb_executor.triangular_arb_executor import TriangularArbExecutor
-from hummingbot.strategy_v2.executors.position_executor.position_executor import PositionExecutor
 from hummingbot.strategy_v2.executors.twap_executor.data_types import TWAPExecutorConfig
 from hummingbot.strategy_v2.executors.twap_executor.twap_executor import TWAPExecutor
 from hummingbot.strategy_v2.executors.xemm_executor.data_types import XEMMExecutorConfig

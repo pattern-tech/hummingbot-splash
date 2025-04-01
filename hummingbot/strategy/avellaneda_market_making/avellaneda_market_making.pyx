@@ -10,16 +10,15 @@ import numpy as np
 import pandas as pd
 
 from hummingbot.connector.exchange_base import ExchangeBase
+
 from hummingbot.connector.exchange_base cimport ExchangeBase
 from hummingbot.core.clock cimport Clock
 
 from hummingbot.client.config.config_helpers import ClientConfigAdapter
-from hummingbot.core.data_type.common import (
-    OrderType,
-    PriceType,
-    TradeType
-)
+from hummingbot.core.data_type.common import OrderType, PriceType, TradeType
+
 from hummingbot.core.data_type.limit_order cimport LimitOrder
+
 from hummingbot.core.data_type.limit_order import LimitOrder
 from hummingbot.core.network_iterator import NetworkStatus
 from hummingbot.core.utils import map_df_to_str
@@ -32,21 +31,14 @@ from hummingbot.strategy.avellaneda_market_making.avellaneda_market_making_confi
     MultiOrderLevelModel,
     TrackHangingOrdersModel,
 )
-from hummingbot.strategy.conditional_execution_state import (
-    RunAlwaysExecutionState,
-    RunInTimeConditionalExecutionState
-)
-from hummingbot.strategy.data_types import (
-    PriceSize,
-    Proposal,
-)
-from hummingbot.strategy.hanging_orders_tracker import (
-    CreatedPairOfOrders,
-    HangingOrdersTracker,
-)
+from hummingbot.strategy.conditional_execution_state import RunAlwaysExecutionState, RunInTimeConditionalExecutionState
+from hummingbot.strategy.data_types import PriceSize, Proposal
+from hummingbot.strategy.hanging_orders_tracker import CreatedPairOfOrders, HangingOrdersTracker
 from hummingbot.strategy.market_trading_pair_tuple import MarketTradingPairTuple
 from hummingbot.strategy.order_book_asset_price_delegate import OrderBookAssetPriceDelegate
+
 from hummingbot.strategy.order_tracker cimport OrderTracker
+
 from hummingbot.strategy.strategy_base import StrategyBase
 from hummingbot.strategy.utils import order_age
 

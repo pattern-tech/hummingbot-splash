@@ -6,16 +6,16 @@ from decimal import Decimal
 from typing import Tuple
 
 import numpy as np
-from scipy.optimize import curve_fit
-from scipy.optimize import OptimizeWarning
+from scipy.optimize import OptimizeWarning, curve_fit
 
-from hummingbot.core.data_type.common import (
-    PriceType,
-)
+from hummingbot.core.data_type.common import PriceType
 from hummingbot.core.data_type.order_book import OrderBook
+
 from hummingbot.core.event.event_listener cimport EventListener
+
 from hummingbot.core.event.events import OrderBookEvent
 from hummingbot.strategy.asset_price_delegate import AssetPriceDelegate
+
 
 cdef class TradesForwarder(EventListener):
     def __init__(self, indicator: 'TradingIntensityIndicator'):

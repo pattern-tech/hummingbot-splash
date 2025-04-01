@@ -2,11 +2,11 @@ import asyncio
 import os
 import time
 from asyncio import Future
+from dataclasses import dataclass
 from decimal import Decimal
 from typing import Callable, Dict, List, Set, Union, cast
 
 from pydantic import Field
-from dataclasses import dataclass
 
 from hummingbot.client.config.config_data_types import ClientFieldData
 from hummingbot.connector.connector_base import ConnectorBase
@@ -18,8 +18,8 @@ from hummingbot.strategy_v2.executors.triangular_arb_executor.data_types import 
     ArbitrageDirection,
     ArbitragePercent,
     GraceFullStop,
-    TriExecuter,
     TriangularArbExecutorConfig,
+    TriExecuter,
 )
 from hummingbot.strategy_v2.models.executor_actions import CreateExecutorAction, ExecutorAction, StopExecutorAction
 

@@ -5,11 +5,13 @@ from decimal import Decimal
 from typing import List
 
 import pandas as pd
+
 from cpython cimport PyObject
 from libcpp.string cimport string
 
-from hummingbot.core.data_type.common import PositionAction, OrderType
+from hummingbot.core.data_type.common import OrderType, PositionAction
 from hummingbot.core.event.events import LimitOrderStatus
+
 
 cdef class LimitOrder:
     """

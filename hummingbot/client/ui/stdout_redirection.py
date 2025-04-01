@@ -1,11 +1,11 @@
 #!/usr/bin/env python
 
 from __future__ import unicode_literals
-from asyncio import get_event_loop
 
-from contextlib import contextmanager
-import threading
 import sys
+import threading
+from asyncio import get_event_loop
+from contextlib import contextmanager
 
 __all__ = [
     'patch_stdout',

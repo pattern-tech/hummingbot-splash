@@ -1,6 +1,6 @@
 import asyncio
-from unittest import TestCase
 from decimal import Decimal
+from unittest import TestCase
 
 import hummingbot.strategy.twap.twap_config_map as twap_config_map_module
 

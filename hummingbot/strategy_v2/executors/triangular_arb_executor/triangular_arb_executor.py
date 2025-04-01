@@ -1,6 +1,6 @@
 import asyncio
-from decimal import Decimal
 import logging
+from decimal import Decimal
 from typing import Coroutine, Dict, Optional, Union, cast
 
 from hummingbot.connector.connector_base import ConnectorBase

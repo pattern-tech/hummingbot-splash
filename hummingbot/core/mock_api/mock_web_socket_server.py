@@ -1,8 +1,8 @@
 import asyncio
+import errno
+import socket
 from threading import Event, Thread
 from typing import Optional
-import socket
-import errno
 from urllib.parse import urlparse
 
 import aiohttp
