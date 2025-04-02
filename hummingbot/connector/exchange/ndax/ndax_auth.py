@@ -1,6 +1,6 @@
 import hashlib
 import hmac
-from typing import Dict, Any
+from typing import Any, Dict
 
 from hummingbot.core.utils.tracking_nonce import get_tracking_nonce_low_res
 

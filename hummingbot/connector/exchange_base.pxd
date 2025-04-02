@@ -1,11 +1,9 @@
-from hummingbot.core.event.event_reporter cimport EventReporter
-from hummingbot.core.event.event_logger cimport EventLogger
-from hummingbot.core.data_type.order_book cimport OrderBook
 from hummingbot.connector.connector_base cimport ConnectorBase
-from hummingbot.core.data_type.order_book_query_result cimport(
-    ClientOrderBookQueryResult,
-    OrderBookQueryResult,
-)
+from hummingbot.core.data_type.order_book cimport OrderBook
+from hummingbot.core.data_type.order_book_query_result cimport ClientOrderBookQueryResult, OrderBookQueryResult
+from hummingbot.core.event.event_logger cimport EventLogger
+from hummingbot.core.event.event_reporter cimport EventReporter
+
 
 cdef class ExchangeBase(ConnectorBase):
     cdef:

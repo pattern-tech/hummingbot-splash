@@ -1,12 +1,12 @@
+from dataclasses import dataclass
 from decimal import Decimal
 from enum import Enum
-
 from typing import Any, Callable, Coroutine, List, Protocol, TypeAlias
 
 from hummingbot.core.data_type.in_flight_order import InFlightOrder
 from hummingbot.strategy_v2.executors.data_types import ConnectorPair, ExecutorConfigBase
 from hummingbot.strategy_v2.models.executors import TrackedOrder
-from dataclasses import dataclass
+
 
 class ArbitrageDirection(Enum):
     FORWARD = 0
@@ -36,6 +36,7 @@ class TriangularArbExecutorConfig(ExecutorConfigBase):
     confirm_round_callback: Callable[[Strategy], None]
     set_stop: Callable[[TriExecuter], None]
     stopper_init: bool
+    real_arbitrage_percentage: Decimal
     
 
 @dataclass

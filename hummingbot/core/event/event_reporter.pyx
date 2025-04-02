@@ -1,6 +1,7 @@
+import dataclasses
 import logging
 from typing import Optional
-import dataclasses
+
 from hummingbot.core.event.event_listener cimport EventListener
 
 er_logger = None

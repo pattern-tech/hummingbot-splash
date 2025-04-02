@@ -1,18 +1,13 @@
-from collections import (
-    deque,
-    OrderedDict
-)
+from collections import OrderedDict, deque
 from decimal import Decimal
-from typing import (
-    Dict,
-    List,
-    Tuple
-)
+from typing import Dict, List, Tuple
 
 import pandas as pd
 
 from hummingbot.connector.connector_base import ConnectorBase
+
 from hummingbot.core.data_type.limit_order cimport LimitOrder
+
 from hummingbot.core.data_type.limit_order import LimitOrder
 from hummingbot.core.data_type.market_order import MarketOrder
 from hummingbot.strategy.market_trading_pair_tuple import MarketTradingPairTuple

@@ -2,12 +2,8 @@ import asyncio
 import unittest
 from typing import Awaitable
 
-from hummingbot.core.web_assistant.connections.connections_factory import (
-    ConnectionsFactory
-)
-from hummingbot.core.web_assistant.connections.rest_connection import (
-    RESTConnection
-)
+from hummingbot.core.web_assistant.connections.connections_factory import ConnectionsFactory
+from hummingbot.core.web_assistant.connections.rest_connection import RESTConnection
 from hummingbot.core.web_assistant.connections.ws_connection import WSConnection
 
 

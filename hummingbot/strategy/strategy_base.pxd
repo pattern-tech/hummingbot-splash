@@ -1,9 +1,10 @@
 # distutils: language=c++
 
-from hummingbot.core.time_iterator cimport TimeIterator
 from hummingbot.core.event.event_listener cimport EventListener
+from hummingbot.core.time_iterator cimport TimeIterator
 
 from .order_tracker cimport OrderTracker
+
 
 cdef class StrategyBase(TimeIterator):
     cdef:

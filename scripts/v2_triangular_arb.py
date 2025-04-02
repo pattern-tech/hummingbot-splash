@@ -1,13 +1,10 @@
-import asyncio
 import os
 import time
 from asyncio import Future
 from decimal import Decimal
 from typing import Callable, Dict, List, Set, Union, cast
 
-from hummingbot.client.hummingbot_application import HummingbotApplication
 from pydantic import Field
-from dataclasses import dataclass
 
 from hummingbot.client.config.config_data_types import ClientFieldData
 from hummingbot.connector.connector_base import ConnectorBase
@@ -18,9 +15,8 @@ from hummingbot.strategy_v2.executors.data_types import ConnectorPair
 from hummingbot.strategy_v2.executors.triangular_arb_executor.data_types import (
     ArbitrageDirection,
     ArbitragePercent,
-    GraceFullStop,
-    TriExecuter,
     TriangularArbExecutorConfig,
+    TriExecuter,
 )
 from hummingbot.strategy_v2.models.executor_actions import CreateExecutorAction, ExecutorAction, StopExecutorAction
 
@@ -100,10 +96,7 @@ class TriangularArbV2(StrategyV2Base):
         self.executor_stopper: Union[Callable[[TriExecuter], None], None] = None
         self.executor_called: bool = False
         self.latest_action_exec_id: str = ""
-        self.hb_app = HummingbotApplication.main_application()
-        self.mqtt_enabled = self.hb_app._mqtt is not None
-        
-        
+
     def arbitrage_config(self, direction: ArbitrageDirection, amounts: ArbitragePercent) -> TriangularArbExecutorConfig:
 
         cex_main = ConnectorPair(connector_name=self.config.cex_connector_main, trading_pair=self.main_trading_pair)
@@ -130,18 +123,19 @@ class TriangularArbV2(StrategyV2Base):
             sell_amount=amounts.sell_amount,
             confirm_round_callback=self.confirm_round,
             set_stop=self.set_stop,
-            stopper_init=True if self.executor_stopper == None else False,
+            stopper_init=True if self.executor_stopper is None else False,
+            real_arbitrage_percentage=amounts.percent,
         )
 
     def on_tick(self):
-        if self.executor_called == False:
+        if not self.executor_called:
             self.update_executors_info()
             self.update_controllers_configs()
             if self.market_data_provider.ready:
                 executor_actions: List[ExecutorAction] = self.determine_executor_actions()
                 for action in executor_actions:
                     self.executor_orchestrator.execute_action(action)
-    
+
     def determine_executor_actions(self) -> List[ExecutorAction]:
         executor_actions = []
         if self._arb_task is None:
@@ -149,6 +143,12 @@ class TriangularArbV2(StrategyV2Base):
         elif self._arb_task.done():
             executor_actions.append(self._arb_task.result())
             self._arb_task = safe_ensure_future(self.try_create_arbitrage_action())
+            self.logger().debug(
+                "sending this action %s and this called %s and this executer %s",
+                executor_actions,
+                self.executor_called,
+                self.executor_stopper,
+            )
         return executor_actions
 
     async def try_create_arbitrage_action(self) -> List[ExecutorAction]:
@@ -157,10 +157,9 @@ class TriangularArbV2(StrategyV2Base):
             executors=self.get_all_executors(), filter_func=lambda e: not e.is_done
         )
 
-
         if self.executor_called:
-            return [StopExecutorAction(executor_id= self.latest_action_exec_id)]
-        if self.executor_stopper == None:
+            return [StopExecutorAction(executor_id=self.latest_action_exec_id)]
+        if self.executor_stopper is None:
             fake_action = CreateExecutorAction(
                 executor_config=self.arbitrage_config(
                     ArbitrageDirection.FORWARD,
@@ -172,15 +171,16 @@ class TriangularArbV2(StrategyV2Base):
                     ),
                 )
             )
+
             fake_action.controller_id = fake_action.executor_config.id
             self.latest_action_exec_id = fake_action.executor_config.id
             return fake_action
         #
         # Uncomment this if you want to test the stats and do only one trade once found an opportunity
         #
-        if self.one_time_trade:
-            print("traded one time, not trading anymore")
-            return []
+        # if self.one_time_trade:
+        #     print("traded one time, not trading anymore")
+        #     return []
 
         if not self.previous_round_confirmed:
             print("Wait until next round gets confirmed")
@@ -210,7 +210,6 @@ class TriangularArbV2(StrategyV2Base):
         else:
             self.one_time_trade = True
             self.previous_round_confirmed = False
-            self.logger().info("retiring this action: %s", executor_actions[0])
             return executor_actions[0]
 
     async def estimate_arbitrage_percent(self, direction: ArbitrageDirection) -> ArbitragePercent:
@@ -322,18 +321,10 @@ class TriangularArbV2(StrategyV2Base):
         self.executor_stopper = early_stop
 
     async def on_stop(self):
-        self.logger().info("on stop on strat")
         self.executor_stopper()
         self.executor_called = True
         await super().on_stop()
-        
-        
-    async def on_stop(self):
-        await super().on_stop()
-        if self.mqtt_enabled:
-            self._pub({controller_id: {} for controller_id in self.controllers.keys()})
-            self._pub = None
-            
+
     def confirm_round(self):
         print("All orders have been filled")
         self.previous_round_confirmed = True

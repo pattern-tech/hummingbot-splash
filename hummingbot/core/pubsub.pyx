@@ -1,24 +1,18 @@
 # distutils: language=c++
 # distutils: sources=hummingbot/core/cpp/PyRef.cpp
 
-from cpython cimport(
-    PyObject,
-    PyWeakref_NewRef,
-    PyWeakref_GetObject
-)
-from cython.operator cimport(
-    postincrement as inc,
-    dereference as deref,
-    address
-)
+from cpython cimport PyObject, PyWeakref_GetObject, PyWeakref_NewRef
+from cython.operator cimport address, dereference as deref, postincrement as inc
 from libcpp.vector cimport vector
-from enum import Enum
+
 import logging
 import random
+from enum import Enum
 from typing import List
 
-from hummingbot.logger import HummingbotLogger
 from hummingbot.core.event.event_listener import EventListener
+from hummingbot.logger import HummingbotLogger
+
 from hummingbot.core.event.event_listener cimport EventListener
 
 class_logger = None

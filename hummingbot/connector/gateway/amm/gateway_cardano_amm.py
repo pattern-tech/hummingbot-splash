@@ -1,21 +1,26 @@
 import asyncio
 import itertools as it
 from decimal import Decimal
-from typing import List, Optional, TYPE_CHECKING, Any, Dict, Union
+from typing import TYPE_CHECKING, Any, Dict, List, Optional, Union
+
 from hummingbot.connector.gateway.amm.gateway_amm_base import GatewayAMMBase
-from hummingbot.core.data_type.cancellation_result import CancellationResult
-from hummingbot.core.utils import async_ttl_cache
 from hummingbot.connector.gateway.gateway_in_flight_order import GatewayInFlightOrder
+from hummingbot.core.data_type.cancellation_result import CancellationResult
 from hummingbot.core.data_type.in_flight_order import OrderState, OrderUpdate
 from hummingbot.core.data_type.trade_fee import TokenAmount
 from hummingbot.core.event.events import TradeType
 from hummingbot.core.gateway.gateway_http_client import GatewayHttpClient
+from hummingbot.core.utils import async_ttl_cache
 from hummingbot.core.utils.async_utils import safe_ensure_future, safe_gather
 from hummingbot.core.utils.tracking_nonce import NonceCreator
 from hummingbot.logger import HummingbotLogger
+
 if TYPE_CHECKING:
     from hummingbot.client.config.config_helpers import ClientConfigAdapter
+
 from hummingbot.core.gateway import check_transaction_exceptions
+
+
 class GatewayCardanoAMM(GatewayAMMBase):
     """
     Defines basic functions common to connectors that interact with Gateway.

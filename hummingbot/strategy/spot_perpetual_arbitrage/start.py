@@ -1,7 +1,10 @@
 from decimal import Decimal
+
 from hummingbot.strategy.market_trading_pair_tuple import MarketTradingPairTuple
 from hummingbot.strategy.spot_perpetual_arbitrage.spot_perpetual_arbitrage import SpotPerpetualArbitrageStrategy
-from hummingbot.strategy.spot_perpetual_arbitrage.spot_perpetual_arbitrage_config_map import spot_perpetual_arbitrage_config_map
+from hummingbot.strategy.spot_perpetual_arbitrage.spot_perpetual_arbitrage_config_map import (
+    spot_perpetual_arbitrage_config_map,
+)
 
 
 def start(self):

@@ -39,4 +39,4 @@ services:
       volumes:
           - "./certs:/home/gateway/certs"
       environment:
-          - GATEWAY_PASSPHRASE=Sp09135546636
+          - GATEWAY_PASSPHRASE=a

@@ -1,7 +1,8 @@
-import numpy as np
 import logging
-cimport numpy as np
 
+import numpy as np
+
+cimport numpy as np
 
 pmm_logger = None
 

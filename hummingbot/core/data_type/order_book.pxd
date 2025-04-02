@@ -1,12 +1,14 @@
 # distutils: language=c++
 
+cimport numpy as np
 from libc.stdint cimport int64_t
 from libcpp.set cimport set
 from libcpp.vector cimport vector
+
 from hummingbot.core.data_type.OrderBookEntry cimport OrderBookEntry
 from hummingbot.core.pubsub cimport PubSub
+
 from .order_book_query_result cimport OrderBookQueryResult
-cimport numpy as np
 
 
 cdef class OrderBook(PubSub):

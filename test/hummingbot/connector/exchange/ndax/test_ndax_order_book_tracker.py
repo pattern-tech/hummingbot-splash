@@ -1,16 +1,15 @@
-import unittest
 import asyncio
+import unittest
 from decimal import Decimal
 from typing import Any
-from unittest.mock import patch, AsyncMock
+from unittest.mock import AsyncMock, patch
 
 import hummingbot.connector.exchange.ndax.ndax_constants as CONSTANTS
-
-from hummingbot.core.data_type.order_book import OrderBook
 from hummingbot.connector.exchange.ndax.ndax_order_book import NdaxOrderBook
 from hummingbot.connector.exchange.ndax.ndax_order_book_message import NdaxOrderBookEntry, NdaxOrderBookMessage
 from hummingbot.connector.exchange.ndax.ndax_order_book_tracker import NdaxOrderBookTracker
 from hummingbot.core.api_throttler.async_throttler import AsyncThrottler
+from hummingbot.core.data_type.order_book import OrderBook
 
 
 class NdaxOrderBookTrackerUnitTest(unittest.TestCase):

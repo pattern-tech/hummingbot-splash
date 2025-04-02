@@ -1,6 +1,8 @@
 import numpy as np
-from libc.stdint cimport int64_t
+
 cimport numpy as np
+from libc.stdint cimport int64_t
+
 
 cdef class RingBuffer:
     cdef:

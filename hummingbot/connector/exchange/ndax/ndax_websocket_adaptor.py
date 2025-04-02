@@ -1,8 +1,8 @@
-import aiohttp
 import asyncio
 from enum import Enum
-from typing import AsyncIterable, Dict, Any, Optional
+from typing import Any, AsyncIterable, Dict, Optional
 
+import aiohttp
 import ujson
 
 import hummingbot.connector.exchange.ndax.ndax_constants as CONSTANTS

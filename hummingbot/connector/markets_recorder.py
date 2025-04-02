@@ -9,7 +9,6 @@ from shutil import move
 from typing import Dict, List, Optional, Tuple, Union
 
 import pandas as pd
-from hummingbot.strategy_v2.executors.triangular_arb_executor.data_types import TriangularArbExecutorConfig
 from sqlalchemy.orm import Query, Session
 
 from hummingbot import data_path
@@ -49,6 +48,7 @@ from hummingbot.model.range_position_update import RangePositionUpdate
 from hummingbot.model.sql_connection_manager import SQLConnectionManager
 from hummingbot.model.trade_fill import TradeFill
 from hummingbot.strategy_v2.controllers.controller_base import ControllerConfigBase
+from hummingbot.strategy_v2.executors.triangular_arb_executor.data_types import TriangularArbExecutorConfig
 from hummingbot.strategy_v2.models.executors_info import ExecutorInfo
 
 
@@ -197,12 +197,12 @@ class MarketsRecorder:
     def store_or_update_executor(self, executor):
         with self._sql_manager.get_new_session() as session:
             existing_executor = session.query(Executors).filter(Executors.id == executor.config.id).one_or_none()
+            if (isinstance(executor.executor_info.config, TriangularArbExecutorConfig)): 
+                    executor.executor_info.config.confirm_round_callback = None
+                    executor.executor_info.config.set_stop = None
             serialized_config = executor.executor_info.json()
             executor_dict = json.loads(serialized_config)
-            if existing_executor:
-                print("found this exec %s", existing_executor)
-                self.logger().info("found this exec %s", existing_executor)
-                
+            if existing_executor:                
                 # Update existing executor
                 for attr, value in executor_dict.items():
                     setattr(existing_executor, attr, value)
@@ -213,6 +213,7 @@ class MarketsRecorder:
                 # Necessary for triangular to be json serializable compatible 
                 if (isinstance(raw_config.config, TriangularArbExecutorConfig)): 
                     raw_config.config.confirm_round_callback = None
+                    raw_config.config.set_stop = None
 
                 serialized_config = raw_config.json()
                 new_executor = Executors(**executor_dict)

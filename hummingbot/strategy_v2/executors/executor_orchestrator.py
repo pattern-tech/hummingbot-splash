@@ -18,9 +18,9 @@ from hummingbot.strategy_v2.executors.dca_executor.dca_executor import DCAExecut
 from hummingbot.strategy_v2.executors.grid_executor.data_types import GridExecutorConfig
 from hummingbot.strategy_v2.executors.grid_executor.grid_executor import GridExecutor
 from hummingbot.strategy_v2.executors.position_executor.data_types import PositionExecutorConfig
+from hummingbot.strategy_v2.executors.position_executor.position_executor import PositionExecutor
 from hummingbot.strategy_v2.executors.triangular_arb_executor.data_types import TriangularArbExecutorConfig
 from hummingbot.strategy_v2.executors.triangular_arb_executor.triangular_arb_executor import TriangularArbExecutor
-from hummingbot.strategy_v2.executors.position_executor.position_executor import PositionExecutor
 from hummingbot.strategy_v2.executors.twap_executor.data_types import TWAPExecutorConfig
 from hummingbot.strategy_v2.executors.twap_executor.twap_executor import TWAPExecutor
 from hummingbot.strategy_v2.executors.xemm_executor.data_types import XEMMExecutorConfig
@@ -198,12 +198,7 @@ class ExecutorOrchestrator:
         """
         Execute the action and handle executors based on action type.
         """
-        self.logger().info("this is the action received %s ", action )
-        if action == None:
-            self.stop_executor(action)
-            self.stop()
-        elif isinstance(action, StopExecutorAction):
-            self.stop_executor(action)
+
         controller_id = action.controller_id
         if controller_id not in self.cached_performance:
             self.active_executors[controller_id] = []
@@ -249,13 +244,11 @@ class ExecutorOrchestrator:
         elif isinstance(executor_config, XEMMExecutorConfig):
             executor = XEMMExecutor(self.strategy, executor_config, self.executors_update_interval)
         elif isinstance(executor_config, TriangularArbExecutorConfig):
-            self.logger().info("matched the triangular arb executer")
             executor = TriangularArbExecutor(self.strategy, executor_config, self.executors_update_interval)
         else:
             raise ValueError("Unsupported executor config type")
 
         executor.start()
-        self.logger().info("called the start")
         self.active_executors[controller_id].append(executor)
         # MarketsRecorder.get_instance().store_or_update_executor(executor)
         self.logger().debug(f"Created {type(executor).__name__} for controller {controller_id}")

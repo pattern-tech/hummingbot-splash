@@ -44,20 +44,16 @@ class RunnableBase(ABC):
         Start the control loop of the smart component.
         If the component is not already started, it will start the control loop.
         """
-        self.logger().info("in start")        
         if self._status == RunnableStatus.NOT_STARTED:
             self.terminated.clear()
             self._status = RunnableStatus.RUNNING
-            self.logger().info("calling the control loop")
             safe_ensure_future(self.control_loop())
-            self.logger().info("called the control loop")
 
     def stop(self):
         """
         Stop the control loop of the smart component.
         If the component is active or not started, it will stop the control loop.
         """
-        self.logger().info("terminating the status")
         if self._status != RunnableStatus.TERMINATED:
             self._status = RunnableStatus.TERMINATED
             self.terminated.set()
@@ -67,19 +63,18 @@ class RunnableBase(ABC):
         The main control loop of the smart component.
         This method is responsible for executing the control task at the specified interval.
         """
-        self.logger().info("in control loop")
+        self.logger().debug("inside the control loop")
+        self.logger().debug("is terminated %s", self.terminated.is_set())
         await self.on_start()
-        self.logger().info("called the on start %s", self.terminated.is_set())
+        self.logger().debug("passed on start %s", self.terminated.is_set())
         while not self.terminated.is_set():
             try:
-                self.logger().info("calling the control task")
+                self.logger().debug("in loop")
                 await self.control_task()
-                self.logger().info("called the control task")
             except Exception as e:
                 self.logger().error(e, exc_info=True)
             finally:
                 await asyncio.sleep(self.update_interval)
-        self.logger().info("calling the on stop on the control loop")
         self.on_stop()
 
     def on_stop(self):

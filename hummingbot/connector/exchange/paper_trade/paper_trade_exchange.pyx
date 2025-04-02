@@ -4,8 +4,8 @@ import asyncio
 import math
 import random
 from collections import defaultdict, deque
-from decimal import Decimal, ROUND_DOWN
-from typing import Callable, Dict, List, Optional, Tuple, TYPE_CHECKING
+from decimal import ROUND_DOWN, Decimal
+from typing import TYPE_CHECKING, Callable, Dict, List, Optional, Tuple
 
 from cpython cimport PyObject
 from cython.operator cimport address, dereference as deref, postincrement as inc
@@ -16,18 +16,26 @@ from hummingbot.connector.budget_checker import BudgetChecker
 from hummingbot.connector.connector_metrics_collector import DummyMetricsCollector
 from hummingbot.connector.exchange.paper_trade.trading_pair import TradingPair
 from hummingbot.connector.exchange_base import ExchangeBase
+
 from hummingbot.core.clock cimport Clock
+
 from hummingbot.core.clock import Clock
 from hummingbot.core.data_type.cancellation_result import CancellationResult
 from hummingbot.core.data_type.common import OrderType, TradeType
 from hummingbot.core.data_type.composite_order_book import CompositeOrderBook
+
 from hummingbot.core.data_type.composite_order_book cimport CompositeOrderBook
+
 from hummingbot.core.data_type.limit_order import LimitOrder
+
 from hummingbot.core.data_type.limit_order cimport c_create_limit_order_from_cpp_limit_order
 from hummingbot.core.data_type.order_book cimport OrderBook
+
 from hummingbot.core.data_type.order_book_tracker import OrderBookTracker
 from hummingbot.core.data_type.order_candidate import OrderCandidate
+
 from hummingbot.core.event.event_listener cimport EventListener
+
 from hummingbot.core.event.events import (
     BuyOrderCompletedEvent,
     BuyOrderCreatedEvent,
@@ -41,7 +49,9 @@ from hummingbot.core.event.events import (
     SellOrderCreatedEvent,
 )
 from hummingbot.core.network_iterator import NetworkStatus
+
 from hummingbot.core.Utils cimport getIteratorFromReverseIterator, reverse_iterator
+
 from hummingbot.core.utils.async_utils import safe_ensure_future
 from hummingbot.core.utils.estimate_fee import build_trade_fee
 

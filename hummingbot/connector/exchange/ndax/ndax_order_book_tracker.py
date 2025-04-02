@@ -1,21 +1,20 @@
 #!/usr/bin/env python
 import asyncio
-import aiohttp
 import bisect
 import logging
 import time
-
 from collections import defaultdict, deque
-from typing import Optional, Dict, List, Deque
+from typing import Deque, Dict, List, Optional
+
+import aiohttp
 
 import hummingbot.connector.exchange.ndax.ndax_constants as CONSTANTS
-from hummingbot.core.api_throttler.async_throttler import AsyncThrottler
-
-from hummingbot.core.data_type.order_book_message import OrderBookMessageType
-from hummingbot.core.data_type.order_book_tracker import OrderBookTracker
-from hummingbot.connector.exchange.ndax.ndax_order_book_message import NdaxOrderBookMessage
 from hummingbot.connector.exchange.ndax.ndax_api_order_book_data_source import NdaxAPIOrderBookDataSource
 from hummingbot.connector.exchange.ndax.ndax_order_book import NdaxOrderBook
+from hummingbot.connector.exchange.ndax.ndax_order_book_message import NdaxOrderBookMessage
+from hummingbot.core.api_throttler.async_throttler import AsyncThrottler
+from hummingbot.core.data_type.order_book_message import OrderBookMessageType
+from hummingbot.core.data_type.order_book_tracker import OrderBookTracker
 from hummingbot.logger import HummingbotLogger
 
 

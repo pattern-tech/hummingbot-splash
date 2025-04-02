@@ -1,14 +1,15 @@
 # distutils: language=c++
 
 import asyncio
-from enum import Enum
 import logging
+from enum import Enum
 from typing import Optional
 
 from hummingbot.core.clock cimport Clock
-from hummingbot.logger import HummingbotLogger
-from hummingbot.core.utils.async_utils import safe_ensure_future
+
 from hummingbot.core.time_iterator import TimeIterator
+from hummingbot.core.utils.async_utils import safe_ensure_future
+from hummingbot.logger import HummingbotLogger
 
 NaN = float("nan")
 ni_logger = None

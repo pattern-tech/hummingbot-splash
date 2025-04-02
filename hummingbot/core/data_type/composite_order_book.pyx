@@ -4,12 +4,14 @@
 from typing import Iterator
 
 from cython.operator cimport address as ref, dereference as deref, postincrement as inc
-from hummingbot.core.data_type.OrderBookEntry cimport OrderBookEntry
 from libcpp.set cimport set
 from libcpp.vector cimport vector
 
+from hummingbot.core.data_type.OrderBookEntry cimport OrderBookEntry
+
 from hummingbot.core.data_type.common import TradeType
 from hummingbot.core.data_type.order_book_row import OrderBookRow
+
 
 cdef class CompositeOrderBook(OrderBook):
     """

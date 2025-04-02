@@ -1,14 +1,13 @@
 import asyncio
 from collections import deque
+from typing import List, Optional
 
 from async_timeout import timeout
-from typing import (
-    List,
-    Optional,
-)
 
 from hummingbot.core.event.event_listener cimport EventListener
+
 from hummingbot.core.event.events import OrderFilledEvent
+
 
 cdef class EventLogger(EventListener):
     def __init__(self, event_source: Optional[str] = None):

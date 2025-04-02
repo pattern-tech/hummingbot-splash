@@ -1,6 +1,7 @@
 # distutils: language=c++
 from hummingbot.core.data_type.order_book cimport OrderBook
 
+
 cdef class CompositeOrderBook(OrderBook):
     cdef:
         OrderBook _traded_order_book

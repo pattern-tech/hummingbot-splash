@@ -2,6 +2,7 @@ from hummingbot.core.event.event_logger cimport EventLogger
 from hummingbot.core.event.event_reporter cimport EventReporter
 from hummingbot.core.network_iterator cimport NetworkIterator
 
+
 cdef class ConnectorBase(NetworkIterator):
     cdef:
         EventReporter _event_reporter

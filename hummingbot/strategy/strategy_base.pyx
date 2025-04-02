@@ -1,21 +1,26 @@
-from decimal import Decimal
 import logging
+from decimal import Decimal
+from typing import List
+
 import pandas as pd
-from typing import (
-    List)
 
 from hummingbot.core.clock cimport Clock
-from hummingbot.core.event.events import MarketEvent, AccountEvent
+
+from hummingbot.core.event.events import AccountEvent, MarketEvent
+
 from hummingbot.core.event.event_listener cimport EventListener
+
 from hummingbot.core.network_iterator import NetworkStatus
 from hummingbot.strategy.market_trading_pair_tuple import MarketTradingPairTuple
-from hummingbot.core.time_iterator cimport TimeIterator
+
 from hummingbot.connector.connector_base cimport ConnectorBase
+from hummingbot.core.time_iterator cimport TimeIterator
+
+from hummingbot.connector.derivative_base import DerivativeBase
+from hummingbot.core.data_type.common import OrderType, PositionAction
 from hummingbot.core.data_type.trade import Trade
 from hummingbot.core.event.events import OrderFilledEvent
-from hummingbot.core.data_type.common import OrderType, PositionAction
 from hummingbot.strategy.order_tracker import OrderTracker
-from hummingbot.connector.derivative_base import DerivativeBase
 
 NaN = float("nan")
 s_decimal_nan = Decimal("NaN")

@@ -1,7 +1,7 @@
 import asyncio
-from decimal import Decimal
 import logging
-from typing import Coroutine, Dict, Optional, Union, cast
+from decimal import Decimal
+from typing import Optional, Union
 
 from hummingbot.connector.connector_base import ConnectorBase
 from hummingbot.core.data_type.common import OrderType, PositionAction, TradeType
@@ -43,7 +43,6 @@ class TriangularArbExecutor(ExecutorBase):
         return type(self.state) is Completed or type(self.state) is Failed
 
     def __init__(self, strategy: ScriptStrategyBase, config: TriangularArbExecutorConfig, update_interval: float = 1.0):
-        self.logger().info("came to the init")
         super().__init__(
             strategy=strategy,
             connectors=[
@@ -82,6 +81,8 @@ class TriangularArbExecutor(ExecutorBase):
             self.sell_amount = config.sell_amount
             self.confirm_round_callback = config.confirm_round_callback
             config.set_stop(self.early_stop)
+            self.stopper_initiated = False
+            self.real_arbitrage_percentage = config.real_arbitrage_percentage
             self.rollbacks: AsyncTrackedOrderFunction = []
             self.state: Idle | InProgress | Completed | Canceled | Failed | GraceFullStop = Idle()
         else:
@@ -96,8 +97,7 @@ class TriangularArbExecutor(ExecutorBase):
     def selling_market(self) -> ConnectorBase:
         return self.connectors[self._selling_market.connector_name]
 
-    def validate_sufficient_balance(self):
-        self.logger().info("got into validate sufficient balance")
+    async def validate_sufficient_balance(self):
         if self.arb_direction is ArbitrageDirection.FORWARD:
             buying_account_not_ok = self.buying_market().get_balance(self.proxy_asset) < self.buy_amount
             proxy_account_not_ok = self.proxy_market().get_balance(self.stable_asset) < self.proxy_amount
@@ -116,16 +116,27 @@ class TriangularArbExecutor(ExecutorBase):
                 self.logger().error("Not enough budget to open position.")
 
     async def control_task(self):
-        self.logger().info("entered the controller tasker the triangular arbitrage ")
+        if (
+            self.config.buy_amount + self.config.sell_amount + self.config.proxy_amount == Decimal(0)
+            and not self.stopper_initiated
+            and self.real_arbitrage_percentage == Decimal(0)
+        ):
+            self.logger().debug("initiating the stopper")
+            self.config.set_stop(self.early_stop)
+            self.stopper_initiated = True
+            self.confirm_round_callback()
+            self.stop()
+            return
+
         if isinstance(self.state, GraceFullStop):
             self.logger().error("the bot is stopped, check the logs for errors !")
             return
 
         if isinstance(self.state, Idle):
+
             await self.init_arbitrage()
 
         if isinstance(self.state, Canceled):
-
             try:
                 if not self.state.rollbacks:
                     self.logger().error("No rollback functions available!")
@@ -219,7 +230,7 @@ class TriangularArbExecutor(ExecutorBase):
                                 self.stop()
                                 self.early_stop()
                             return
-        
+
         if self.state.buy_order.is_filled and self.state.proxy_order.is_filled and self.state.sell_order.is_filled:
             self.state = Completed(
                 buy_order_exec_price=self.state.buy_order.average_executed_price,
@@ -228,16 +239,6 @@ class TriangularArbExecutor(ExecutorBase):
             )
             self.confirm_round_callback()
             self.stop()
-
-    async def on_start(self):
-        """
-        This method is responsible for starting the executor and validating if the position is expired. The base method
-        validates if there is enough balance to place the open order.
-
-        :return: None
-        """
-        self.logger().info("got into the triangular on_start")
-        await self.control_task()
 
     async def init_arbitrage(self):
         buy_order = asyncio.create_task(self.place_buy_order())
@@ -250,7 +251,6 @@ class TriangularArbExecutor(ExecutorBase):
             sell_order=sell_order,
         )
 
-    ## --------------------------------
     async def place_buy_order(self) -> TrackedOrder:
         market = self._buying_market
         order_id = self.place_order(
@@ -275,7 +275,6 @@ class TriangularArbExecutor(ExecutorBase):
 
         return TrackedOrder(order_id)
 
-    ## --------------------------------
     async def place_proxy_order(self) -> TrackedOrder:
         market = self._proxy_market
         order_id = self.place_order(
@@ -300,7 +299,6 @@ class TriangularArbExecutor(ExecutorBase):
 
         return TrackedOrder(order_id)
 
-    ## --------------------------------
     async def place_sell_order(self) -> TrackedOrder:
         market = self._selling_market
 
@@ -325,8 +323,6 @@ class TriangularArbExecutor(ExecutorBase):
         )
 
         return TrackedOrder(order_id)
-
-    ## --------------------------------
 
     async def cancel_splash_order(self, connector_name: str, pair: str, order_id: str) -> str:
 
@@ -432,8 +428,6 @@ class TriangularArbExecutor(ExecutorBase):
             return self._strategy.sell(connector_name, trading_pair, amount, order_type, price, position_action)
 
     def on_stop(self):
-        
-        self.logger().info("got into the exe tri on stop")
         if self._status != RunnableStatus.TERMINATED:
             self.state = GraceFullStop
             self.close_type = CloseType.EARLY_STOP
@@ -443,7 +437,6 @@ class TriangularArbExecutor(ExecutorBase):
             self.stop()
 
     def early_stop(self):
-        self.logger().info("got into the exe tri early stop")
         self.on_stop()
 
     def get_net_pnl_quote(self) -> Decimal:

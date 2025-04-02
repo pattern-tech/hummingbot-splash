@@ -1,6 +1,6 @@
 import asyncio
 from decimal import Decimal
-from typing import Dict, List, Iterator, Mapping, Optional, TYPE_CHECKING
+from typing import TYPE_CHECKING, Dict, Iterator, List, Mapping, Optional
 
 from bidict import bidict
 
