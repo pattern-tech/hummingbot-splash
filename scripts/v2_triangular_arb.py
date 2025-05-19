@@ -145,7 +145,7 @@ class TriangularArbV2(StrategyV2Base):
         #     return []
 
         if not self.previous_round_confirmed:
-            print("Wait until next round gets confirmed")
+            print("Wait until previous round gets confirmed")
             return []
 
         if len(active_executors) == 0:

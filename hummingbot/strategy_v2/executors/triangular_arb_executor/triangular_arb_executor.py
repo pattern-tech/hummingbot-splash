@@ -216,13 +216,13 @@ class TriangularArbExecutor(ExecutorBase):
                             return
 
         if self.state.buy_order.is_filled and self.state.proxy_order.is_filled and self.state.sell_order.is_filled:
+            self.confirm_round_callback()
+            self.stop()
             self.state = Completed(
                 buy_order_exec_price=self.state.buy_order.average_executed_price,
                 proxy_order_exec_price=self.state.proxy_order.average_executed_price,
                 sell_order_exec_price=self.state.sell_order.average_executed_price,
             )
-            self.confirm_round_callback()
-            self.stop()
 
 
 
